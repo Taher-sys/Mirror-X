@@ -1,0 +1,259 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Heavyweight Premium Charcoal Base */
+  --background: #14151a;
+  --foreground: #ffffff;
+  --surface: #1a1b22;
+  --surface-elevated: #1e2028;
+  --surface-overlay: #24252e;
+  --border: rgba(255, 255, 255, 0.1);
+  --muted: #71717a;
+
+  /* Electric Amber/Orange Accents */
+  --accent-amber: #f59e0b;
+  --accent-orange: #ea580c;
+  --accent-amber-glow: #fbbf24;
+  --accent-burnt-orange: #c2410c;
+  --accent-crimson: #ff003c;
+}
+
+body {
+  color: var(--foreground);
+  background:
+    /* Subtle dot-matrix grid overlay for architectural depth */
+    radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px),
+    /* Premium ambient radial gradient: warm charcoal top → deep slate bottom */
+    radial-gradient(ellipse 80% 50% at 50% 0%, #1e2028 0%, #14151a 55%, #0d0e12 100%);
+  background-size:
+    24px 24px,
+    100% 100%;
+  background-color: #14151a;
+  background-attachment: fixed;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Deep Multi-Layered Glassmorphism */
+  .glass-surface {
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    background-color: rgba(9, 9, 11, 0.9);
+    border: 2px solid rgba(249, 115, 22, 0.35);
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 50px 0 rgba(0, 0, 0, 0.9);
+  }
+
+  .glass-surface-elevated {
+    backdrop-filter: blur(36px);
+    -webkit-backdrop-filter: blur(36px);
+    background-color: rgba(9, 9, 11, 0.95);
+    border: 2px solid rgba(249, 115, 22, 0.45);
+    border-top: 2px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 25px 60px 0 rgba(0, 0, 0, 0.95);
+  }
+
+  /* Heavy Glassmorphism Panel - Obsidian Black & Electric Orange */
+  .glass-panel {
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    background: rgba(9, 9, 11, 0.9); /* bg-zinc-950/90 */
+    border: 2px solid rgba(249, 115, 22, 0.35); /* border-2 border-orange-500/35 */
+    border-top: 2px solid rgba(255, 255, 255, 0.3); /* border-t-2 border-white/30 */
+    box-shadow: 0 20px 50px 0 rgba(0, 0, 0, 0.9); /* shadow-[0_20px_50px_rgba(0,0,0,0.9)] */
+  }
+
+  /* Typography Gradient Fills - Amber/Orange */
+  .text-gradient-header {
+    background: linear-gradient(135deg, #ffffff 0%, #f4f4f5 50%, #d4d4d8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+  }
+
+  .text-gradient-amber {
+    background: linear-gradient(135deg, #fde047 0%, #f59e0b 50%, #ea580c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+  }
+
+  .text-gradient-orange {
+    background: linear-gradient(135deg, #fed7aa 0%, #ea580c 50%, #c2410c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+  }
+
+  /* Anti-Vibe-Code Thick Typography System */
+  .text-header-bold {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+  }
+
+  .text-data-stream {
+    font-family: var(--font-jetbrains), monospace;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #fb923c; /* text-orange-400 */
+  }
+
+  .text-metric {
+    font-family: var(--font-jetbrains), monospace;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #f59e0b;
+  }
+
+  .text-label {
+    font-family: var(--font-jetbrains), monospace;
+    font-size: 0.8125rem; /* 13px — upgraded from 12px for document-grade readability */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #fb923c; /* text-orange-400 */
+  }
+
+  /* Rich Textured Canvas Background Utility */
+  .canvas-textured {
+    background:
+      radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px),
+      radial-gradient(ellipse 80% 50% at 50% 0%, #1e2028 0%, #14151a 55%, #0d0e12 100%);
+    background-size:
+      24px 24px,
+      100% 100%;
+    background-color: #14151a;
+  }
+
+  /* FramerKit Navigation Spec */
+  .nav-bar {
+    border-radius: 9999px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    background-color: rgba(9, 9, 11, 0.85);
+    border-width: 1px;
+    border-color: rgba(249, 115, 22, 0.4);
+    box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.4), 0 0 20px rgba(249, 115, 22, 0.15);
+  }
+
+  .nav-item-active {
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+    background-color: rgba(249, 115, 22, 0.15);
+    border-color: rgba(249, 115, 22, 0.6);
+  }
+
+  .nav-interactive, .spring-interactive {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    transition-duration: 300ms;
+  }
+  .nav-interactive:hover, .spring-interactive:hover {
+    transform: scale(1.02);
+  }
+  .nav-interactive:active, .spring-interactive:active {
+    transform: scale(0.98);
+  }
+
+  /* Micro-Interactions: Smooth hover lift & amber border illuminate */
+  .hover-glass-lift {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .hover-glass-lift:hover {
+    transform: translateY(-2px);
+    border-color: rgba(245, 158, 11, 0.35);
+    box-shadow:
+      0 16px 40px 0 rgba(0, 0, 0, 0.8),
+      0 0 20px rgba(245, 158, 11, 0.1);
+  }
+
+  /* Amber Glow Effects */
+  .amber-glow {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+  }
+
+  .amber-glow-subtle {
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+  }
+
+  .amber-border-glow {
+    border-color: rgba(245, 158, 11, 0.4);
+    box-shadow:
+      0 0 15px rgba(245, 158, 11, 0.15),
+      inset 0 0 15px rgba(245, 158, 11, 0.05);
+  }
+}
+
+/* Amber Pulse Animations */
+@keyframes amber-pulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 2px rgba(245, 158, 11, 0.3);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.5);
+  }
+}
+
+.animate-amber-pulse {
+  animation: amber-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Custom scrollbar for Obsidian theme with amber hover */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #14151a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.5);
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(245, 158, 11, 0.3);
+  color: #ffffff;
+}
+
+/* Focus ring styling */
+:focus-visible {
+  outline: 2px solid rgba(245, 158, 11, 0.5);
+  outline-offset: 2px;
+}
