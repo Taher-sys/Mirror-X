@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api import api_router
 from app.core.config import get_settings
 from app.core.database import close_db, init_db
+from app.core.edge.database import get_edge_db_manager
 from app.core.errors import (
     AppException,
     app_exception_handler,
@@ -23,8 +24,10 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Application lifespan manager."""
     # Startup
     await init_db()
+    await get_edge_db_manager().init_db()
     yield
     # Shutdown
+    await get_edge_db_manager().close()
     await close_db()
 
 
@@ -53,6 +56,8 @@ def create_app() -> FastAPI:
 
     # Include routers
     app.include_router(api_router)
+    from app.api.edge import router as edge_router
+    app.include_router(edge_router, prefix="/api")
 
     return app
 

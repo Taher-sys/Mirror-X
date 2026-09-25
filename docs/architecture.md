@@ -40,22 +40,28 @@
 - **CI/CD**: GitHub Actions (Later phases)
 - **Deployment**: Cloud Deployment (Deferred to later phases)
 
+### Implemented Modular Engines (Phases 1-9)
+- **Command Center & Vengeance UI** (Phases 1-2)
+- **Reality Graph Engine** (Phase 3)
+- **Context Engine & API Linking** (Phase 4)
+- **Change Twin & Blast Radius Analysis** (Phase 5)
+- **Synthetic Scenario Engine** (Phase 6 - Algorithmic 10-class deterministic generator)
+- **Agent Behavior Lab** (Phase 7 - Telemetry & 8-metric behavioral comparator)
+- **Trust Layer & Policy Engine** (Phase 8 - Sandbox governance & human sign-off)
+- **Evidence Ledger & Release Passport** (Phase 9 - SHA-256 provenance & 6-domain release passport)
+
 ### Future Technologies (Deferred)
-- **MCP (Model Context Protocol)**
-- **OpenTelemetry**
-- **Graph Reasoning**
-- **Deep Learning**
-- **Synthetic Scenario Generation**
-- **Local-first Edge Execution**
-- **WebGPU**
+- **MCP (Model Context Protocol)** (Phase 10)
+- **Deep Learning / Advanced Graph Reasoning** (Phase 10)
+- **Local-first Edge SQLite Execution** (Phase 11)
+- **WebGPU Acceleration**
+- **Cloud Deployment / Kubernetes**
 
 ## 3. Explicit Non-Goals (DO NOT IMPLEMENT YET)
-- Deep Learning models
-- Autonomous Agents built-in
+- Deep Learning / ML models (no external ML datasets for scenario generation)
+- Live production action execution (strict sandbox / mock isolation enforced)
+- Arbitrary "intelligence scores" for agents (empirical behavioral metrics only)
 - MCP Servers
-- 3D Digital Twin visualization
-- Synthetic Scenario Engine
-- Complex Policy Engine
 - Cloud Deployment / Kubernetes
 - Vector Databases
 - Advanced Distributed Systems logic

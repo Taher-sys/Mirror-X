@@ -79,7 +79,6 @@ export default function DashboardPage() {
       if (findingCountsRes.status === 'fulfilled') setFindingCounts(findingCountsRes.value);
       if (activitiesRes.status === 'fulfilled') setActivities(activitiesRes.value);
 
-      // If all failed due to offline daemon, indicate status
       const allFailed = [
         statusRes,
         summaryRes,
@@ -89,7 +88,6 @@ export default function DashboardPage() {
       ].every((r) => r.status === 'rejected');
 
       if (allFailed) {
-        // Do not crash, display honest offline empty state
         setStatus({
           status: 'uninitialized',
           database_connected: false,
@@ -132,11 +130,10 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="relative min-h-full space-y-6 pb-12">
+    <div className="relative min-h-[calc(100vh-3.5rem)] overflow-hidden canvas-textured text-white p-6 space-y-6">
       {/* 3D Perspective Grid Canvas Background */}
       <PerspectiveGrid />
 
-      {/* Control Room Header */}
       {/* Control Room Header */}
       <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
         <div className="flex items-center gap-3.5">
@@ -148,11 +145,11 @@ export default function DashboardPage() {
               <h1 className="text-2xl font-bold tracking-tight text-white font-sans drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
                 Command Center
               </h1>
-              <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2 py-0.5 rounded shadow-[0_0_10px_rgba(249,115,22,0.25)]">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2.5 py-0.5 rounded shadow-[0_0_10px_rgba(249,115,22,0.25)]">
                 CONTROL ROOM
               </span>
             </div>
-            <p className="mt-1 font-mono text-sm font-bold text-zinc-200">
+            <p className="mt-1 font-mono text-sm font-semibold text-zinc-200">
               Reality Twin operational telemetry &amp; ecosystem topology matrix
             </p>
           </div>
@@ -238,15 +235,15 @@ export default function DashboardPage() {
           {/* Section 3: Bottom System Footer Stream */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/30 bg-zinc-950/90 px-5 py-3.5 font-mono text-xs font-bold text-zinc-200 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
+            className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 px-5 py-3.5 font-mono text-sm font-semibold text-zinc-200 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
           >
             <div className="flex items-center gap-2.5">
-              <Terminal className="h-3.5 w-3.5 text-orange-400" />
+              <Terminal className="h-4 w-4 text-orange-400" />
               <span>CONTROL MATRIX: <strong className="text-white font-bold">MIRROR-X ENTERPRISE REALITY ENGINE</strong></span>
             </div>
             <div className="flex items-center gap-5">
               <div className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-orange-400 shadow-[0_0_6px_#EA580C]" />
+                <span className="h-2 w-2 rounded-full bg-orange-400 shadow-[0_0_6px_#EA580C]" />
                 <span>UPTIME: <span className="font-bold text-orange-400">{status ? `${status.uptime_seconds}s` : '0s'}</span></span>
               </div>
               <span className="text-zinc-600">|</span>

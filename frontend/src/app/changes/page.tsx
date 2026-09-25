@@ -4,13 +4,11 @@ import React, { useState } from 'react';
 import {
   AlertTriangle,
   ArrowRight,
-  CheckCircle2,
   Code2,
   Database,
   ExternalLink,
   FileCode,
   GitBranch,
-  GitCommit,
   GitPullRequest,
   Layers,
   Play,
@@ -22,7 +20,6 @@ import Link from 'next/link';
 import { GlassPanel } from '@/components/ui/glass-panel';
 import { PerspectiveGrid } from '@/components/ui/perspective-grid';
 import { StatTile } from '@/components/ui/stat-tile';
-import { StatusBadge } from '@/components/ui/status-badge';
 import {
   analyzeChangeImpact,
   ChangeImpactAnalysisResult,
@@ -133,11 +130,11 @@ export default function ChangesPage() {
               <h1 className="text-2xl font-bold tracking-tight text-white font-sans drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
                 Change Twin
               </h1>
-              <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2 py-0.5 rounded shadow-[0_0_10px_rgba(249,115,22,0.25)]">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2.5 py-0.5 rounded shadow-[0_0_10px_rgba(249,115,22,0.25)]">
                 BLAST RADIUS CASCADE
               </span>
             </div>
-            <p className="mt-1 font-mono text-sm font-bold text-zinc-200">
+            <p className="mt-1 font-mono text-sm font-semibold text-zinc-200">
               Dual-pane predictive impact simulation contrasting code diffs against reality graph topology
             </p>
           </div>
@@ -145,7 +142,7 @@ export default function ChangesPage() {
 
         {/* Preset Selector & Action */}
         <div className="flex items-center gap-2.5 flex-wrap">
-          <span className="font-mono text-[10px] uppercase text-orange-400 font-bold mr-1">Presets:</span>
+          <span className="font-mono text-xs uppercase text-orange-400 font-bold mr-1">Presets:</span>
           {PRESET_DIFFS.map((preset) => (
             <button
               key={preset.id}
@@ -183,7 +180,7 @@ export default function ChangesPage() {
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* LEFT PANE: Proposed Change (Git Diff) */}
         <div className="lg:col-span-6 space-y-4">
-          <GlassPanel className="p-4 space-y-4">
+          <GlassPanel className="p-5 space-y-4">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-2">
                 <FileCode className="h-4 w-4 text-orange-400" />
@@ -191,13 +188,13 @@ export default function ChangesPage() {
                   Proposed Git Change
                 </h3>
               </div>
-              <span className="font-mono text-[10px] font-bold text-orange-400">UNIFIED DIFF</span>
+              <span className="font-mono text-xs font-bold text-orange-400">UNIFIED DIFF</span>
             </div>
 
             {/* Change Metadata Inputs */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block font-mono text-[10px] uppercase font-bold text-zinc-300 mb-1">
+                <label className="block font-mono text-xs uppercase font-bold text-zinc-300 mb-1">
                   Change / PR Title
                 </label>
                 <input
@@ -210,7 +207,7 @@ export default function ChangesPage() {
               </div>
 
               <div>
-                <label className="block font-mono text-[10px] uppercase font-bold text-zinc-300 mb-1">
+                <label className="block font-mono text-xs uppercase font-bold text-zinc-300 mb-1">
                   Target Branch
                 </label>
                 <div className="flex items-center gap-2 rounded-xl border-2 border-orange-500/30 bg-zinc-950/90 px-3.5 py-2">
@@ -228,9 +225,9 @@ export default function ChangesPage() {
 
             {/* Diff Editor / Viewer */}
             <div>
-              <label className="block font-mono text-[10px] uppercase text-zinc-300 mb-2 flex items-center justify-between font-bold">
+              <label className="block font-mono text-xs uppercase text-zinc-300 mb-2 flex items-center justify-between font-bold">
                 <span>Git Unified Diff</span>
-                <span className="text-[10px] font-bold text-orange-400">Standard unified format</span>
+                <span className="text-xs font-bold text-orange-400">Standard unified format</span>
               </label>
 
               <textarea
@@ -249,19 +246,19 @@ export default function ChangesPage() {
           {!impactResult ? (
             <GlassPanel className="py-24 text-center">
               <div className="flex flex-col items-center justify-center p-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/60 text-zinc-500 mb-3">
-                  <Zap className="h-6 w-6 stroke-[1.5] text-accent-amber/60" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-orange-500/40 bg-orange-950/40 text-orange-400 mb-3 shadow-[0_0_15px_rgba(249,115,22,0.3)]">
+                  <Zap className="h-6 w-6 stroke-[1.5]" />
                 </div>
-                <h4 className="font-mono text-sm font-semibold uppercase tracking-wider text-zinc-200">
+                <h4 className="font-mono text-sm font-bold uppercase tracking-wider text-zinc-200">
                   Awaiting Impact Simulation
                 </h4>
-                <p className="mt-1.5 max-w-sm text-sm text-zinc-300 font-sans leading-relaxed">
+                <p className="mt-1.5 max-w-sm text-sm font-medium text-zinc-300 font-sans leading-relaxed">
                   Provide a unified Git diff in the left pane and click &quot;Simulate Blast Radius&quot; to calculate direct entity impacts and indirect graph propagation cascades.
                 </p>
                 <div className="mt-4">
                   <button
                     onClick={handleAnalyze}
-                    className="inline-flex items-center gap-2 rounded-lg border border-accent-amber/50 bg-accent-amber/10 px-4 py-2 font-mono text-xs font-semibold uppercase tracking-wider text-accent-amber hover:bg-accent-amber/20 transition-all"
+                    className="inline-flex items-center gap-2 rounded-xl border-2 border-orange-500/50 bg-orange-950/60 px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 hover:bg-orange-900/60 transition-all shadow-[0_0_15px_rgba(249,115,22,0.25)]"
                   >
                     <Play className="h-3 w-3 fill-current" />
                     <span>Run Simulation</span>
@@ -282,9 +279,7 @@ export default function ChangesPage() {
                       ? 'crimson'
                       : impactResult.risk_level === 'high'
                       ? 'amber'
-                      : impactResult.risk_level === 'medium'
-                      ? 'cyan'
-                      : 'emerald'
+                      : 'orange'
                   }
                   icon={ShieldAlert}
                 />
@@ -292,7 +287,7 @@ export default function ChangesPage() {
                   label="Direct Nodes"
                   value={impactResult.direct_impact_count}
                   subvalue="modified entities"
-                  accent="cyan"
+                  accent="orange"
                   icon={Code2}
                 />
                 <StatTile
@@ -313,7 +308,7 @@ export default function ChangesPage() {
 
               {/* Breaking Changes Warnings */}
               {impactResult.breaking_changes && impactResult.breaking_changes.length > 0 && (
-                <div className="rounded-2xl border-2 border-rose-500/40 border-t-2 border-white/20 bg-rose-950/30 p-4 space-y-3 shadow-[0_12px_32px_rgba(0,0,0,0.8)] backdrop-blur-3xl">
+                <div className="rounded-2xl border-2 border-rose-500/40 border-t-2 border-white/25 bg-rose-950/30 p-4 space-y-3 shadow-[0_12px_32px_rgba(0,0,0,0.8)] backdrop-blur-3xl">
                   <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-rose-400">
                     <AlertTriangle className="h-4 w-4 drop-shadow-[0_0_8px_rgba(244,63,94,0.4)]" />
                     <span>Breaking Changes Detected ({impactResult.breaking_changes.length})</span>
@@ -329,9 +324,9 @@ export default function ChangesPage() {
                           {bc.severity}
                         </span>
                       </div>
-                      <p className="text-zinc-300 font-sans text-xs font-medium">{bc.description}</p>
+                      <p className="text-zinc-200 font-sans text-xs font-medium">{bc.description}</p>
                       {bc.impacted_nodes.length > 0 && (
-                        <div className="pt-1 text-[11px] font-bold text-zinc-400">
+                        <div className="pt-1 text-xs font-bold text-zinc-300">
                           Downstream affected:{' '}
                           <span className="text-orange-400">{bc.impacted_nodes.join(', ')}</span>
                         </div>
@@ -358,7 +353,7 @@ export default function ChangesPage() {
                         <button
                           key={cat}
                           onClick={() => setCategoryFilter(cat)}
-                          className={`px-2.5 py-1 rounded-xl font-mono text-[10px] font-bold uppercase tracking-wider transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] ${
+                          className={`px-2.5 py-1 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] ${
                             categoryFilter === cat
                               ? 'bg-orange-950/60 text-white font-bold border border-orange-500/50 shadow-[0_0_8px_rgba(249,115,22,0.25)]'
                               : 'bg-zinc-900/60 text-zinc-400 hover:text-white border border-white/5'
@@ -392,7 +387,7 @@ export default function ChangesPage() {
                           <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-2">
                               <span
-                                className={`font-mono text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${
+                                className={`font-mono text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${
                                   isDirect
                                     ? 'bg-orange-950/60 text-orange-400 border-orange-500/50 shadow-[0_0_8px_rgba(249,115,22,0.25)]'
                                     : 'bg-zinc-900/80 text-zinc-300 border-white/10'
@@ -403,7 +398,7 @@ export default function ChangesPage() {
                               <span className="font-mono text-xs font-bold text-white">
                                 {n.name}
                               </span>
-                              <span className="font-mono text-[10px] font-bold text-orange-400 uppercase bg-black/60 border border-orange-500/30 px-2 py-0.5 rounded-lg">
+                              <span className="font-mono text-xs font-bold text-orange-400 uppercase bg-black/60 border border-orange-500/30 px-2 py-0.5 rounded-lg">
                                 {n.node_type}
                               </span>
                             </div>
@@ -417,20 +412,20 @@ export default function ChangesPage() {
                             </Link>
                           </div>
 
-                          <div className="mt-2 text-xs font-medium text-zinc-300 font-sans">
+                          <div className="mt-2 text-xs font-medium text-zinc-200 font-sans">
                             {n.reason}
                           </div>
 
                           {n.propagation_path && n.propagation_path.length > 0 && (() => {
                             const path = n.propagation_path;
                             return (
-                              <div className="mt-2.5 flex items-center gap-1.5 font-mono text-[10px] text-zinc-400 overflow-x-auto bg-black/60 p-2 rounded-lg border border-white/10">
-                                <span className="text-zinc-500 font-bold uppercase tracking-wider">Cascade:</span>
+                              <div className="mt-2.5 flex items-center gap-1.5 font-mono text-xs text-zinc-300 overflow-x-auto bg-black/60 p-2.5 rounded-xl border border-white/10">
+                                <span className="text-orange-400 font-bold uppercase tracking-wider">Cascade:</span>
                                 {path.map((step, idx) => (
                                   <React.Fragment key={idx}>
                                     <span
                                       className={
-                                        step.startsWith('(') ? 'text-accent-cyan font-bold drop-shadow-[0_0_6px_rgba(0,240,255,0.4)]' : 'text-zinc-200'
+                                        step.startsWith('(') ? 'text-orange-400 font-bold drop-shadow-[0_0_6px_rgba(249,115,22,0.4)]' : 'text-zinc-200'
                                       }
                                     >
                                       {step}

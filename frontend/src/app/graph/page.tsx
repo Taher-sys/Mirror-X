@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { GitBranch, RefreshCw, UploadCloud, Layers } from 'lucide-react';
+import { GitBranch, RefreshCw, UploadCloud } from 'lucide-react';
 import { PerspectiveGrid } from '@/components/ui/perspective-grid';
 import { RealityGraphCanvas } from '@/components/graph/reality-graph-canvas';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -36,7 +36,7 @@ export default function GraphPage() {
         setStatistics(statsRes.value);
       }
     } catch {
-      // In offline testing mode, keep empty lists
+      // Keep empty lists in offline mode
     } finally {
       setLoading(false);
     }
@@ -47,7 +47,7 @@ export default function GraphPage() {
   }, [fetchGraphData]);
 
   return (
-    <div className="relative min-h-full space-y-4 pb-8">
+    <div className="relative min-h-[calc(100vh-3.5rem)] overflow-hidden canvas-textured text-white p-6 space-y-6">
       <PerspectiveGrid />
 
       {/* Control Bar Header */}
@@ -61,11 +61,11 @@ export default function GraphPage() {
               <h1 className="text-2xl font-bold tracking-tight text-white font-sans drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
                 Reality Graph
               </h1>
-              <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2 py-0.5 rounded shadow-[0_0_10px_rgba(249,115,22,0.25)]">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2.5 py-0.5 rounded shadow-[0_0_10px_rgba(249,115,22,0.25)]">
                 TOPOLOGY MATRIX
               </span>
             </div>
-            <p className="mt-1 font-mono text-sm font-bold text-zinc-200">
+            <p className="mt-1 font-mono text-sm font-semibold text-zinc-200">
               Interactive structural ecosystem graph spanning services, APIs, databases, and deployments
             </p>
           </div>
@@ -75,7 +75,7 @@ export default function GraphPage() {
           <button
             onClick={() => fetchGraphData()}
             disabled={loading}
-            className="inline-flex items-center gap-2 rounded-xl border border-orange-500/40 bg-zinc-900/60 px-4 py-2 font-mono text-xs font-bold text-white transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] hover:border-orange-500 hover:shadow-[0_0_16px_rgba(249,115,22,0.3)] shadow-sm disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-xl border-2 border-orange-500/50 bg-gradient-to-r from-orange-950/70 via-zinc-900/90 to-orange-950/70 px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] hover:border-orange-400 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] shadow-lg disabled:opacity-50"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin text-orange-400' : ''}`} />
             <span>Sync Graph</span>
@@ -98,9 +98,9 @@ export default function GraphPage() {
               action={
                 <a
                   href="/dashboard"
-                  className="inline-flex items-center gap-2 rounded-lg border border-accent-amber/60 bg-accent-amber/10 px-4 py-2 font-mono text-xs font-semibold uppercase tracking-wider text-accent-amber hover:bg-accent-amber/20 transition-all"
+                  className="inline-flex items-center gap-2 rounded-xl border-2 border-orange-500/50 bg-orange-950/60 px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 hover:bg-orange-900/60 transition-all shadow-[0_0_15px_rgba(249,115,22,0.3)]"
                 >
-                  <UploadCloud className="h-3.5 w-3.5" />
+                  <UploadCloud className="h-4 w-4" />
                   <span>Go to Command Center to Ingest</span>
                 </a>
               }

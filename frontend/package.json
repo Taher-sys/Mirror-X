@@ -11,15 +11,21 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.8.1",
     "@tanstack/react-query": "^5.56.2",
+    "@types/three": "^0.186.0",
     "@xyflow/react": "^12.12.0",
     "clsx": "^2.1.1",
-    "framer-motion": "^13.4.3",
+    "framer-motion": "^13.4.4",
+    "hubot-sans": "^1.0.0",
     "lucide-react": "^0.446.0",
+    "mona-sans": "^1.0.0",
     "next": "14.2.14",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "tailwind-merge": "^2.5.2",
+    "tailwind-merge": "^2.6.1",
+    "three": "^0.186.1",
     "zustand": "^4.5.5"
   },
   "devDependencies": {

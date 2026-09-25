@@ -52,7 +52,7 @@ async def analyze_context(
         repository_id=request.repository_id,
         file_tree=request.file_tree,
     )
-    return findings
+    return [FindingResponse.model_validate(f) for f in findings]
 
 
 @router.get("/findings", response_model=list[FindingResponse])

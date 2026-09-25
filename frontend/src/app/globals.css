@@ -3,8 +3,9 @@
 @tailwind utilities;
 
 :root {
-  /* Heavyweight Premium Charcoal Base */
-  --background: #14151a;
+  /* Rich Tactile Charcoal Canvas - Phase 11 Standard */
+  --background: #121316;
+  --background-deep: #16181d;
   --foreground: #ffffff;
   --surface: #1a1b22;
   --surface-elevated: #1e2028;
@@ -17,6 +18,7 @@
   --accent-orange: #ea580c;
   --accent-amber-glow: #fbbf24;
   --accent-burnt-orange: #c2410c;
+  --accent-emerald: #10b981; /* For online status */
   --accent-crimson: #ff003c;
 }
 
@@ -32,8 +34,46 @@ body {
     100% 100%;
   background-color: #14151a;
   background-attachment: fixed;
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   overflow-x: hidden;
+}
+
+/* HARD-WEIGHT TYPOGRAPHY ENFORCEMENT - ANTI-VIBE-CODE */
+/* All headings: heavy weight, tight letter-spacing, pure white */
+h1, h2, h3, h4, h5, h6, .section-title, .panel-title, [class*="title"] {
+  font-weight: 700 !important;
+  letter-spacing: -0.03em !important;
+  color: #FFFFFF !important;
+  font-family: var(--font-sans) !important;
+}
+
+/* Subheaders and navigation links: medium-heavy weight */
+.nav-link, .sidebar-link, .topbar-link, .breadcrumb-item,
+h1, h2, h3, h4, h5, h6, .subsection-header, [class*="header"]:not(.section-title),
+.menu-item, .navigation-item {
+  font-weight: 600 !important;
+  color: #E4E4E7 !important;
+  font-size: 0.925rem !important;
+  font-family: var(--font-sans) !important;
+}
+
+/* Data chips, badges, telemetry numbers: mono font, bold */
+.badge, .status-tag, .data-chip, .metric-value, .telemetry-number,
+[class*="value"], [class*="metric"], .stat-value, .counter,
+[data-value], .metric-label, .info-text {
+  font-family: var(--font-mono) !important;
+  font-weight: 700 !important;
+  color: #FB923C !important;
+}
+
+/* Remove all thin/faint text classes */
+.text-zinc-500, .text-zinc-600, .text-zinc-700,
+.font-extralight, .font-light, .font-thin,
+.opacity-60, .opacity-70,
+.text-muted, .text-secondary {
+  color: inherit !important;
+  opacity: 1 !important;
+  font-weight: inherit !important;
 }
 
 @layer utilities {

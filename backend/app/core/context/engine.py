@@ -133,5 +133,9 @@ class ContextEngine:
                 db.add(new_finding)
                 persisted.append(new_finding)
 
-        await db.commit()
-        return persisted
+        await db.flush()
+        stmt_reload = select(Finding).order_by(Finding.created_at.desc())
+        if repository_id:
+            stmt_reload = stmt_reload.where(Finding.repository_id == repository_id)
+        reload_res = await db.execute(stmt_reload)
+        return list(reload_res.scalars().all())

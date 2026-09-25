@@ -39,7 +39,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="relative z-20 m-3 my-3 flex h-[calc(100vh-1.5rem)] w-64 flex-col rounded-2xl border-2 border-orange-500/40 border-t-2 border-white/30 bg-zinc-950/85 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] overflow-hidden shrink-0">
+    <aside className="relative z-20 m-3 my-3 flex h-[calc(100vh-1.5rem)] w-64 flex-col rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] transition-all duration-300 ease-out hover:-translate-y-2.5 hover:scale-[1.015] hover:border-orange-500/60 hover:border-t-white/40 hover:shadow-[0_20px_45px_-5px_rgba(249,115,22,0.3)] overflow-hidden shrink-0">
       {/* Brand Header */}
       <div className="flex h-16 items-center justify-between border-b border-white/10 px-5">
         <div className="flex items-center gap-2.5">
@@ -52,7 +52,7 @@ export function Sidebar() {
         </div>
 
         {/* Live System Indicator */}
-        <div className="flex items-center gap-1.5 rounded-full border border-orange-500/40 bg-orange-950/50 px-2.5 py-0.5 font-mono text-[10px] font-bold text-orange-400 shadow-[0_0_12px_rgba(249,115,22,0.25)]">
+        <div className="flex items-center gap-1.5 rounded-full border border-orange-500/40 bg-orange-950/50 px-2.5 py-0.5 font-mono text-[11px] font-bold text-orange-400 shadow-[0_0_12px_rgba(249,115,22,0.25)]">
           <div className="h-1.5 w-1.5 rounded-full bg-orange-400 animate-amber-pulse shadow-[0_0_8px_#EA580C]" />
           <span>LIVE</span>
         </div>
@@ -60,7 +60,7 @@ export function Sidebar() {
 
       {/* Navigation Matrix */}
       <nav className="flex-1 space-y-1.5 overflow-y-auto px-3.5 py-4 scrollbar-none">
-        <div className="px-3 pb-2 pt-1 font-mono text-xs font-bold uppercase tracking-wider text-orange-400/80">
+        <div className="px-3 pb-2 pt-1 font-mono text-xs font-bold uppercase tracking-wider text-orange-400">
           CORE CONSOLES
         </div>
         {navigation.map((item) => {

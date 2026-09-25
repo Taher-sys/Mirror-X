@@ -22,20 +22,21 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center rounded-lg border border-dashed border-zinc-800 bg-zinc-950/40 p-8 text-center backdrop-blur-sm',
+        'flex flex-col items-center justify-center rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 p-8 text-center backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] transition-all duration-300 ease-out',
+        'hover:-translate-y-2.5 hover:scale-[1.015] hover:border-orange-500/60 hover:border-t-white/40 hover:shadow-[0_20px_45px_-5px_rgba(249,115,22,0.3)]',
         className
       )}
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/60 text-zinc-500 shadow-inner">
-        <Icon className="h-6 w-6 stroke-[1.5]" />
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-orange-500/40 bg-orange-950/40 text-orange-400 shadow-[0_0_20px_rgba(249,115,22,0.3)]">
+        <Icon className="h-7 w-7 drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
       </div>
-      <h4 className="mt-3 font-mono text-sm font-semibold uppercase tracking-wider text-zinc-200">
+      <h3 className="mt-4 font-mono text-base font-bold uppercase tracking-wider text-white">
         {title}
-      </h4>
-      <p className="mt-1.5 max-w-sm text-sm text-zinc-300 font-sans leading-relaxed">
+      </h3>
+      <p className="mt-2 max-w-md text-sm font-medium text-zinc-200 font-sans leading-relaxed">
         {description}
       </p>
-      {action && <div className="mt-4">{action}</div>}
+      {action && <div className="mt-5">{action}</div>}
     </div>
   );
 }

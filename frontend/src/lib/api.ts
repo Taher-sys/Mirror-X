@@ -189,7 +189,6 @@ async function fetchFromApi<T>(endpoint: string, options?: RequestInit): Promise
       data: json as T,
     };
   } catch (err) {
-    // If backend is unreachable (e.g. running standalone tests without server process), return structured error
     throw err;
   }
 }
@@ -437,3 +436,439 @@ export async function getChangeRecords(repository_id?: string): Promise<ChangeRe
   return resp.data;
 }
 
+/* =========================================================================
+   PHASE 6: SYNTHETIC SCENARIOS
+   ========================================================================= */
+
+export interface Scenario {
+  id: string;
+  name: string;
+  scenario_class:
+    | 'normal'
+    | 'boundary'
+    | 'incomplete'
+    | 'malformed'
+    | 'contradictory'
+    | 'unauthorized'
+    | 'adversarial'
+    | 'outage'
+    | 'tool_failure'
+    | 'ambiguous';
+  source_type: string;
+  seed: number;
+  initial_state: Record<string, unknown>;
+  generated_inputs: Record<string, unknown>;
+  expected_constraints: Record<string, unknown>;
+  participating_resources: Array<{ name: string; type: string; role: string }>;
+  applicable_policies: Array<{ id: string; name: string; enforcement: string }>;
+  metadata_payload: Record<string, unknown>;
+  status: string;
+  execution_result?: {
+    execution_id: string;
+    passed: boolean;
+    actual_status: number;
+    actual_decision: string;
+    execution_duration_ms: number;
+  } | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export async function generateScenario(payload: {
+  target_name: string;
+  source_type?: string;
+  scenario_class?: string;
+  seed?: number;
+  parameters?: Record<string, unknown>;
+}): Promise<Scenario> {
+  const resp = await fetchFromApi<Scenario>('/scenarios/generate', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  return resp.data;
+}
+
+export async function getScenarios(params?: {
+  scenario_class?: string;
+  source_type?: string;
+}): Promise<Scenario[]> {
+  const q = new URLSearchParams();
+  if (params?.scenario_class) q.set('scenario_class', params.scenario_class);
+  if (params?.source_type) q.set('source_type', params.source_type);
+  const queryStr = q.toString() ? `?${q.toString()}` : '';
+  const resp = await fetchFromApi<Scenario[]>(`/scenarios${queryStr}`);
+  return resp.data;
+}
+
+export async function executeScenario(scenarioId: string): Promise<Record<string, unknown>> {
+  const resp = await fetchFromApi<Record<string, unknown>>(`/scenarios/${scenarioId}/execute`, {
+    method: 'POST',
+  });
+  return resp.data;
+}
+
+export async function generateBatchScenarios(targetName = 'CheckoutService', seed = 42): Promise<Scenario[]> {
+  const resp = await fetchFromApi<Scenario[]>(`/scenarios/batch?target_name=${encodeURIComponent(targetName)}&seed=${seed}`, {
+    method: 'POST',
+  });
+  return resp.data;
+}
+
+/* =========================================================================
+   PHASE 7: AGENT BEHAVIOR LAB
+   ========================================================================= */
+
+export interface Agent {
+  id: string;
+  name: string;
+  version: string;
+  model_reference: string;
+  purpose: string;
+  status: string;
+  config_payload: Record<string, unknown>;
+  created_at: string;
+}
+
+export interface AgentStep {
+  id: string;
+  step_number: number;
+  thought: string;
+  tool_call?: string | null;
+  arguments: Record<string, unknown>;
+  tool_output?: Record<string, unknown> | null;
+  policy_check: { decision: string; policy?: string; reason?: string };
+  duration_ms: number;
+  status: string;
+  error?: string | null;
+}
+
+export interface AgentRun {
+  id: string;
+  agent_id: string;
+  agent_version: string;
+  goal: string;
+  context_reference: Record<string, unknown>;
+  model_reference: string;
+  trace_id: string;
+  plan: string[];
+  status: string;
+  result?: { output: string; steps_count: number; success: boolean } | null;
+  errors: string[];
+  timings: { total_duration_ms: number; planning_ms: number; execution_ms: number };
+  successful_completion: boolean;
+  correct_tool_selection_count: number;
+  incorrect_tool_use_count: number;
+  unnecessary_actions_count: number;
+  policy_violations_count: number;
+  error_count: number;
+  latency_ms: number;
+  retry_count: number;
+  steps: AgentStep[];
+  created_at: string;
+}
+
+export interface AgentCompareResult {
+  baseline_version: string;
+  candidate_version: string;
+  baseline_trace_id?: string;
+  candidate_trace_id?: string;
+  behavioral_matrix: {
+    successful_completion: { baseline: boolean; candidate: boolean; improved: boolean; regressed: boolean };
+    correct_tool_selection: { baseline: number; candidate: number; delta: number; improved: boolean };
+    incorrect_tool_use: { baseline: number; candidate: number; delta: number; improved: boolean };
+    unnecessary_actions: { baseline: number; candidate: number; delta: number; improved: boolean };
+    policy_violations: { baseline: number; candidate: number; delta: number; improved: boolean };
+    error_count: { baseline: number; candidate: number; delta: number; improved: boolean };
+    latency_ms: { baseline: number; candidate: number; delta: number; improved: boolean };
+    retry_count: { baseline: number; candidate: number; delta: number; improved: boolean };
+  };
+  disclaimer: string;
+}
+
+export async function getAgents(): Promise<Agent[]> {
+  const resp = await fetchFromApi<Agent[]>('/agents');
+  return resp.data;
+}
+
+export async function createAgent(payload: {
+  name: string;
+  version: string;
+  model_reference: string;
+  purpose: string;
+}): Promise<Agent> {
+  const resp = await fetchFromApi<Agent>('/agents', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  return resp.data;
+}
+
+export async function getAgentTools(): Promise<Array<{ name: string; description: string; risk_level: string; is_mock_safe: boolean }>> {
+  const resp = await fetchFromApi<Array<{ name: string; description: string; risk_level: string; is_mock_safe: boolean }>>('/agents/tools');
+  return resp.data;
+}
+
+export async function runAgent(agentId: string, payload: { goal: string }): Promise<AgentRun> {
+  const resp = await fetchFromApi<AgentRun>(`/agents/${agentId}/run`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  return resp.data;
+}
+
+export async function getAgentRuns(agentId?: string): Promise<AgentRun[]> {
+  const q = agentId ? `?agent_id=${agentId}` : '';
+  const resp = await fetchFromApi<AgentRun[]>(`/agents/runs/list${q}`);
+  return resp.data;
+}
+
+export async function compareAgentRuns(baselineRunId: string, candidateRunId: string): Promise<AgentCompareResult> {
+  const resp = await fetchFromApi<AgentCompareResult>('/agents/compare', {
+    method: 'POST',
+    body: JSON.stringify({ baseline_run_id: baselineRunId, candidate_run_id: candidateRunId }),
+  });
+  return resp.data;
+}
+
+/* =========================================================================
+   PHASE 8: TRUST LAYER
+   ========================================================================= */
+
+export interface TrustPolicy {
+  id?: string;
+  name: string;
+  description: string;
+  enforcement_level: string;
+  target_type: string;
+  rules_payload: Record<string, unknown>;
+  is_active: boolean;
+}
+
+export interface PermissionItem {
+  id?: string;
+  name: string;
+  principal_role: string;
+  resource_type: string;
+  action_name: string;
+  effect: 'ALLOW' | 'DENY';
+}
+
+export interface TrustResourceItem {
+  name: string;
+  resource_type: string;
+  classification: string;
+  is_sandbox: boolean;
+}
+
+export interface PolicyDecisionItem {
+  id: string;
+  principal_name: string;
+  agent_name?: string | null;
+  tool_name?: string | null;
+  resource_name: string;
+  action_name: string;
+  result: 'ALLOW' | 'DENY' | 'HUMAN_REVIEW_REQUIRED';
+  reason: string;
+  matched_policies: string[];
+  evidence_id?: string | null;
+  reviewed_by?: string | null;
+  review_status?: string | null;
+  created_at: string;
+}
+
+export async function getTrustPolicies(): Promise<TrustPolicy[]> {
+  const resp = await fetchFromApi<TrustPolicy[]>('/trust/policies');
+  return resp.data;
+}
+
+export async function getTrustPermissions(): Promise<PermissionItem[]> {
+  const resp = await fetchFromApi<PermissionItem[]>('/trust/permissions');
+  return resp.data;
+}
+
+export async function getTrustResources(): Promise<TrustResourceItem[]> {
+  const resp = await fetchFromApi<TrustResourceItem[]>('/trust/resources');
+  return resp.data;
+}
+
+export async function evaluateTrustPolicy(payload: {
+  principal_name: string;
+  resource_name: string;
+  action_name: string;
+  agent_name?: string;
+  resource_classification?: string;
+  is_sandbox?: boolean;
+}): Promise<{
+  result: 'ALLOW' | 'DENY' | 'HUMAN_REVIEW_REQUIRED';
+  reason: string;
+  matched_policies: string[];
+  evidence?: Record<string, unknown> | null;
+  is_sandbox: boolean;
+}> {
+  const resp = await fetchFromApi<{
+    result: 'ALLOW' | 'DENY' | 'HUMAN_REVIEW_REQUIRED';
+    reason: string;
+    matched_policies: string[];
+    evidence?: Record<string, unknown> | null;
+    is_sandbox: boolean;
+  }>('/trust/evaluate', {
+    method: 'POST',
+    body: JSON.stringify({ is_sandbox: true, ...payload }),
+  });
+  return resp.data;
+}
+
+export async function getPolicyDecisions(resultFilter?: string): Promise<PolicyDecisionItem[]> {
+  const q = resultFilter ? `?result_filter=${encodeURIComponent(resultFilter)}` : '';
+  const resp = await fetchFromApi<PolicyDecisionItem[]>(`/trust/decisions${q}`);
+  return resp.data;
+}
+
+export async function reviewPolicyDecision(decisionId: string, reviewStatus: 'approved' | 'rejected', reviewedBy: string): Promise<PolicyDecisionItem> {
+  const resp = await fetchFromApi<PolicyDecisionItem>(`/trust/decisions/${decisionId}/review`, {
+    method: 'POST',
+    body: JSON.stringify({ review_status: reviewStatus, reviewed_by: reviewedBy }),
+  });
+  return resp.data;
+}
+
+/* =========================================================================
+   PHASE 9: EVIDENCE LEDGER & RELEASE PASSPORT
+   ========================================================================= */
+
+export interface EvidenceItem {
+  id: string;
+  evidence_type:
+    | 'source_file'
+    | 'graph_relationship'
+    | 'api_contract'
+    | 'test_execution'
+    | 'scenario_run'
+    | 'agent_execution'
+    | 'policy_decision'
+    | 'runtime_trace';
+  source_reference: string;
+  summary: string;
+  raw_payload: Record<string, unknown>;
+  hash_signature: string;
+  confidence: number;
+  linked_finding_id?: string | null;
+  created_at: string;
+}
+
+export interface ReleaseItem {
+  id: string;
+  name: string;
+  version: string;
+  target_environment: string;
+  commit_hash: string;
+  change_ids: string[];
+  status: string;
+  created_at: string;
+}
+
+export interface ReleasePassportItem {
+  id: string;
+  release_id: string;
+  overall_status: 'PASS' | 'FAIL' | 'WARNING' | 'HUMAN_REVIEW_REQUIRED' | 'NOT_EVALUATED';
+  code_change_analysis: {
+    status: string;
+    total_changes: number;
+    breaking_changes_count: number;
+    max_risk_score: number;
+  };
+  context_findings: {
+    status: string;
+    total_findings: number;
+    open_findings: number;
+    critical_count: number;
+    high_count: number;
+  };
+  scenario_testing: {
+    status: string;
+    total_scenarios: number;
+    passed_count: number;
+    failed_count: number;
+    classes_tested: string[];
+  };
+  agent_testing: {
+    status: string;
+    total_runs: number;
+    policy_violations: number;
+    evaluated_models: string[];
+  };
+  policy_validation: {
+    status: string;
+    total_evaluations: number;
+    denied_count: number;
+    review_required_count: number;
+  };
+  evidence_completeness: {
+    status: string;
+    total_evidence_records: number;
+    completeness_score: number;
+  };
+  uncertainty_notes: string;
+  passport_hash: string;
+  created_at: string;
+}
+
+export async function getEvidenceList(typeFilter?: string, search?: string): Promise<EvidenceItem[]> {
+  const q = new URLSearchParams();
+  if (typeFilter) q.set('evidence_type', typeFilter);
+  if (search) q.set('search', search);
+  const queryStr = q.toString() ? `?${q.toString()}` : '';
+  const resp = await fetchFromApi<EvidenceItem[]>(`/evidence${queryStr}`);
+  return resp.data;
+}
+
+export async function getEvidence(evidenceId: string): Promise<EvidenceItem> {
+  const resp = await fetchFromApi<EvidenceItem>(`/evidence/${evidenceId}`);
+  return resp.data;
+}
+
+export async function createEvidence(payload: {
+  evidence_type: string;
+  source_reference: string;
+  summary: string;
+  raw_payload: Record<string, unknown>;
+  confidence?: number;
+  linked_finding_id?: string | null;
+  linked_change_id?: string | null;
+}): Promise<EvidenceItem> {
+  const resp = await fetchFromApi<EvidenceItem>('/evidence', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  return resp.data;
+}
+
+export async function getReleases(): Promise<ReleaseItem[]> {
+  const resp = await fetchFromApi<ReleaseItem[]>('/releases');
+  return resp.data;
+}
+
+export async function createRelease(payload: {
+  name: string;
+  version: string;
+  target_environment?: string;
+  commit_hash: string;
+}): Promise<ReleaseItem> {
+  const resp = await fetchFromApi<ReleaseItem>('/releases', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  return resp.data;
+}
+
+export async function getReleasePassport(releaseId: string): Promise<ReleasePassportItem> {
+  const resp = await fetchFromApi<ReleasePassportItem>(`/releases/${releaseId}/passport`);
+  return resp.data;
+}
+
+export async function issueReleasePassport(releaseId: string): Promise<ReleasePassportItem> {
+  const resp = await fetchFromApi<ReleasePassportItem>(`/releases/${releaseId}/passport`, {
+    method: 'POST',
+  });
+  return resp.data;
+}

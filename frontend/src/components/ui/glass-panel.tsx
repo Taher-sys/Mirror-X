@@ -15,9 +15,9 @@ interface GlassPanelProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Elite Glassmorphism Panel - Obsidian Black & Electric Orange
- * Heavy, thick glassmorphism cards using: backdrop-blur-3xl bg-zinc-950/80 border-2 border-orange-500/35
- * shadow-[0_20px_50px_rgba(0,0,0,0.9)] with strong inner top rim highlight (border-t-2 border-white/25)
+ * Heavy Glassmorphism Panel
+ * Surface spec: backdrop-blur-3xl bg-zinc-950/90 border-2 border-orange-500/35 shadow-[0_20px_50px_rgba(0,0,0,0.9)]
+ * with inner top rim highlight: border-t-2 border-white/25
  */
 export function GlassPanel({
   children,
@@ -40,11 +40,9 @@ export function GlassPanel({
   return (
     <div
       className={cn(
-        // Elite Heavy Glassmorphism Spec
-        'relative rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/30 bg-zinc-950/90 backdrop-blur-3xl',
-        'shadow-[0_20px_50px_rgba(0,0,0,0.9)] transition-all duration-300',
-        // Micro-Interactions: hover lift & border illumination
-        'hover:-translate-y-0.5 hover:border-orange-500/50 hover:border-t-white/40 hover:shadow-[0_25px_60px_0_rgba(0,0,0,0.95)]',
+        'relative rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 backdrop-blur-3xl',
+        'shadow-[0_20px_50px_rgba(0,0,0,0.9)] transition-all duration-300 ease-out',
+        'hover:-translate-y-2.5 hover:scale-[1.015] hover:border-orange-500/60 hover:border-t-white/40 hover:shadow-[0_20px_45px_-5px_rgba(249,115,22,0.3)]',
         glowMap[accentGlow],
         className
       )}
@@ -72,7 +70,7 @@ export function GlassPanel({
                 {badge}
               </div>
               {subtitle && (
-                <p className="mt-0.5 text-xs font-medium text-zinc-200">
+                <p className="mt-0.5 text-sm font-medium text-zinc-300">
                   {subtitle}
                 </p>
               )}

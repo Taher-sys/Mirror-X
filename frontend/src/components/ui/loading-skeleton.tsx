@@ -22,7 +22,7 @@ export function CommandCenterSkeleton() {
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className="h-28 rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/30 bg-zinc-950/90 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] animate-pulse p-4"
+            className="h-28 rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/30 bg-zinc-950/90 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.9)] animate-pulse transition-all duration-300 ease-out hover:-translate-y-2.5 hover:scale-[1.015] hover:border-orange-500/60 hover:border-t-white/40 hover:shadow-[0_20px_45px_-5px_rgba(249,115,22,0.3)] p-4"
           >
             <div className="h-3 w-24 bg-orange-500/20 rounded mb-4" />
             <div className="h-8 w-20 bg-zinc-800 rounded" />
