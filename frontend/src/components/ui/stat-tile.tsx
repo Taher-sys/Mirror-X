@@ -10,7 +10,7 @@ interface StatTileProps {
   subvalue?: string;
   icon?: LucideIcon;
   trend?: 'up' | 'down' | 'neutral';
-  accent?: 'amber' | 'orange' | 'crimson' | 'emerald' | 'none';
+  accent?: 'amber' | 'orange' | 'crimson' | 'emerald' | 'cyan' | 'none';
   className?: string;
 }
 
@@ -42,6 +42,11 @@ export function StatTile({
       valueColor: 'text-white',
       dot: 'bg-emerald-500',
       iconColor: 'text-emerald-400',
+    },
+    cyan: {
+      valueColor: 'text-white',
+      dot: 'bg-cyan-500',
+      iconColor: 'text-cyan-400',
     },
     none: {
       valueColor: 'text-zinc-100',
