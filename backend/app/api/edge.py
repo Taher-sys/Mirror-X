@@ -1,13 +1,13 @@
 """API routes for MIRROR-X Edge and Local-First Runtime."""
 
-from datetime import datetime, timezone
 import hashlib
 import json
 import time
-from typing import Any
 import uuid
+from datetime import datetime, timezone
+from typing import Any
 
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -16,25 +16,16 @@ from app.core.edge.database import EDGE_DB_PATH, get_edge_db
 from app.core.edge.models import (
     EdgeConflict,
     EdgeEvidenceRecord,
-    EdgeGraphNode,
-    EdgePolicy,
     EdgeSyncEvent,
 )
 from app.core.edge.runtime import (
-    OfflineCapabilityError,
     get_edge_runtime,
 )
-from app.core.edge.security import validate_sync_token
 from app.core.edge.sync import EdgeSyncProtocol
 from app.schemas.edge import (
     ConflictResolveRequest,
-    EdgeConflictResponse,
     EdgeLocalEvidenceCreateRequest,
-    EdgeStatusResponse,
     NetworkModeToggleRequest,
-    SnapshotPullResponse,
-    SyncFlushResponse,
-    SyncQueueItem,
 )
 
 router = APIRouter(prefix="/edge", tags=["Edge & Local-First Operations"])
@@ -66,14 +57,18 @@ async def get_edge_status(edge_db: AsyncSession = Depends(get_edge_db)) -> dict[
     try:
         c_res = await edge_db.execute(select(EdgeConflict).order_by(EdgeConflict.detected_at.desc()))
         for c in c_res.scalars().all():
-            conflict_list.append({
-                "id": c.id,
-                "entity_type": c.entity_type,
-                "entity_id": c.entity_id,
-                "resolution_status": c.resolution_status,
-                "detected_at": c.detected_at.isoformat() if hasattr(c.detected_at, "isoformat") else str(c.detected_at),
-                "resolution_notes": c.resolution_notes,
-            })
+            conflict_list.append(
+                {
+                    "id": c.id,
+                    "entity_type": c.entity_type,
+                    "entity_id": c.entity_id,
+                    "resolution_status": c.resolution_status,
+                    "detected_at": c.detected_at.isoformat()
+                    if hasattr(c.detected_at, "isoformat")
+                    else str(c.detected_at),
+                    "resolution_notes": c.resolution_notes,
+                }
+            )
     except Exception:
         pass
 

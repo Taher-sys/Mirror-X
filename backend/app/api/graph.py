@@ -75,9 +75,7 @@ async def get_graph(
         edge_query = (
             select(GraphEdge)
             .options(selectinload(GraphEdge.source_node), selectinload(GraphEdge.target_node))
-            .where(
-                (GraphEdge.source_node_id.in_(node_ids)) & (GraphEdge.target_node_id.in_(node_ids))
-            )
+            .where((GraphEdge.source_node_id.in_(node_ids)) & (GraphEdge.target_node_id.in_(node_ids)))
         )
         edge_res = await db.execute(edge_query)
         edges = list(edge_res.scalars().all())
@@ -131,9 +129,7 @@ async def get_graph_statistics(db: DatabaseSession) -> StandardResponse[GraphSta
     total_edges = total_edges_res.scalar() or 0
 
     # Nodes grouped by type
-    type_res = await db.execute(
-        select(GraphNode.node_type, func.count(GraphNode.id)).group_by(GraphNode.node_type)
-    )
+    type_res = await db.execute(select(GraphNode.node_type, func.count(GraphNode.id)).group_by(GraphNode.node_type))
     nodes_by_type = {row[0]: row[1] for row in type_res.fetchall()}
 
     # Edges grouped by relationship
@@ -192,9 +188,7 @@ async def list_relationships(
     limit: Annotated[int, Query(ge=1, le=200, description="Items limit")] = 100,
 ) -> StandardResponse[list[GraphEdgeResponse]]:
     """List Reality Graph relationships and link details."""
-    query = select(GraphEdge).options(
-        selectinload(GraphEdge.source_node), selectinload(GraphEdge.target_node)
-    )
+    query = select(GraphEdge).options(selectinload(GraphEdge.source_node), selectinload(GraphEdge.target_node))
 
     if relationship_type:
         query = query.where(GraphEdge.relationship_type == relationship_type.lower())

@@ -23,7 +23,9 @@ def parse_terraform(content: str, file_path: str = "main.tf") -> IngestionResult
         full_name = f"{res_type}.{res_name}"
 
         # Determine node type
-        if any(db_kw in res_type.lower() for db_kw in ("db", "database", "rds", "postgres", "mysql", "dynamo", "redis")):
+        if any(
+            db_kw in res_type.lower() for db_kw in ("db", "database", "rds", "postgres", "mysql", "dynamo", "redis")
+        ):
             node_type = "database"
         else:
             node_type = "deployment"

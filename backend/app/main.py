@@ -4,6 +4,7 @@ from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import api_router
@@ -14,7 +15,10 @@ from app.core.errors import (
     AppException,
     app_exception_handler,
     generic_exception_handler,
+    validation_exception_handler,
 )
+from app.core.observability import ObservabilityMiddleware
+from app.core.security.rate_limit import RateLimitMiddleware
 
 settings = get_settings()
 
@@ -41,7 +45,7 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # CORS middleware
+    # 1. CORS middleware
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins,
@@ -50,13 +54,25 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    # 2. OpenTelemetry Tracing middleware
+    app.add_middleware(ObservabilityMiddleware)
+
+    # 3. Rate limiting middleware
+    app.add_middleware(
+        RateLimitMiddleware,
+        default_limit=settings.rate_limit_per_minute,
+        sensitive_limit=settings.rate_limit_sensitive_per_minute,
+    )
+
     # Exception handlers
     app.add_exception_handler(AppException, app_exception_handler)
+    app.add_exception_handler(RequestValidationError, validation_exception_handler)
     app.add_exception_handler(Exception, generic_exception_handler)
 
     # Include routers
     app.include_router(api_router)
     from app.api.edge import router as edge_router
+
     app.include_router(edge_router, prefix="/api")
 
     return app

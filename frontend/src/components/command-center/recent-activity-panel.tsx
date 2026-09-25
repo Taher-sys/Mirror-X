@@ -39,23 +39,23 @@ export function RecentActivityPanel({ activities }: RecentActivityPanelProps) {
             return (
               <div key={act.id} className="relative group">
                 {/* Timeline node dot */}
-                <div className="absolute -left-[19px] top-2.5 h-2.5 w-2.5 rounded-full border-2 border-orange-500/60 bg-[#14151a] group-hover:bg-orange-400 group-hover:shadow-[0_0_10px_#EA580C] transition-all" />
+                <div className="absolute -left-[19px] top-2.5 h-2.5 w-2.5 rounded-full border-2 border-zinc-700 bg-zinc-900 group-hover:border-amber-500 group-hover:bg-amber-500 transition-colors" />
 
-                <div className="rounded-2xl border-2 border-orange-500/30 border-t-2 border-white/20 bg-zinc-950/85 p-3.5 transition-all duration-300 ease-out hover:scale-[1.01] hover:border-orange-500/50 hover:shadow-[0_20px_45px_rgba(0,0,0,0.95)] backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)]">
+                <div className="rounded-lg bg-[#12151e]/92 backdrop-blur-md border border-[#232736] border-t border-t-zinc-700/50 p-3.5 transition-all duration-200 ease-out hover:border-[#343b52] hover:border-t-zinc-500/60 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.8)] shadow-[0_8px_32px_0_rgba(0,0,0,0.6)]">
                   <div className="flex items-center justify-between font-mono text-xs">
                     <div className="flex items-center gap-2">
-                      <span className="text-zinc-300 font-bold">{timeStr}</span>
-                      <span className="rounded-full bg-orange-950/60 px-2.5 py-0.5 text-[9px] uppercase font-bold text-orange-400 border border-orange-500/40 shadow-[0_0_8px_rgba(249,115,22,0.25)]">
+                      <span className="text-zinc-400 font-medium">{timeStr}</span>
+                      <span className="rounded bg-zinc-800 border border-zinc-700/80 px-2 py-0.5 text-[9px] uppercase font-bold text-zinc-300">
                         {act.action.replace('_', ' ')}
                       </span>
                     </div>
-                    <span className="text-xs text-zinc-300 font-bold">
-                      by [<span className="text-white font-bold">{act.actor}</span>]
+                    <span className="text-xs text-zinc-400">
+                      by [<span className="text-zinc-200 font-semibold">{act.actor}</span>]
                     </span>
                   </div>
 
-                  <div className="mt-2 flex items-center gap-1.5 text-xs font-mono text-zinc-200">
-                    <Terminal className="h-3.5 w-3.5 text-orange-400 shrink-0" />
+                  <div className="mt-2 flex items-center gap-1.5 text-xs font-mono text-zinc-300">
+                    <Terminal className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
                     <span className="truncate">
                       {act.entity_type}: <strong className="text-white font-bold">{act.entity_name}</strong>
                     </span>

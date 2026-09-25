@@ -5,11 +5,10 @@ intelligence models, distinguishes deterministic violations from probabilistic a
 and connects results to the Evidence Ledger.
 """
 
-from collections import Counter
 import hashlib
 import json
-from typing import Any
 import uuid
+from collections import Counter
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,6 +16,7 @@ from sqlalchemy.orm import selectinload
 
 from app.core.ai.features import BehavioralFeatureExtractor
 from app.core.ai.model_registry import ModelRegistryManager
+from app.core.observability import get_tracer, trace_span
 from app.models.agent import AgentRun
 from app.models.evidence import EvidenceRecord
 from app.models.trust import PolicyDecision
@@ -30,6 +30,7 @@ class AgentLabEvaluator:
         self.registry = ModelRegistryManager()
         self.extractor = BehavioralFeatureExtractor()
 
+    @trace_span("ai.evaluate_run")
     async def evaluate_run(
         self,
         db: AsyncSession,
@@ -51,7 +52,8 @@ class AgentLabEvaluator:
         dec_res = await db.execute(dec_stmt)
         all_decisions = list(dec_res.scalars().all())
         decisions = [
-            d for d in all_decisions
+            d
+            for d in all_decisions
             if (d.agent_name and (d.agent_name == str(run.agent_id) or d.agent_name in (run.agent_version, run.goal)))
             or (isinstance(d.context_snapshot, dict) and d.context_snapshot.get("trace_id") == run.trace_id)
         ]
@@ -109,9 +111,7 @@ class AgentLabEvaluator:
 
         # 4. Check Heuristic Warnings (Rules)
         action_seq = [
-            getattr(s, "tool_name", None) or (s.tool_call if hasattr(s, "tool_call") else "unknown")
-            for s in steps
-            if s
+            getattr(s, "tool_name", None) or (s.tool_call if hasattr(s, "tool_call") else "unknown") for s in steps if s
         ]
 
         # Redundant reads
@@ -178,12 +178,23 @@ class AgentLabEvaluator:
         if champion:
             try:
                 model, feat_proc = self.registry.load_model_instance(champion)
-                if champion.model_type == "baseline_logistic":
-                    x_norm = feat_proc.transform_features(raw_features)
-                    pred_label, pred_conf, probs = model.predict(x_norm)
-                elif champion.model_type == "deep_sequence_gru":
-                    tokens = feat_proc.tokenize_sequence(action_seq)
-                    pred_label, pred_conf, probs = model.predict(tokens)
+                tracer = get_tracer()
+                with tracer.start_span(
+                    "ai.model_inference",
+                    {
+                        "model_type": champion.model_type,
+                        "model_name": champion.name,
+                        "model_version": champion.version,
+                    },
+                ) as inf_span:
+                    if champion.model_type == "baseline_logistic":
+                        x_norm = feat_proc.transform_features(raw_features)
+                        pred_label, pred_conf, probs = model.predict(x_norm)
+                    elif champion.model_type == "deep_sequence_gru":
+                        tokens = feat_proc.tokenize_sequence(action_seq)
+                        pred_label, pred_conf, probs = model.predict(tokens)
+                    inf_span.set_attribute("predicted_label", pred_label)
+                    inf_span.set_attribute("confidence", pred_conf)
 
                 # Check for statistical anomaly prediction
                 if pred_label not in ("successful",) and pred_conf >= 0.60:
@@ -193,7 +204,7 @@ class AgentLabEvaluator:
                             title=f"Model Classified Behavior as '{pred_label}'",
                             description=(
                                 f"Champion model '{champion.name}:{champion.version}' inferred behavior state "
-                                f"'{pred_label}' with {pred_conf*100:.1f}% confidence. Note: This is an empirical "
+                                f"'{pred_label}' with {pred_conf * 100:.1f}% confidence. Note: This is an empirical "
                                 f"statistical prediction and not an absolute ground truth."
                             ),
                             confidence=pred_conf,
@@ -210,7 +221,7 @@ class AgentLabEvaluator:
                             category="uncertain_prediction",
                             title="High Classification Ambiguity",
                             description=(
-                                f"Model top confidence is {pred_conf*100:.1f}%. The distribution across behavioral "
+                                f"Model top confidence is {pred_conf * 100:.1f}%. The distribution across behavioral "
                                 f"classes exhibits high entropy, indicating the execution pattern does not match canonical clusters."
                             ),
                             confidence=pred_conf,
@@ -238,7 +249,7 @@ class AgentLabEvaluator:
                 f"{len(deterministic_violations)} deterministic violations, "
                 f"{len(model_anomalies)} model anomalies, "
                 f"{len(heuristic_warnings)} heuristic warnings. "
-                f"Predicted state: {pred_label} ({pred_conf*100:.1f}% confidence)."
+                f"Predicted state: {pred_label} ({pred_conf * 100:.1f}% confidence)."
             )
             raw_payload = {
                 "run_id": str(run.id),

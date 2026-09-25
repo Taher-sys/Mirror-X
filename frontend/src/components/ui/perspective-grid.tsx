@@ -12,10 +12,7 @@ export function PerspectiveGrid() {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none"
     >
-      {/* Deep Amber Ambient Glow Gradients (Obsidian Black + Electric Amber/Orange) */}
-      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1100px] h-[500px] bg-gradient-radial from-amber-950/50 via-zinc-950/80 to-transparent blur-[140px] pointer-events-none" />
-      <div className="absolute top-1/4 -right-40 w-[600px] h-[600px] bg-gradient-radial from-orange-950/30 via-amber-950/15 to-transparent blur-[120px] pointer-events-none opacity-60" />
-      <div className="absolute -bottom-40 -left-40 w-[700px] h-[500px] bg-gradient-radial from-orange-950/20 via-zinc-950/60 to-transparent blur-[130px] pointer-events-none opacity-50" />
+      {/* Pure Smoked Onyx base without muddy orange radial glow */}
 
       {/* 3D Horizon Grid Floor */}
       <div

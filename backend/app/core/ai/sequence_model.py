@@ -47,10 +47,7 @@ class SequenceGRUClassifier:
         scale_h = 1.0 / math.sqrt(hidden_dim)
 
         # Embedding Matrix [vocab_size, embedding_dim]
-        self.E = [
-            [rng.uniform(-scale_emb, scale_emb) for _ in range(embedding_dim)]
-            for _ in range(vocab_size)
-        ]
+        self.E = [[rng.uniform(-scale_emb, scale_emb) for _ in range(embedding_dim)] for _ in range(vocab_size)]
 
         # GRU Gates: Update (z), Reset (r), Candidate (n)
         # Weights for input x [hidden_dim, embedding_dim]
@@ -90,13 +87,25 @@ class SequenceGRUClassifier:
             n_gate = [0.0] * self.hidden_dim
 
             for j in range(self.hidden_dim):
-                sum_z = self.b_z[j] + sum(self.W_z[j][k] * x[k] for k in range(self.embedding_dim)) + sum(self.U_z[j][k] * h_t[k] for k in range(self.hidden_dim))
-                sum_r = self.b_r[j] + sum(self.W_r[j][k] * x[k] for k in range(self.embedding_dim)) + sum(self.U_r[j][k] * h_t[k] for k in range(self.hidden_dim))
+                sum_z = (
+                    self.b_z[j]
+                    + sum(self.W_z[j][k] * x[k] for k in range(self.embedding_dim))
+                    + sum(self.U_z[j][k] * h_t[k] for k in range(self.hidden_dim))
+                )
+                sum_r = (
+                    self.b_r[j]
+                    + sum(self.W_r[j][k] * x[k] for k in range(self.embedding_dim))
+                    + sum(self.U_r[j][k] * h_t[k] for k in range(self.hidden_dim))
+                )
                 z_gate[j] = _sigmoid(sum_z)
                 r_gate[j] = _sigmoid(sum_r)
 
             for j in range(self.hidden_dim):
-                sum_n = self.b_n[j] + sum(self.W_n[j][k] * x[k] for k in range(self.embedding_dim)) + sum(self.U_n[j][k] * (r_gate[k] * h_t[k]) for k in range(self.hidden_dim))
+                sum_n = (
+                    self.b_n[j]
+                    + sum(self.W_n[j][k] * x[k] for k in range(self.embedding_dim))
+                    + sum(self.U_n[j][k] * (r_gate[k] * h_t[k]) for k in range(self.hidden_dim))
+                )
                 n_gate[j] = _tanh(sum_n)
 
             # New hidden state
@@ -106,7 +115,10 @@ class SequenceGRUClassifier:
             gates_history.append({"z": z_gate, "r": r_gate, "n": n_gate, "x": x, "token_id": idx})
 
         # 3. Output head logits from final hidden state
-        logits = [self.b_out[c] + sum(self.W_out[c][j] * h_t[j] for j in range(self.hidden_dim)) for c in range(self.num_classes)]
+        logits = [
+            self.b_out[c] + sum(self.W_out[c][j] * h_t[j] for j in range(self.hidden_dim))
+            for c in range(self.num_classes)
+        ]
 
         # Softmax
         max_l = max(logits)
@@ -224,11 +236,13 @@ class SequenceGRUClassifier:
                 val_loss = sum(v_losses) / max(1, len(v_losses))
 
             if epoch % 10 == 0 or epoch == epochs:
-                history.append({
-                    "epoch": epoch,
-                    "train_loss": round(train_loss, 4),
-                    "val_loss": round(val_loss, 4),
-                })
+                history.append(
+                    {
+                        "epoch": epoch,
+                        "train_loss": round(train_loss, 4),
+                        "val_loss": round(val_loss, 4),
+                    }
+                )
 
         return {"epochs_trained": epochs, "history": history}
 

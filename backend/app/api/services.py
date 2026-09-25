@@ -27,7 +27,6 @@ async def list_services(
     page: Annotated[int, Query(ge=1, description="Page number")] = 1,
     limit: Annotated[int, Query(ge=1, le=100, description="Items per page")] = 50,
 ) -> StandardResponse[list[ServiceResponse]]:
-
     """List software services with status and metadata."""
     query = select(Service).options(selectinload(Service.repository))
 
@@ -86,7 +85,6 @@ async def create_service(
     payload: ServiceCreate,
     db: DatabaseSession,
 ) -> StandardResponse[ServiceResponse]:
-
     """Register a new service."""
     repo = await db.get(Repository, payload.repository_id)
     if not repo:

@@ -15,7 +15,6 @@ def parse_kubernetes(content: str, file_path: str = "deployment.yaml") -> Ingest
         result.warnings.append(f"Failed to parse Kubernetes manifest {file_path}: {e}")
         return result
 
-
     for doc in docs:
         if not isinstance(doc, dict):
             continue

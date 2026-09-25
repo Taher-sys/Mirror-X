@@ -296,9 +296,9 @@ export function RealityGraphCanvas({
   const types = Array.from(new Set(initialNodes.map((n) => n.node_type)));
 
   return (
-    <div className="relative h-[calc(100vh-140px)] w-full overflow-hidden rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/30 bg-zinc-950/90 shadow-[0_20px_50px_rgba(0,0,0,0.95)] backdrop-blur-3xl">
-      {/* Ambient Lighting overlay */}
-      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-radial from-orange-950/20 via-transparent to-zinc-950/90 blur-3xl" />
+    <div className="relative h-[calc(100vh-140px)] w-full overflow-hidden rounded-2xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 shadow-[0_20px_50px_rgba(0,0,0,0.95)] backdrop-blur-3xl">
+      {/* Ambient overlay */}
+      <div className="pointer-events-none absolute inset-0 z-0 bg-[#09090b]/60" />
 
       {/* React Flow Canvas */}
       <ReactFlow
@@ -314,21 +314,21 @@ export function RealityGraphCanvas({
         className="z-10"
       >
         <Background color="#27272a" gap={28} size={1} />
-        <Controls className="!border-2 !border-orange-500/35 !border-t-white/30 !bg-zinc-950/90 !backdrop-blur-3xl !text-white !fill-white shadow-2xl rounded-2xl overflow-hidden" />
+        <Controls className="!border !border-[#232736] !border-t-zinc-700/50 !bg-[#12151e]/95 !backdrop-blur-3xl !text-white !fill-white shadow-2xl rounded-xl overflow-hidden" />
         <MiniMap
           nodeColor={(n) => {
             const data = n.data as CustomNodeData;
-            return typeColors[data.nodeType]?.dot ? '#EA580C' : '#71717a';
+            return typeColors[data.nodeType]?.dot ? '#f59e0b' : '#71717a';
           }}
-          maskColor="rgba(3, 3, 5, 0.85)"
-          className="!border-2 !border-orange-500/35 !bg-zinc-950/90 !backdrop-blur-3xl rounded-2xl overflow-hidden shadow-2xl"
+          maskColor="rgba(9, 9, 11, 0.85)"
+          className="!border !border-[#232736] !border-t-zinc-700/50 !bg-[#12151e]/95 !backdrop-blur-3xl rounded-xl overflow-hidden shadow-2xl"
         />
 
         {/* Top Control Bar Panel */}
         <Panel position="top-left" className="m-4 flex flex-wrap items-center gap-2.5">
           {/* Search Bar */}
-          <div className="flex items-center rounded-xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 px-3.5 py-2 backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)] hover:border-orange-500/60 transition-colors">
-            <Search className="h-3.5 w-3.5 text-orange-400 mr-2.5" />
+          <div className="flex items-center rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 px-3.5 py-2 backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)] hover:border-[#343b52] transition-colors">
+            <Search className="h-3.5 w-3.5 text-zinc-400 mr-2.5" />
             <input
               type="text"
               placeholder="Search nodes or paths..."
@@ -347,16 +347,16 @@ export function RealityGraphCanvas({
           </div>
 
           {/* Type Filter Select */}
-          <div className="flex items-center rounded-xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 px-3 py-2 backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)]">
-            <Filter className="h-3.5 w-3.5 text-orange-400 mr-2" />
+          <div className="flex items-center rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 px-3 py-2 backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)]">
+            <Filter className="h-3.5 w-3.5 text-zinc-400 mr-2" />
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
               className="bg-transparent font-mono text-[11px] font-bold uppercase tracking-wider text-white outline-none"
             >
-              <option value="all" className="bg-zinc-950 text-white">ALL TYPES ({initialNodes.length})</option>
+              <option value="all" className="bg-[#12151e] text-white">ALL TYPES ({initialNodes.length})</option>
               {types.map((t) => (
-                <option key={t} value={t} className="bg-zinc-950 text-white">
+                <option key={t} value={t} className="bg-[#12151e] text-white">
                   {t.toUpperCase()} (
                   {initialNodes.filter((n) => n.node_type === t).length})
                 </option>
@@ -368,7 +368,7 @@ export function RealityGraphCanvas({
         {/* Top Right Statistics Overlay */}
         {statistics && (
           <Panel position="top-right" className="m-4">
-            <div className="flex items-center gap-3.5 rounded-xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 px-4 py-2 font-mono text-xs font-bold backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)] text-zinc-300">
+            <div className="flex items-center gap-3.5 rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 px-4 py-2 font-mono text-xs font-bold backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)] text-zinc-300">
               <div className="flex items-center gap-1.5">
                 <span className="text-zinc-400 font-bold">NODES:</span>
                 <strong className="text-white font-bold">{statistics.total_nodes}</strong>
@@ -376,12 +376,12 @@ export function RealityGraphCanvas({
               <span className="text-white/20">•</span>
               <div className="flex items-center gap-1.5">
                 <span className="text-zinc-400 font-bold">EDGES:</span>
-                <strong className="text-orange-400 font-bold">{statistics.total_edges}</strong>
+                <strong className="text-amber-400 font-bold">{statistics.total_edges}</strong>
               </div>
               <span className="text-white/20">•</span>
               <div className="flex items-center gap-1.5">
                 <span className="text-zinc-400 font-bold">DENSITY:</span>
-                <strong className="text-orange-400 font-bold">
+                <strong className="text-amber-400 font-bold">
                   {(statistics.graph_density * 100).toFixed(1)}%
                 </strong>
               </div>
@@ -392,10 +392,10 @@ export function RealityGraphCanvas({
 
       {/* Node Detail Sliding Drawer */}
       {selectedNode && (
-        <div className="absolute right-0 top-0 bottom-0 z-30 w-80 sm:w-96 border-l-2 border-orange-500/40 bg-zinc-950/95 p-5 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.95)] flex flex-col animate-in slide-in-from-right duration-250">
-          <div className="flex items-center justify-between border-b border-white/10 pb-3.5">
+        <div className="absolute right-0 top-0 bottom-0 z-30 w-80 sm:w-96 border-l border-[#232736] bg-[#12151e]/96 p-5 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.95)] flex flex-col animate-in slide-in-from-right duration-250">
+          <div className="flex items-center justify-between border-b border-zinc-800 pb-3.5">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[10px] uppercase font-bold text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2 py-0.5 rounded shadow-[0_0_8px_rgba(249,115,22,0.25)]">
+              <span className="font-mono text-[10px] uppercase font-bold text-amber-400 bg-zinc-900 border border-zinc-800 px-2 py-0.5 rounded">
                 {selectedNode.node_type}
               </span>
               <h3 className="font-mono text-xs font-bold text-white truncate max-w-[200px]">
@@ -404,7 +404,7 @@ export function RealityGraphCanvas({
             </div>
             <button
               onClick={() => setSelectedNode(null)}
-              className="rounded-lg p-1 text-zinc-400 hover:bg-white/10 hover:text-white transition-colors"
+              className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors"
             >
               <X className="h-4 w-4" />
             </button>

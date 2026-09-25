@@ -1,8 +1,8 @@
 """Pydantic schemas for Synthetic Scenario Engine."""
 
+import uuid
 from datetime import datetime
 from typing import Any
-import uuid
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -11,8 +11,14 @@ class ScenarioCreateRequest(BaseModel):
     """Request payload to generate a synthetic scenario."""
 
     target_name: str = Field(..., description="Target entity or API name")
-    source_type: str = Field("api", description="Source type: api, schema, domain_model, policy, tool_definition, validation_rule, existing_test")
-    scenario_class: str = Field("normal", description="Scenario class: normal, boundary, incomplete, malformed, contradictory, unauthorized, adversarial, outage, tool_failure, ambiguous")
+    source_type: str = Field(
+        "api",
+        description="Source type: api, schema, domain_model, policy, tool_definition, validation_rule, existing_test",
+    )
+    scenario_class: str = Field(
+        "normal",
+        description="Scenario class: normal, boundary, incomplete, malformed, contradictory, unauthorized, adversarial, outage, tool_failure, ambiguous",
+    )
     seed: int = Field(42, description="Random seed for reproducible generation")
     parameters: dict[str, Any] = Field(default_factory=dict, description="Optional overrides or parameters")
 

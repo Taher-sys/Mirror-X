@@ -86,9 +86,7 @@ class EndpointMismatchDetector(BaseDetector):
                             file_path=c_info.get("path"),
                             expected=sorted(s_info["methods"]),
                             actual=sorted(c_info["methods"]),
-                            related_node_ids=[
-                                nid for nid in [c_info["node_id"], s_info["node_id"]] if nid
-                            ],
+                            related_node_ids=[nid for nid in [c_info["node_id"], s_info["node_id"]] if nid],
                             metadata={"type": "method_mismatch"},
                         )
                     )

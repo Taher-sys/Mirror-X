@@ -136,21 +136,21 @@ export default function ContextPage() {
       <PerspectiveGrid />
 
       {/* Header */}
-      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-5">
         <div className="flex items-center gap-3.5">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border-2 border-orange-500/40 bg-orange-950/40 text-orange-400 shadow-[0_0_20px_rgba(249,115,22,0.3)]">
-            <ShieldAlert className="h-5 w-5 drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/80 text-amber-500">
+            <ShieldAlert className="h-5 w-5" />
           </div>
           <div>
             <div className="flex items-center gap-2.5">
               <h1 className="text-2xl font-bold tracking-tight text-white font-sans drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
                 Context Engine
               </h1>
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2.5 py-0.5 rounded shadow-[0_0_10px_rgba(249,115,22,0.25)]">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-amber-500 bg-zinc-900/80 border border-zinc-800 px-2.5 py-0.5 rounded">
                 DRIFT MATRIX
               </span>
             </div>
-            <p className="mt-1 font-mono text-sm font-semibold text-zinc-200">
+            <p className="mt-1 font-mono text-sm font-semibold text-zinc-300">
               Deterministic discrepancy detectors contrasting code, API contracts, database schemas, and documentation
             </p>
           </div>
@@ -160,9 +160,9 @@ export default function ContextPage() {
           <button
             onClick={handleRunScan}
             disabled={scanning}
-            className="inline-flex items-center gap-2 rounded-xl border-2 border-orange-500/50 bg-gradient-to-r from-orange-950/70 via-zinc-900/90 to-orange-950/70 px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] hover:border-orange-400 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] shadow-lg disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-lg bg-amber-500 hover:bg-amber-600 px-4 py-2 font-mono text-xs font-extrabold uppercase tracking-wider text-black transition-all shadow-md active:scale-95 disabled:opacity-50"
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${scanning ? 'animate-spin text-orange-400' : ''}`} />
+            <RefreshCw className={`h-3.5 w-3.5 ${scanning ? 'animate-spin text-black' : ''}`} />
             <span>{scanning ? 'Analyzing Reality...' : 'Run Deep Scan'}</span>
           </button>
         </div>
@@ -188,7 +188,7 @@ export default function ContextPage() {
           label="Open Issues"
           value={stats ? stats.findings_by_status.open || 0 : findings.filter((f) => f.status === 'open').length}
           subvalue="unresolved discrepancies"
-          accent="orange"
+          accent="amber"
           icon={XCircle}
         />
         <StatTile
@@ -214,16 +214,16 @@ export default function ContextPage() {
               <button
                 key={tab.id}
                 onClick={() => setSelectedType(tab.id)}
-                className={`whitespace-nowrap px-3.5 py-1.5 rounded-xl border font-mono text-xs font-bold transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2 backdrop-blur-2xl ${
+                className={`whitespace-nowrap px-3.5 py-1.5 rounded-lg border font-mono text-xs font-bold transition-all duration-200 flex items-center gap-2 ${
                   active
-                    ? 'border-2 border-orange-500/60 bg-orange-950/60 text-white shadow-[0_0_15px_rgba(249,115,22,0.3)]'
-                    : 'border border-white/10 bg-zinc-900/50 text-zinc-300 hover:border-orange-500/30 hover:text-white'
+                    ? 'border-amber-500 bg-zinc-800/90 text-white'
+                    : 'border border-[#232736] bg-zinc-900/60 text-zinc-400 hover:border-zinc-700 hover:text-white'
                 }`}
               >
                 <span>{tab.label}</span>
                 <span
                   className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
-                    active ? 'bg-orange-500/30 text-orange-300' : 'bg-black/60 text-zinc-300'
+                    active ? 'bg-amber-500/20 text-amber-300' : 'bg-black/60 text-zinc-400'
                   }`}
                 >
                   {count}
@@ -236,8 +236,8 @@ export default function ContextPage() {
         {/* Severity Filters & Search Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-1.5 w-full sm:w-auto flex-wrap">
-            <span className="font-mono text-xs text-orange-400 uppercase tracking-wider mr-1 flex items-center gap-1 font-bold">
-              <Filter className="h-3.5 w-3.5 text-orange-400" /> Severity:
+            <span className="font-mono text-xs text-zinc-400 uppercase tracking-wider mr-1 flex items-center gap-1 font-bold">
+              <Filter className="h-3.5 w-3.5 text-zinc-400" /> Severity:
             </span>
             {SEVERITY_OPTIONS.map((sev) => {
               const active = selectedSeverity === sev;
@@ -245,10 +245,10 @@ export default function ContextPage() {
                 <button
                   key={sev}
                   onClick={() => setSelectedSeverity(sev)}
-                  className={`px-3 py-1 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] backdrop-blur-2xl ${
+                  className={`px-3 py-1 rounded-lg border font-mono text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
                     active
-                      ? 'border-2 border-orange-500/60 bg-orange-950/60 text-white shadow-[0_0_12px_rgba(249,115,22,0.25)]'
-                      : 'border border-white/10 bg-zinc-900/40 text-zinc-300 hover:border-orange-500/30 hover:text-white'
+                      ? 'border-amber-500 bg-zinc-800/90 text-white'
+                      : 'border border-[#232736] bg-zinc-900/40 text-zinc-400 hover:border-zinc-700 hover:text-white'
                   }`}
                 >
                   {sev}
@@ -258,13 +258,13 @@ export default function ContextPage() {
           </div>
 
           <div className="relative w-full sm:w-72">
-            <Search className="absolute left-3.5 top-2.5 h-3.5 w-3.5 text-orange-400" />
+            <Search className="absolute left-3.5 top-2.5 h-3.5 w-3.5 text-zinc-400" />
             <input
               type="text"
               placeholder="Search findings or evidence..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-xl border-2 border-orange-500/30 bg-zinc-950/80 pl-9 pr-3.5 py-2 font-mono text-xs font-bold text-white placeholder-zinc-500 focus:border-orange-500/60 focus:outline-none backdrop-blur-2xl shadow-sm"
+              className="w-full rounded-lg border border-[#232736] bg-zinc-900/80 pl-9 pr-3.5 py-2 font-mono text-xs font-bold text-white placeholder-zinc-500 focus:border-zinc-600 focus:outline-none shadow-sm"
             />
           </div>
         </div>
@@ -273,32 +273,32 @@ export default function ContextPage() {
       {/* Main Findings Matrix */}
       <div className="relative z-10">
         {loading ? (
-          <div className="py-20 text-center font-mono text-sm font-semibold text-zinc-300 animate-pulse">
+          <div className="py-20 text-center font-mono text-sm font-semibold text-zinc-400 animate-pulse">
             Analyzing reality graph telemetry...
           </div>
         ) : filteredFindings.length === 0 ? (
           <GlassPanel className="py-16 text-center">
             <div className="flex flex-col items-center justify-center p-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-orange-500/40 bg-orange-950/40 text-orange-400 mb-3 shadow-[0_0_15px_rgba(249,115,22,0.3)]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/80 text-emerald-400 mb-3">
                 <CheckCircle2 className="h-6 w-6 stroke-[1.5]" />
               </div>
               <h4 className="font-mono text-sm font-bold uppercase tracking-wider text-zinc-200">
                 No Discrepancies Found
               </h4>
-              <p className="mt-1.5 max-w-sm text-sm font-medium text-zinc-300 font-sans leading-relaxed">
+              <p className="mt-1.5 max-w-sm text-sm font-medium text-zinc-400 font-sans leading-relaxed">
                 Zero discrepancies match the current filter criteria. If you have not ingested repositories yet, trigger a sync to extract reality graph telemetry.
               </p>
               <div className="mt-4 flex gap-3">
                 <button
                   onClick={handleRunScan}
-                  className="inline-flex items-center gap-2 rounded-xl border-2 border-orange-500/50 bg-orange-950/60 px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 hover:bg-orange-900/60 transition-all shadow-[0_0_15px_rgba(249,115,22,0.25)]"
+                  className="inline-flex items-center gap-2 rounded-lg bg-amber-500 hover:bg-amber-600 px-4 py-2 font-mono text-xs font-extrabold uppercase tracking-wider text-black transition-all shadow-md active:scale-95"
                 >
                   <RefreshCw className="h-3.5 w-3.5" />
                   <span>Execute Scan</span>
                 </button>
                 <Link
                   href="/dashboard"
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-zinc-900 px-4 py-2 font-mono text-xs font-bold text-zinc-300 hover:text-white transition-all"
+                  className="inline-flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/80 px-4 py-2 font-mono text-xs font-bold text-zinc-300 hover:text-white transition-all"
                 >
                   <span>Go to Command Center</span>
                 </Link>
@@ -315,7 +315,7 @@ export default function ContextPage() {
                 <div
                   key={finding.id}
                   onClick={() => handleOpenDetail(finding.id)}
-                  className="cursor-pointer rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 p-4.5 backdrop-blur-3xl transition-all duration-300 ease-out hover:scale-[1.005] hover:border-orange-500/60 hover:shadow-[0_25px_60px_rgba(0,0,0,0.95)] shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
+                  className="cursor-pointer rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-4.5 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-200 hover:border-[#343b52]"
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                     <div className="space-y-1.5">
@@ -323,18 +323,18 @@ export default function ContextPage() {
                         <span
                           className={`font-mono text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${
                             sev === 'critical'
-                              ? 'bg-rose-950/60 text-rose-400 border-rose-500/50 shadow-[0_0_8px_rgba(244,63,94,0.3)]'
+                              ? 'bg-rose-950/60 text-rose-400 border-rose-500/50'
                               : sev === 'high'
-                              ? 'bg-orange-950/60 text-orange-400 border-orange-500/50 shadow-[0_0_8px_rgba(249,115,22,0.3)]'
-                              : 'bg-zinc-900 text-zinc-300 border-white/10'
+                              ? 'bg-amber-950/60 text-amber-400 border-amber-500/50'
+                              : 'bg-zinc-900 text-zinc-300 border-zinc-800'
                           }`}
                         >
                           {finding.severity}
                         </span>
-                        <span className="font-mono text-xs font-bold text-orange-400 bg-orange-950/40 border border-orange-500/30 px-2 py-0.5 rounded-lg">
+                        <span className="font-mono text-xs font-bold text-amber-400 bg-zinc-900 border border-zinc-800 px-2 py-0.5 rounded-lg">
                           {finding.finding_type}
                         </span>
-                        <span className="font-mono text-xs font-bold text-orange-400">
+                        <span className="font-mono text-xs font-bold text-amber-400">
                           {Math.round(finding.confidence * 100)}% EVIDENCE CONFIDENCE
                         </span>
                         <StatusBadge
@@ -346,17 +346,17 @@ export default function ContextPage() {
                       <h3 className="font-mono text-sm font-bold text-white tracking-wide">
                         {finding.title}
                       </h3>
-                      <p className="text-sm font-medium text-zinc-200 line-clamp-2 font-sans">
+                      <p className="text-sm font-medium text-zinc-300 line-clamp-2 font-sans">
                         {finding.description}
                       </p>
                     </div>
 
                     <div className="flex items-center gap-3 shrink-0 self-end md:self-center">
                       {Boolean(evidence.file_path) && (
-                        <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-zinc-300 bg-zinc-900/80 border border-orange-500/30 px-2.5 py-1 rounded-xl">
-                          <Code2 className="h-3 w-3 text-orange-400" />
+                        <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-zinc-300 bg-zinc-900/80 border border-zinc-800 px-2.5 py-1 rounded-lg">
+                          <Code2 className="h-3 w-3 text-amber-500" />
                           <span className="max-w-[200px] truncate">{String(evidence.file_path)}</span>
-                          {Boolean(evidence.line_number) && <span className="text-orange-400">:L{String(evidence.line_number)}</span>}
+                          {Boolean(evidence.line_number) && <span className="text-amber-400">:L{String(evidence.line_number)}</span>}
                         </div>
                       )}
                       <button
@@ -364,7 +364,7 @@ export default function ContextPage() {
                           e.stopPropagation();
                           handleOpenDetail(finding.id);
                         }}
-                        className="flex items-center gap-1 text-xs font-mono font-bold text-orange-400 hover:text-orange-300 transition-colors"
+                        className="flex items-center gap-1 text-xs font-mono font-bold text-amber-400 hover:text-amber-300 transition-colors"
                       >
                         <span>Inspect</span>
                         <ChevronRight className="h-3.5 w-3.5" />
@@ -381,7 +381,7 @@ export default function ContextPage() {
       {/* Evidence Inspector Drawer / Modal */}
       {selectedFindingId && (
         <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/80 backdrop-blur-md p-4 sm:p-6 animate-fade-in">
-          <div className="w-full max-w-2xl h-full max-h-[90vh] flex flex-col rounded-3xl border-2 border-orange-500/40 border-t-2 border-white/25 bg-zinc-950/95 p-6 shadow-[0_24px_64px_rgba(0,0,0,0.95)] backdrop-blur-3xl overflow-y-auto space-y-6">
+          <div className="w-full max-w-2xl h-full max-h-[90vh] flex flex-col rounded-2xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/96 p-6 shadow-[0_24px_64px_rgba(0,0,0,0.95)] backdrop-blur-3xl overflow-y-auto space-y-6">
             {loadingDetail || !detailData ? (
               <div className="py-20 text-center font-mono text-sm font-bold text-zinc-400 animate-pulse">
                 Fetching evidence payload and graph telemetry...
@@ -389,13 +389,13 @@ export default function ContextPage() {
             ) : (
               <>
                 {/* Header */}
-                <div className="flex items-start justify-between border-b border-white/10 pb-4">
+                <div className="flex items-start justify-between border-b border-zinc-800 pb-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs uppercase font-bold text-orange-400 bg-orange-950/50 border border-orange-500/40 px-2 py-0.5 rounded-lg shadow-[0_0_8px_rgba(249,115,22,0.25)]">
+                      <span className="font-mono text-xs uppercase font-bold text-amber-400 bg-zinc-900 border border-zinc-800 px-2 py-0.5 rounded-lg">
                         {detailData.finding.finding_type}
                       </span>
-                      <span className="font-mono text-xs font-bold text-orange-400">
+                      <span className="font-mono text-xs font-bold text-amber-400">
                         {Math.round(detailData.finding.confidence * 100)}% CONFIDENCE
                       </span>
                     </div>
@@ -405,7 +405,7 @@ export default function ContextPage() {
                   </div>
                   <button
                     onClick={() => setSelectedFindingId(null)}
-                    className="p-1.5 rounded-xl border border-white/10 text-zinc-400 hover:text-white hover:border-orange-500/40"
+                    className="p-1.5 rounded-lg border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800"
                   >
                     <XCircle className="h-5 w-5" />
                   </button>
@@ -413,10 +413,10 @@ export default function ContextPage() {
 
                 {/* Description */}
                 <div>
-                  <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-orange-400 mb-1.5">
+                  <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-amber-500 mb-1.5">
                     Analytical Conclusion
                   </h4>
-                  <p className="text-sm font-medium text-zinc-200 font-sans leading-relaxed bg-zinc-900/60 border border-white/10 p-3.5 rounded-xl">
+                  <p className="text-sm font-medium text-zinc-300 font-sans leading-relaxed bg-zinc-900/60 border border-zinc-800 p-3.5 rounded-xl">
                     {detailData.finding.description}
                   </p>
                 </div>
@@ -424,11 +424,11 @@ export default function ContextPage() {
                 {/* Expected vs Actual Diff Card */}
                 {detailData.finding.evidence_payload && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="rounded-xl border border-orange-500/30 bg-orange-950/20 p-3">
-                      <div className="flex items-center gap-1.5 font-mono text-xs uppercase font-bold text-orange-400 mb-1">
+                    <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3">
+                      <div className="flex items-center gap-1.5 font-mono text-xs uppercase font-bold text-amber-500 mb-1">
                         <CheckCircle2 className="h-3 w-3" /> Expected Architectural State
                       </div>
-                      <div className="font-mono text-xs text-zinc-200 break-all bg-black/60 p-2.5 rounded-lg border border-orange-500/20">
+                      <div className="font-mono text-xs text-zinc-300 break-all bg-black/60 p-2.5 rounded-lg border border-zinc-800">
                         {JSON.stringify(detailData.finding.evidence_payload.expected ?? 'N/A', null, 2)}
                       </div>
                     </div>
@@ -437,7 +437,7 @@ export default function ContextPage() {
                       <div className="flex items-center gap-1.5 font-mono text-xs uppercase font-bold text-rose-400 mb-1">
                         <AlertTriangle className="h-3 w-3" /> Observed Reality Drift
                       </div>
-                      <div className="font-mono text-xs text-zinc-200 break-all bg-black/60 p-2.5 rounded-lg border border-rose-900/40">
+                      <div className="font-mono text-xs text-zinc-300 break-all bg-black/60 p-2.5 rounded-lg border border-rose-900/40">
                         {JSON.stringify(detailData.finding.evidence_payload.actual ?? 'N/A', null, 2)}
                       </div>
                     </div>
@@ -448,10 +448,10 @@ export default function ContextPage() {
                 {Boolean(detailData.finding.evidence_payload?.file_path) && (
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="font-mono text-xs uppercase tracking-wider text-orange-400 flex items-center gap-1.5 font-bold">
-                        <FileText className="h-3.5 w-3.5 text-orange-400" /> Evidence Source
+                      <span className="font-mono text-xs uppercase tracking-wider text-amber-500 flex items-center gap-1.5 font-bold">
+                        <FileText className="h-3.5 w-3.5 text-amber-500" /> Evidence Source
                       </span>
-                      <span className="font-mono text-xs text-orange-400 font-semibold">
+                      <span className="font-mono text-xs text-amber-400 font-semibold">
                         {String(detailData.finding.evidence_payload?.file_path)}
                         {Boolean(detailData.finding.evidence_payload?.line_number) &&
                           `:L${String(detailData.finding.evidence_payload?.line_number)}`}
@@ -459,7 +459,7 @@ export default function ContextPage() {
                     </div>
 
                     {Boolean(detailData.finding.evidence_payload?.code_snippet) && (
-                      <pre className="font-mono text-xs text-orange-200 bg-black/90 border border-orange-500/30 p-3.5 rounded-xl overflow-x-auto">
+                      <pre className="font-mono text-xs text-zinc-300 bg-black/90 border border-[#232736] p-3.5 rounded-xl overflow-x-auto">
                         <code>{String(detailData.finding.evidence_payload?.code_snippet)}</code>
                       </pre>
                     )}
@@ -469,25 +469,25 @@ export default function ContextPage() {
                 {/* Related Reality Graph Entities */}
                 {detailData.related_nodes && detailData.related_nodes.length > 0 && (
                   <div>
-                    <h4 className="font-mono text-xs uppercase tracking-wider text-orange-400 mb-2 flex items-center gap-1.5 font-bold">
-                      <Database className="h-3.5 w-3.5 text-orange-400" /> Linked Reality Graph Nodes
+                    <h4 className="font-mono text-xs uppercase tracking-wider text-amber-500 mb-2 flex items-center gap-1.5 font-bold">
+                      <Database className="h-3.5 w-3.5 text-amber-500" /> Linked Reality Graph Nodes
                     </h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {detailData.related_nodes.map((n) => (
                         <Link
                           key={n.id}
                           href="/graph"
-                          className="flex items-center justify-between p-2.5 rounded-xl border border-orange-500/30 bg-zinc-900/50 hover:border-orange-500 hover:bg-orange-950/30 transition-all"
+                          className="flex items-center justify-between p-2.5 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:border-zinc-700 transition-all"
                         >
                           <div className="space-y-0.5 truncate">
                             <div className="font-mono text-xs text-white font-bold truncate">
                               {n.name}
                             </div>
-                            <div className="font-mono text-[10px] uppercase font-bold text-orange-400">
+                            <div className="font-mono text-[10px] uppercase font-bold text-amber-400">
                               {n.node_type}
                             </div>
                           </div>
-                          <ExternalLink className="h-3.5 w-3.5 text-orange-400 shrink-0 ml-2" />
+                          <ExternalLink className="h-3.5 w-3.5 text-zinc-400 shrink-0 ml-2" />
                         </Link>
                       ))}
                     </div>
@@ -495,10 +495,10 @@ export default function ContextPage() {
                 )}
 
                 {/* Status Switcher Actions */}
-                <div className="border-t border-white/10 pt-4 flex items-center justify-between">
+                <div className="border-t border-zinc-800 pt-4 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-xs font-semibold text-zinc-300">Current Status:</span>
-                    <span className="font-mono text-xs uppercase font-bold text-orange-400 px-2 py-0.5 rounded bg-zinc-900 border border-orange-500/30">
+                    <span className="font-mono text-xs uppercase font-bold text-amber-400 px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800">
                       {detailData.finding.status}
                     </span>
                   </div>
@@ -507,7 +507,7 @@ export default function ContextPage() {
                     {detailData.finding.status !== 'resolved' && (
                       <button
                         onClick={() => handleStatusChange(detailData.finding.id, 'resolved')}
-                        className="px-3.5 py-1.5 rounded-xl border border-orange-500/60 bg-orange-950/40 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 hover:bg-orange-900/40 transition-all"
+                        className="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 font-mono text-xs font-extrabold uppercase tracking-wider text-black transition-all shadow-sm active:scale-95"
                       >
                         Mark Resolved
                       </button>
@@ -515,7 +515,7 @@ export default function ContextPage() {
                     {detailData.finding.status !== 'dismissed' && (
                       <button
                         onClick={() => handleStatusChange(detailData.finding.id, 'dismissed')}
-                        className="px-3.5 py-1.5 rounded-xl border border-white/10 bg-zinc-900 font-mono text-xs font-bold uppercase tracking-wider text-zinc-300 hover:text-white transition-all"
+                        className="px-3.5 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 font-mono text-xs font-bold uppercase tracking-wider text-zinc-300 hover:text-white transition-all"
                       >
                         Dismiss
                       </button>
@@ -523,7 +523,7 @@ export default function ContextPage() {
                     {detailData.finding.status !== 'open' && (
                       <button
                         onClick={() => handleStatusChange(detailData.finding.id, 'open')}
-                        className="px-3.5 py-1.5 rounded-xl border border-orange-500/60 bg-orange-950/40 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 hover:bg-orange-900/40 transition-all"
+                        className="px-3.5 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 font-mono text-xs font-bold uppercase tracking-wider text-amber-400 hover:text-white transition-all"
                       >
                         Reopen
                       </button>

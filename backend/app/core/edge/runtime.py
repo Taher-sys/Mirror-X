@@ -4,12 +4,9 @@ Maintains demonstrable ONLINE/OFFLINE network modes, enforces capability constra
 and routes local-first execution.
 """
 
+import uuid
 from datetime import datetime
 from typing import Any
-import uuid
-
-from app.core.errors import AppException
-
 
 PERMITTED_OFFLINE_CAPABILITIES = {
     "local_metadata",

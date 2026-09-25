@@ -25,7 +25,7 @@ export function ServiceSummaryPanel({ services }: ServiceSummaryPanelProps) {
     <GlassPanel
       title="Service Architecture Summary"
       subtitle="Discovered microservices, APIs, and background processes"
-      accentGlow={services.length > 0 ? 'orange' : 'none'}
+      accentGlow="none"
       badge={
         <span className="font-mono text-xs font-bold text-zinc-300 bg-zinc-900 border border-zinc-800 px-1.5 py-0.5 rounded">
           {services.length} active
@@ -66,18 +66,18 @@ export function ServiceSummaryPanel({ services }: ServiceSummaryPanelProps) {
           {filtered.map((service) => (
             <div
               key={service.id}
-              className="group rounded-2xl border-2 border-orange-500/30 border-t-2 border-white/20 bg-zinc-950/85 p-4 transition-all duration-300 ease-out hover:scale-[1.01] hover:border-orange-500/50 hover:shadow-[0_20px_45px_rgba(0,0,0,0.95)] backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)]"
+              className="group rounded-lg bg-[#12151e]/92 backdrop-blur-md border border-[#232736] border-t border-t-zinc-700/50 p-4 transition-all duration-200 ease-out hover:border-[#343b52] hover:border-t-zinc-500/60 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.8)] shadow-[0_8px_32px_0_rgba(0,0,0,0.6)]"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-orange-500/40 bg-orange-950/50 text-orange-400 shadow-[0_0_12px_rgba(249,115,22,0.25)]">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/80 text-amber-500">
                     <Server className="h-4 w-4" />
                   </div>
                   <div>
-                    <h4 className="font-mono text-sm font-bold text-white group-hover:text-orange-400 transition-colors">
+                    <h4 className="font-mono text-sm font-bold text-white group-hover:text-amber-400 transition-colors">
                       {service.name}
                     </h4>
-                    <p className="font-mono text-xs font-bold text-zinc-200">
+                    <p className="font-mono text-xs text-zinc-400">
                       {service.repository_name || 'Repository'}
                     </p>
                   </div>
@@ -85,11 +85,11 @@ export function ServiceSummaryPanel({ services }: ServiceSummaryPanelProps) {
                 <StatusBadge status={service.status} size="sm" />
               </div>
 
-              <div className="mt-3.5 flex items-center justify-between border-t border-white/10 pt-2.5 font-mono text-xs">
-                <span className="uppercase text-zinc-400 font-bold">
-                  Type: <strong className="text-white font-bold">{service.service_type}</strong>
+              <div className="mt-3.5 flex items-center justify-between border-t border-zinc-800/80 pt-2.5 font-mono text-xs">
+                <span className="uppercase text-zinc-400 font-medium">
+                  Type: <strong className="text-zinc-200 font-bold">{service.service_type}</strong>
                 </span>
-                <span className="text-orange-400 font-bold">{service.runtime || service.version}</span>
+                <span className="text-zinc-300 font-medium">{service.runtime || service.version}</span>
               </div>
             </div>
           ))}

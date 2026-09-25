@@ -45,20 +45,20 @@ export function FindingSummaryPanel({ findings, counts }: FindingSummaryPanelPro
       }
     >
       {/* Severity Filter Tabs */}
-      <div className="flex flex-wrap items-center gap-1.5 border-b border-white/10 pb-3 mb-3">
+      <div className="flex flex-wrap items-center gap-1.5 border-b border-zinc-800/80 pb-3 mb-3">
         {severityBadges.map((badge) => (
           <button
             key={badge.key}
             onClick={() => setSelectedSeverity(badge.key)}
             className={cn(
-              'flex items-center gap-1.5 rounded-xl px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-wider transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98]',
+              'flex items-center gap-1.5 rounded-lg px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider transition-colors',
               selectedSeverity === badge.key
-                ? 'border-2 border-orange-500/50 bg-orange-950/60 text-white shadow-[0_0_15px_rgba(249,115,22,0.25)]'
-                : 'border border-white/10 text-zinc-400 hover:text-white hover:border-orange-500/30 bg-zinc-900/40'
+                ? 'bg-amber-500 text-black font-extrabold border border-amber-500'
+                : 'border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 bg-zinc-900/60'
             )}
           >
-            <span className={badge.color}>{badge.label}</span>
-            <span className="rounded-lg bg-black/60 px-1.5 py-0.5 text-[9px] font-bold text-zinc-200">
+            <span className={selectedSeverity === badge.key ? 'text-black' : badge.color}>{badge.label}</span>
+            <span className={cn('rounded px-1.5 py-0.5 text-[9px] font-bold', selectedSeverity === badge.key ? 'bg-black/20 text-black' : 'bg-black/60 text-zinc-300')}>
               {badge.count}
             </span>
           </button>
@@ -80,7 +80,7 @@ export function FindingSummaryPanel({ findings, counts }: FindingSummaryPanelPro
           {filtered.slice(0, 5).map((finding) => (
             <div
               key={finding.id}
-              className="flex items-start justify-between gap-3 rounded-2xl border-2 border-orange-500/30 border-t-2 border-white/20 bg-zinc-950/85 p-3.5 transition-all duration-300 ease-out hover:scale-[1.01] hover:border-orange-500/50 hover:shadow-[0_20px_45px_rgba(0,0,0,0.95)] backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)]"
+              className="flex items-start justify-between gap-3 rounded-lg bg-[#12151e]/92 backdrop-blur-md border border-[#232736] border-t border-t-zinc-700/50 p-3.5 transition-all duration-200 ease-out hover:border-[#343b52] hover:border-t-zinc-500/60 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.8)] shadow-[0_8px_32px_0_rgba(0,0,0,0.6)]"
             >
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
@@ -88,10 +88,10 @@ export function FindingSummaryPanel({ findings, counts }: FindingSummaryPanelPro
                     className={cn(
                       'font-mono text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border',
                       finding.severity === 'critical'
-                        ? 'border-rose-500/50 bg-rose-950/50 text-rose-400 shadow-[0_0_8px_rgba(244,63,94,0.35)]'
+                        ? 'border-rose-500/50 bg-rose-950/50 text-rose-400'
                         : finding.severity === 'high'
-                        ? 'border-orange-500/50 bg-orange-950/50 text-orange-400 shadow-[0_0_8px_rgba(249,115,22,0.35)]'
-                        : 'border-white/10 bg-black/50 text-zinc-300'
+                        ? 'border-amber-500/50 bg-amber-500/10 text-amber-400'
+                        : 'border-zinc-800 bg-zinc-900/60 text-zinc-300'
                     )}
                   >
                     {finding.severity}
@@ -106,11 +106,11 @@ export function FindingSummaryPanel({ findings, counts }: FindingSummaryPanelPro
                 <div className="flex items-center gap-2 font-mono text-[10px] font-bold text-zinc-300">
                   <span>Type: <span className="text-white font-bold">{finding.finding_type}</span></span>
                   <span>•</span>
-                  <span>Confidence: <span className="text-orange-400 font-bold">{(finding.confidence * 100).toFixed(0)}%</span></span>
+                  <span>Confidence: <span className="text-amber-400 font-bold">{(finding.confidence * 100).toFixed(0)}%</span></span>
                   {finding.service_name && (
                     <>
                       <span>•</span>
-                      <span>Service: <span className="text-orange-400 font-bold">{finding.service_name}</span></span>
+                      <span>Service: <span className="text-amber-400 font-bold">{finding.service_name}</span></span>
                     </>
                   )}
                 </div>

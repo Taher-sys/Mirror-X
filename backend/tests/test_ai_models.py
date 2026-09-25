@@ -1,7 +1,5 @@
 """Unit tests for baseline logistic classifier, anomaly detector, metrics, and sequence GRU."""
 
-import pytest
-
 from app.core.ai.baseline_model import (
     BaselineLogisticClassifier,
     CentroidAnomalyDetector,

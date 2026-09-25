@@ -19,7 +19,6 @@ def parse_docker_compose(content: str, file_path: str = "docker-compose.yml") ->
         result.warnings.append(f"Failed to parse {file_path}: {e}")
         return result
 
-
     services = data.get("services", {})
     for svc_name, svc_conf in services.items():
         if not isinstance(svc_conf, dict):
@@ -54,7 +53,9 @@ def parse_docker_compose(content: str, file_path: str = "docker-compose.yml") ->
                 properties={
                     "image": image,
                     "ports": ports,
-                    "environment_keys": list(svc_conf.get("environment", {}).keys()) if isinstance(svc_conf.get("environment"), dict) else [],
+                    "environment_keys": list(svc_conf.get("environment", {}).keys())
+                    if isinstance(svc_conf.get("environment"), dict)
+                    else [],
                 },
             )
             result.nodes.append(service_node)

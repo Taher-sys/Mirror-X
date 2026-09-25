@@ -128,21 +128,21 @@ export default function AgentsPage() {
       <PerspectiveGrid />
 
       {/* Header */}
-      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#232736] pb-5">
         <div className="flex items-center gap-3.5">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border-2 border-orange-500/40 bg-orange-950/40 text-orange-400 shadow-[0_0_20px_rgba(249,115,22,0.3)]">
-            <Bot className="h-5 w-5 drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#232736] bg-zinc-900/80 text-amber-500">
+            <Bot className="h-5 w-5" />
           </div>
           <div>
             <div className="flex items-center gap-2.5">
-              <h1 className="text-2xl font-bold tracking-tight text-white font-sans drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+              <h1 className="text-2xl font-bold tracking-tight text-white font-sans">
                 Agent Behavior Lab
               </h1>
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2.5 py-0.5 rounded shadow-[0_0_10px_rgba(249,115,22,0.25)]">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-amber-500 bg-zinc-900/80 border border-zinc-800 px-2.5 py-0.5 rounded">
                 SANDBOX BEHAVIOR MATRIX
               </span>
             </div>
-            <p className="mt-1 font-mono text-sm font-semibold text-zinc-200">
+            <p className="mt-1 font-mono text-sm font-semibold text-zinc-300">
               Controlled execution telemetry &amp; observable version comparison without arbitrary intelligence scores
             </p>
           </div>
@@ -153,10 +153,10 @@ export default function AgentsPage() {
           <button
             onClick={handleRunAgent}
             disabled={executing || !selectedAgentId}
-            className="inline-flex items-center gap-2 rounded-xl border-2 border-orange-500/50 bg-gradient-to-r from-orange-950/70 via-zinc-900/90 to-orange-950/70 px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] hover:border-orange-400 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] shadow-lg disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-lg bg-amber-500 hover:bg-amber-600 px-4 py-2 font-mono text-xs font-extrabold uppercase tracking-wider text-black transition-all shadow-md active:scale-95 disabled:opacity-50"
           >
             {executing ? (
-              <RotateCcw className="h-3.5 w-3.5 animate-spin text-orange-400" />
+              <RotateCcw className="h-3.5 w-3.5 animate-spin text-black" />
             ) : (
               <Play className="h-3.5 w-3.5 fill-current" />
             )}
@@ -167,8 +167,8 @@ export default function AgentsPage() {
 
       {/* Preset Goal Launcher Bar */}
       <GlassPanel className="relative z-10 p-5 space-y-4">
-        <div className="flex items-center justify-between border-b border-white/10 pb-3">
-          <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-orange-400">
+        <div className="flex items-center justify-between border-b border-[#232736] pb-3">
+          <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-amber-500">
             <Cpu className="h-4 w-4" />
             <span>Agent Target &amp; Goal Console</span>
           </div>
@@ -177,7 +177,7 @@ export default function AgentsPage() {
             <select
               value={selectedAgentId || ''}
               onChange={(e) => setSelectedAgentId(e.target.value)}
-              className="rounded-lg border border-orange-500/40 bg-zinc-900 px-2 py-1 font-mono text-xs font-bold text-orange-400 focus:outline-none"
+              className="rounded-lg border border-[#232736] bg-zinc-900 px-2 py-1 font-mono text-xs font-bold text-amber-500 focus:outline-none"
             >
               {agents.map((a) => (
                 <option key={a.id} value={a.id}>
@@ -190,15 +190,15 @@ export default function AgentsPage() {
 
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <div className="flex items-center gap-2 overflow-x-auto pb-1 w-full sm:w-auto">
-            <span className="font-mono text-xs uppercase font-bold text-orange-400 shrink-0">Presets:</span>
+            <span className="font-mono text-xs uppercase font-bold text-zinc-400 shrink-0">Presets:</span>
             {PRESET_GOALS.map((p) => (
               <button
                 key={p.id}
                 onClick={() => setCustomGoal(p.goal)}
-                className={`whitespace-nowrap px-3 py-1.5 rounded-xl border font-mono text-xs font-bold transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] backdrop-blur-2xl ${
+                className={`whitespace-nowrap px-3 py-1.5 rounded-lg border font-mono text-xs font-bold transition-all duration-200 ${
                   customGoal === p.goal
-                    ? 'border-2 border-orange-500/60 bg-orange-950/60 text-white shadow-[0_0_12px_rgba(249,115,22,0.3)]'
-                    : 'border border-white/10 bg-zinc-900/50 text-zinc-300 hover:border-orange-500/30 hover:text-white'
+                    ? 'border border-amber-500 bg-zinc-800/90 text-white'
+                    : 'border border-[#232736] bg-zinc-900/60 text-zinc-400 hover:border-zinc-700 hover:text-white'
                 }`}
               >
                 {p.label}
@@ -211,7 +211,7 @@ export default function AgentsPage() {
               type="text"
               value={customGoal}
               onChange={(e) => setCustomGoal(e.target.value)}
-              className="w-full rounded-xl border-2 border-orange-500/30 bg-zinc-950/90 px-4 py-2 font-mono text-xs font-bold text-white placeholder-zinc-500 focus:border-orange-500/60 focus:outline-none"
+              className="w-full rounded-lg border border-[#232736] bg-zinc-900/80 px-4 py-2 font-mono text-xs font-bold text-white placeholder-zinc-500 focus:border-zinc-600 focus:outline-none"
               placeholder="Enter agent objective or task..."
             />
           </div>
@@ -223,7 +223,7 @@ export default function AgentsPage() {
         {/* Left Column: Historical Agent Runs */}
         <div className="lg:col-span-5 space-y-3">
           <div className="flex items-center justify-between px-1">
-            <span className="font-mono text-xs uppercase font-bold text-orange-400">
+            <span className="font-mono text-xs uppercase font-bold text-zinc-400">
               Recorded Trace Executions ({runs.length})
             </span>
           </div>
@@ -234,11 +234,11 @@ export default function AgentsPage() {
             </div>
           ) : runs.length === 0 ? (
             <GlassPanel className="py-16 text-center">
-              <Bot className="mx-auto h-12 w-12 text-orange-400" />
+              <Bot className="mx-auto h-10 w-10 text-amber-500" />
               <h4 className="mt-3 font-mono text-sm font-bold uppercase tracking-wider text-white">
                 No Traces Recorded
               </h4>
-              <p className="mt-1 text-sm font-medium text-zinc-300">
+              <p className="mt-1 text-sm font-medium text-zinc-400">
                 Execute a goal above to start recording agent telemetry.
               </p>
             </GlassPanel>
@@ -250,15 +250,13 @@ export default function AgentsPage() {
                   <div
                     key={run.id}
                     onClick={() => setSelectedRunId(run.id)}
-                    className={`cursor-pointer rounded-2xl border-2 border-t-2 p-4 backdrop-blur-3xl transition-all duration-300 ease-out hover:scale-[1.01] shadow-[0_16px_40px_rgba(0,0,0,0.85)] ${
-                      isSelected
-                        ? 'border-orange-500/60 border-t-white/35 bg-zinc-950/95 shadow-[0_0_25px_rgba(249,115,22,0.2)]'
-                        : 'border-orange-500/35 border-t-white/20 bg-zinc-950/85 hover:border-orange-500/50'
+                    className={`cursor-pointer rounded-xl border border-[#232736] border-t border-t-zinc-700/50 p-4 bg-[#12151e]/92 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-200 hover:border-[#343b52] ${
+                      isSelected ? 'border-l-2 border-l-amber-500 bg-zinc-900/90' : ''
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-orange-950/60 text-orange-400 border-orange-500/40">
+                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-zinc-900/80 text-amber-500 border-amber-500/40">
                           {run.agent_version}
                         </span>
                         <span className="font-mono text-xs font-bold text-white truncate max-w-[200px]">
@@ -272,9 +270,9 @@ export default function AgentsPage() {
                     </div>
 
                     <div className="mt-2.5 flex items-center justify-between font-mono text-xs text-zinc-300 font-semibold">
-                      <span>Trace: <strong className="text-orange-400 font-bold">{run.trace_id.slice(0, 16)}...</strong></span>
+                      <span>Trace: <strong className="text-amber-400 font-bold">{run.trace_id.slice(0, 16)}...</strong></span>
                       <span>Steps: <strong className="text-white font-bold">{run.steps?.length || 0}</strong></span>
-                      <span>Latency: <strong className="text-orange-400 font-bold">{run.latency_ms}ms</strong></span>
+                      <span>Latency: <strong className="text-amber-400 font-bold">{run.latency_ms}ms</strong></span>
                     </div>
                   </div>
                 );
@@ -286,7 +284,7 @@ export default function AgentsPage() {
         {/* Right Column: Execution Workspace (Timeline, Metrics, Version Comparison) */}
         <div className="lg:col-span-7 space-y-4">
           {/* View Mode Tabs */}
-          <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+          <div className="flex items-center gap-2 border-b border-[#232736] pb-3">
             {[
               { id: 'timeline', label: 'Trace Timeline', icon: Terminal },
               { id: 'metrics', label: 'Measurable Behaviors', icon: Zap },
@@ -297,13 +295,13 @@ export default function AgentsPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
                     active
-                      ? 'border-2 border-orange-500/60 bg-orange-950/60 text-white shadow-[0_0_15px_rgba(249,115,22,0.3)]'
-                      : 'border border-white/10 bg-zinc-900/40 text-zinc-300 hover:text-white'
+                      ? 'border border-amber-500 bg-zinc-800/90 text-white'
+                      : 'border border-[#232736] bg-zinc-900/40 text-zinc-400 hover:text-white'
                   }`}
                 >
-                  <tab.icon className="h-4 w-4 text-orange-400" />
+                  <tab.icon className={`h-4 w-4 ${active ? 'text-amber-500' : 'text-zinc-400'}`} />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -312,7 +310,7 @@ export default function AgentsPage() {
 
           {!selectedRun ? (
             <GlassPanel className="py-24 text-center">
-              <Bot className="mx-auto h-12 w-12 text-orange-400" />
+              <Bot className="mx-auto h-10 w-10 text-amber-500" />
               <h4 className="mt-3 font-mono text-sm font-bold uppercase tracking-wider text-white">
                 Select an Agent Run
               </h4>
@@ -320,10 +318,10 @@ export default function AgentsPage() {
           ) : activeTab === 'timeline' ? (
             /* TAB 1: Trace Timeline */
             <GlassPanel className="p-5 space-y-5">
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div className="flex items-center justify-between border-b border-[#232736] pb-4">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2.5 py-0.5 rounded-lg">
+                    <span className="font-mono text-xs font-bold text-amber-500 bg-zinc-900/80 border border-zinc-800 px-2.5 py-0.5 rounded">
                       TRACE: {selectedRun.trace_id}
                     </span>
                     <span className="font-mono text-xs font-bold text-zinc-300">
@@ -338,8 +336,8 @@ export default function AgentsPage() {
 
               {/* High Level Plan */}
               {selectedRun.plan && selectedRun.plan.length > 0 && (
-                <div className="rounded-xl border border-orange-500/30 bg-zinc-900/50 p-3.5 space-y-1.5 font-mono text-xs">
-                  <div className="text-orange-400 font-bold uppercase tracking-wider">Execution Strategy Plan:</div>
+                <div className="rounded-lg border border-[#232736] bg-zinc-900/60 p-3.5 space-y-1.5 font-mono text-xs">
+                  <div className="text-amber-500 font-bold uppercase tracking-wider">Execution Strategy Plan:</div>
                   {selectedRun.plan.map((step, idx) => (
                     <div key={idx} className="text-zinc-200 font-medium">
                       {step}
@@ -350,53 +348,53 @@ export default function AgentsPage() {
 
               {/* Step Timeline */}
               <div className="space-y-3">
-                <h4 className="font-mono text-xs uppercase font-bold text-orange-400 tracking-wider">
+                <h4 className="font-mono text-xs uppercase font-bold text-zinc-400 tracking-wider">
                   Step-by-Step Tool Invocations &amp; Policy Checks
                 </h4>
                 {selectedRun.steps && selectedRun.steps.map((st) => (
                   <div
                     key={st.step_number}
-                    className="rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 p-4 space-y-2.5 backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)]"
+                    className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-4 space-y-2.5 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs font-bold text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2 py-0.5 rounded-lg">
+                        <span className="font-mono text-xs font-bold text-amber-500 bg-zinc-900/80 border border-zinc-800 px-2 py-0.5 rounded">
                           STEP {st.step_number}
                         </span>
                         <span className="font-mono text-xs font-bold text-white">
-                          Tool: <strong className="text-orange-400">{st.tool_call || 'None'}</strong>
+                          Tool: <strong className="text-amber-400">{st.tool_call || 'None'}</strong>
                         </span>
                       </div>
-                      <span className="font-mono text-xs font-bold text-orange-400">
+                      <span className="font-mono text-xs font-bold text-amber-500">
                         {st.duration_ms}ms
                       </span>
                     </div>
 
-                    <div className="text-xs font-medium text-zinc-200 font-sans italic bg-black/40 p-2.5 rounded-lg border border-white/5">
+                    <div className="text-xs font-medium text-zinc-300 font-sans italic bg-black/40 p-2.5 rounded-lg border border-[#232736]">
                       &quot;{st.thought}&quot;
                     </div>
 
                     {/* Tool Arguments and Output */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-xs">
-                      <div className="bg-black/70 p-2.5 rounded-lg border border-white/10">
+                      <div className="bg-black/70 p-2.5 rounded-lg border border-[#232736]">
                         <span className="text-zinc-400 font-bold">Arguments:</span>
-                        <pre className="mt-1 text-orange-200 overflow-x-auto">
+                        <pre className="mt-1 text-zinc-300 overflow-x-auto">
                           <code>{JSON.stringify(st.arguments, null, 2)}</code>
                         </pre>
                       </div>
-                      <div className="bg-black/70 p-2.5 rounded-lg border border-white/10">
+                      <div className="bg-black/70 p-2.5 rounded-lg border border-[#232736]">
                         <span className="text-zinc-400 font-bold">Tool Output:</span>
-                        <pre className="mt-1 text-zinc-200 overflow-x-auto">
+                        <pre className="mt-1 text-zinc-300 overflow-x-auto">
                           <code>{JSON.stringify(st.tool_output, null, 2)}</code>
                         </pre>
                       </div>
                     </div>
 
                     {/* Policy Gate Check */}
-                    <div className="flex items-center justify-between font-mono text-xs pt-1 border-t border-white/5">
+                    <div className="flex items-center justify-between font-mono text-xs pt-1 border-t border-[#232736]">
                       <div className="flex items-center gap-1.5">
-                        <Shield className="h-3.5 w-3.5 text-orange-400" />
-                        <span className="text-zinc-300">Policy Gate:</span>
+                        <Shield className="h-3.5 w-3.5 text-amber-500" />
+                        <span className="text-zinc-400">Policy Gate:</span>
                         <span className={`font-bold ${st.policy_check.decision === 'ALLOW' ? 'text-emerald-400' : 'text-rose-400'}`}>
                           {st.policy_check.decision}
                         </span>
@@ -412,16 +410,16 @@ export default function AgentsPage() {
           ) : activeTab === 'metrics' ? (
             /* TAB 2: Measurable Behaviors Breakdown */
             <GlassPanel className="p-5 space-y-5">
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div className="flex items-center justify-between border-b border-[#232736] pb-4">
                 <div>
                   <h3 className="font-mono text-base font-bold text-white">
                     Measurable Behavioral Matrix
                   </h3>
                   <p className="font-mono text-xs font-semibold text-zinc-300 mt-1">
-                    Trace ID: <span className="text-orange-400 font-bold">{selectedRun.trace_id}</span>
+                    Trace ID: <span className="text-amber-400 font-bold">{selectedRun.trace_id}</span>
                   </p>
                 </div>
-                <div className="rounded-xl border border-orange-500/40 bg-orange-950/40 px-3 py-1 font-mono text-xs font-bold text-orange-400">
+                <div className="rounded-lg border border-zinc-800 bg-zinc-900/80 px-3 py-1 font-mono text-xs font-bold text-zinc-400">
                   NO ARBITRARY SCORE
                 </div>
               </div>
@@ -452,7 +450,7 @@ export default function AgentsPage() {
                   label="Unnecessary Actions"
                   value={selectedRun.unnecessary_actions_count}
                   subvalue="redundant queries"
-                  accent="orange"
+                  accent="cyan"
                   icon={Layers}
                 />
                 <StatTile
@@ -473,7 +471,7 @@ export default function AgentsPage() {
                   label="Execution Latency"
                   value={`${selectedRun.latency_ms}ms`}
                   subvalue="end-to-end sandbox time"
-                  accent="orange"
+                  accent="cyan"
                   icon={Zap}
                 />
                 <StatTile
@@ -488,7 +486,7 @@ export default function AgentsPage() {
           ) : (
             /* TAB 3: Version Comparison */
             <GlassPanel className="p-5 space-y-5">
-              <div className="border-b border-white/10 pb-4">
+              <div className="border-b border-[#232736] pb-4">
                 <h3 className="font-mono text-base font-bold text-white">
                   Agent Version Comparison Console
                 </h3>
@@ -506,7 +504,7 @@ export default function AgentsPage() {
                   <select
                     value={baselineRunId}
                     onChange={(e) => setBaselineRunId(e.target.value)}
-                    className="w-full rounded-xl border-2 border-orange-500/30 bg-zinc-950/90 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-orange-500/60 focus:outline-none"
+                    className="w-full rounded-lg border border-[#232736] bg-zinc-900/80 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-zinc-600 focus:outline-none"
                   >
                     <option value="">Select Baseline Run...</option>
                     {runs.map((r) => (
@@ -524,7 +522,7 @@ export default function AgentsPage() {
                   <select
                     value={candidateRunId}
                     onChange={(e) => setCandidateRunId(e.target.value)}
-                    className="w-full rounded-xl border-2 border-orange-500/30 bg-zinc-950/90 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-orange-500/60 focus:outline-none"
+                    className="w-full rounded-lg border border-[#232736] bg-zinc-900/80 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-zinc-600 focus:outline-none"
                   >
                     <option value="">Select Candidate Run...</option>
                     {runs.map((r) => (
@@ -539,7 +537,7 @@ export default function AgentsPage() {
               <button
                 onClick={handleCompare}
                 disabled={!baselineRunId || !candidateRunId}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-xl border-2 border-orange-500/50 bg-gradient-to-r from-orange-950/70 via-zinc-900/90 to-orange-950/70 px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] hover:border-orange-400 shadow-lg disabled:opacity-50"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-amber-500 hover:bg-amber-600 px-4 py-2.5 font-mono text-xs font-extrabold uppercase tracking-wider text-black transition-all shadow-md active:scale-95 disabled:opacity-50"
               >
                 <GitCompare className="h-4 w-4" />
                 <span>Compare Behavioral Telemetry</span>
@@ -547,12 +545,12 @@ export default function AgentsPage() {
 
               {comparisonResult && (
                 <div className="space-y-4 pt-2">
-                  <div className="rounded-xl border border-orange-500/30 bg-black/60 p-3 font-mono text-xs text-orange-300">
+                  <div className="rounded-lg border border-[#232736] bg-black/60 p-3 font-mono text-xs text-zinc-300">
                     {comparisonResult.disclaimer}
                   </div>
 
-                  <div className="rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 p-4 space-y-3 backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)]">
-                    <div className="grid grid-cols-3 font-mono text-xs font-bold text-orange-400 border-b border-white/10 pb-2">
+                  <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-4 space-y-3 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md">
+                    <div className="grid grid-cols-3 font-mono text-xs font-bold text-zinc-400 border-b border-[#232736] pb-2">
                       <span>Behavior Dimension</span>
                       <span>Baseline vs Candidate</span>
                       <span>Delta / Trend</span>
@@ -563,7 +561,7 @@ export default function AgentsPage() {
                       return (
                         <div
                           key={metric}
-                          className="grid grid-cols-3 font-mono text-xs py-1.5 border-b border-white/5 items-center"
+                          className="grid grid-cols-3 font-mono text-xs py-1.5 border-b border-[#232736]/50 items-center"
                         >
                           <span className="font-bold text-white uppercase">{metric.replace(/_/g, ' ')}</span>
                           <span className="text-zinc-300">

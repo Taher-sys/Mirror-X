@@ -103,9 +103,7 @@ class ContextEngine:
         if repository_id:
             stmt = stmt.where(Finding.repository_id == repository_id)
         existing_res = await db.execute(stmt)
-        existing_findings = {
-            (f.title, f.finding_type): f for f in existing_res.scalars().all()
-        }
+        existing_findings = {(f.title, f.finding_type): f for f in existing_res.scalars().all()}
 
         for d in discrepancies:
             key = (d.title, d.finding_type)

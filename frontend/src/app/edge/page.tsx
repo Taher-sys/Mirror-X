@@ -22,6 +22,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PerspectiveGrid } from '@/components/ui/perspective-grid';
 
 interface ConflictRecord {
   id: string;
@@ -229,17 +230,15 @@ export default function EdgePage() {
   const isOnline = edgeData.connectivity === 'ONLINE';
 
   return (
-    <div className="min-h-screen bg-[#121316] text-zinc-100 p-6 md:p-10 relative overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-950/20 via-[#121316] to-[#121316]">
-      {/* Background Ambience */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 left-1/4 w-80 h-80 bg-zinc-900/60 rounded-full blur-3xl pointer-events-none" />
+    <div className="relative min-h-[calc(100vh-3.5rem)] overflow-hidden canvas-textured text-white p-6 space-y-6">
+      <PerspectiveGrid />
 
       <div className="max-w-7xl mx-auto space-y-8 relative z-10">
         {/* Header Bar */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800/80 pb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800 pb-6">
           <div className="space-y-1">
             <div className="flex items-center space-x-3">
-              <div className="p-2.5 rounded-xl bg-orange-500/10 border border-orange-500/30 text-orange-400 shadow-[0_0_20px_rgba(249,115,22,0.15)]">
+              <div className="p-2.5 rounded-xl bg-zinc-900/80 border border-zinc-800 text-amber-500">
                 <HardDrive className="h-7 w-7" />
               </div>
               <div>
@@ -259,24 +258,24 @@ export default function EdgePage() {
               onClick={handleToggleMode}
               disabled={isTogglingMode}
               className={cn(
-                'flex items-center space-x-2.5 px-4 py-2.5 rounded-xl border-2 font-bold text-xs uppercase tracking-wider',
-                'transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] shadow-lg',
+                'flex items-center space-x-2.5 px-4 py-2 rounded-lg border font-mono font-bold text-xs uppercase tracking-wider',
+                'transition-all duration-200 shadow-sm',
                 isOnline
-                  ? 'border-emerald-500/50 bg-emerald-950/40 text-emerald-300 hover:border-emerald-400 hover:bg-emerald-950/60 shadow-emerald-950/40'
-                  : 'border-amber-500/50 bg-amber-950/40 text-amber-300 hover:border-amber-400 hover:bg-amber-950/60 shadow-amber-950/40'
+                  ? 'border-emerald-500/50 bg-emerald-950/40 text-emerald-300'
+                  : 'border-amber-500/50 bg-amber-950/40 text-amber-300'
               )}
             >
               {isOnline ? (
                 <>
                   <Wifi className="h-4 w-4 text-emerald-400 animate-pulse" />
                   <span>ONLINE MODE</span>
-                  <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
+                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
                 </>
               ) : (
                 <>
                   <WifiOff className="h-4 w-4 text-amber-400" />
                   <span>OFFLINE MODE</span>
-                  <span className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_8px_#fbbf24]" />
+                  <span className="h-2 w-2 rounded-full bg-amber-400" />
                 </>
               )}
             </button>
@@ -284,10 +283,7 @@ export default function EdgePage() {
             <button
               onClick={handleTriggerSync}
               disabled={isSyncing}
-              className={cn(
-                'flex items-center space-x-2 px-4 py-2.5 rounded-xl border-2 border-orange-500/40 bg-zinc-950/80 text-orange-300 font-bold text-xs',
-                'transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:border-orange-500 hover:bg-orange-500/10 shadow-lg shadow-orange-950/20'
-              )}
+              className="flex items-center space-x-2 rounded-lg bg-amber-500 hover:bg-amber-600 px-4 py-2 font-mono text-xs font-extrabold uppercase tracking-wider text-black transition-all shadow-md active:scale-95 disabled:opacity-50"
             >
               <RefreshCw className={cn('h-4 w-4', isSyncing && 'animate-spin')} />
               <span>{isSyncing ? 'Flushing Queue...' : 'Trigger Edge Sync'}</span>
@@ -302,13 +298,13 @@ export default function EdgePage() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="p-3.5 rounded-xl bg-orange-500/15 border border-orange-500/40 text-orange-200 text-sm flex items-center justify-between shadow-lg"
+              className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-sm flex items-center justify-between shadow-sm"
             >
               <div className="flex items-center space-x-2.5">
-                <Zap className="h-4 w-4 text-orange-400" />
+                <Zap className="h-4 w-4 text-amber-400" />
                 <span>{actionNotice}</span>
               </div>
-              <span className="text-xs font-mono text-orange-400/80">LIVE</span>
+              <span className="text-xs font-mono text-amber-400/80">LIVE</span>
             </motion.div>
           )}
         </AnimatePresence>
@@ -316,12 +312,12 @@ export default function EdgePage() {
         {/* Primary Edge Telemetry Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {/* Card 1: Node State & Storage */}
-          <div className="backdrop-blur-3xl bg-zinc-950/85 border-2 border-orange-500/35 shadow-2xl transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_25px_60px_rgba(249,115,22,0.25)] rounded-2xl p-6 relative overflow-hidden group">
+          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-200 hover:border-[#343b52] relative overflow-hidden group">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
                 Storage & Database
               </span>
-              <Database className="h-5 w-5 text-orange-400 group-hover:scale-110 transition-transform" />
+              <Database className="h-5 w-5 text-amber-500 group-hover:scale-110 transition-transform" />
             </div>
             <div className="space-y-1">
               <div className="text-3xl font-extrabold text-white font-mono tabular-nums">
@@ -338,12 +334,12 @@ export default function EdgePage() {
           </div>
 
           {/* Card 2: Outbound Queue */}
-          <div className="backdrop-blur-3xl bg-zinc-950/85 border-2 border-orange-500/35 shadow-2xl transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_25px_60px_rgba(249,115,22,0.25)] rounded-2xl p-6 relative overflow-hidden group">
+          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-200 hover:border-[#343b52] relative overflow-hidden group">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
                 Outbound Sync Queue
               </span>
-              <Layers className="h-5 w-5 text-orange-400 group-hover:scale-110 transition-transform" />
+              <Layers className="h-5 w-5 text-amber-500 group-hover:scale-110 transition-transform" />
             </div>
             <div className="space-y-1">
               <div className="text-3xl font-extrabold text-white font-mono tabular-nums">
@@ -354,41 +350,41 @@ export default function EdgePage() {
                 <span>{edgeData.queue_length === 0 ? 'Queue Fully Synced' : 'Pending Reconnection Flush'}</span>
               </p>
             </div>
-            <div className="mt-4 pt-3 border-t border-zinc-800/80 flex justify-between text-xs text-zinc-500 font-mono">
+            <div className="mt-4 pt-3 border-t border-zinc-800 flex justify-between text-xs text-zinc-400 font-mono">
               <span>Idempotent SHA-256 Hashes</span>
             </div>
           </div>
 
           {/* Card 3: Versions & Snapshot */}
-          <div className="backdrop-blur-3xl bg-zinc-950/85 border-2 border-orange-500/35 shadow-2xl transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_25px_60px_rgba(249,115,22,0.25)] rounded-2xl p-6 relative overflow-hidden group">
+          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-200 hover:border-[#343b52] relative overflow-hidden group">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
                 Model & Policy State
               </span>
-              <ShieldCheck className="h-5 w-5 text-orange-400 group-hover:scale-110 transition-transform" />
+              <ShieldCheck className="h-5 w-5 text-amber-500 group-hover:scale-110 transition-transform" />
             </div>
             <div className="space-y-1.5">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-xs text-zinc-400">Model:</span>
-                <span className="font-mono text-orange-400 font-semibold">{edgeData.local_model_version}</span>
+                <span className="font-mono text-amber-400 font-semibold">{edgeData.local_model_version}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span className="text-xs text-zinc-400">Policy:</span>
-                <span className="font-mono text-orange-400 font-semibold">{edgeData.local_policy_version}</span>
+                <span className="font-mono text-amber-400 font-semibold">{edgeData.local_policy_version}</span>
               </div>
             </div>
-            <div className="mt-4 pt-3 border-t border-zinc-800/80 flex justify-between text-xs text-zinc-500 font-mono">
+            <div className="mt-4 pt-3 border-t border-zinc-800 flex justify-between text-xs text-zinc-400 font-mono">
               <span>HMAC-SHA256 Signed</span>
             </div>
           </div>
 
           {/* Card 4: Last Synchronization */}
-          <div className="backdrop-blur-3xl bg-zinc-950/85 border-2 border-orange-500/35 shadow-2xl transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_25px_60px_rgba(249,115,22,0.25)] rounded-2xl p-6 relative overflow-hidden group">
+          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-200 hover:border-[#343b52] relative overflow-hidden group">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
                 Sync Heartbeat
               </span>
-              <Clock className="h-5 w-5 text-orange-400 group-hover:scale-110 transition-transform" />
+              <Clock className="h-5 w-5 text-amber-500 group-hover:scale-110 transition-transform" />
             </div>
             <div className="space-y-1">
               <div className="text-xl font-extrabold text-white font-mono tabular-nums truncate">
@@ -398,7 +394,7 @@ export default function EdgePage() {
                 {new Date(edgeData.last_sync).toLocaleDateString()}
               </p>
             </div>
-            <div className="mt-4 pt-3 border-t border-zinc-800/80 flex justify-between text-xs text-zinc-500 font-mono">
+            <div className="mt-4 pt-3 border-t border-zinc-800 flex justify-between text-xs text-zinc-400 font-mono">
               <span className="capitalize">{edgeData.sync_status || 'Synchronized'}</span>
               <span>{isOnline ? 'Direct Cloud Link' : 'Offline Buffer'}</span>
             </div>
@@ -406,8 +402,8 @@ export default function EdgePage() {
         </div>
 
         {/* Runtime Capability Enforcement Matrix */}
-        <div className="backdrop-blur-3xl bg-zinc-950/85 border-2 border-orange-500/35 shadow-2xl transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_25px_60px_rgba(249,115,22,0.25)] rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-800/80">
+        <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md">
+          <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-800">
             <div>
               <h2 className="text-lg font-extrabold text-white tracking-tight">
                 Runtime Boundary & Capability Enforcement
@@ -416,7 +412,7 @@ export default function EdgePage() {
                 Core domain contracts enforced locally; heavy centralized tasks strictly guarded with structured 503 boundary responses
               </p>
             </div>
-            <span className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-orange-500/10 border border-orange-500/30 text-orange-400">
+            <span className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-zinc-900 border border-zinc-800 text-amber-400">
               {isOnline ? 'ALL CAPABILITIES UNLOCKED' : 'CONSTRAINED OFFLINE EXECUTION'}
             </span>
           </div>
@@ -454,7 +450,7 @@ export default function EdgePage() {
                     className={cn(
                       'px-3 py-1.5 rounded-lg text-xs font-mono border flex items-center space-x-1.5',
                       isOnline
-                        ? 'bg-zinc-900/60 border-zinc-700/60 text-zinc-300'
+                        ? 'bg-zinc-900/60 border-zinc-750 text-zinc-300'
                         : 'bg-amber-950/20 border-amber-500/40 text-amber-300'
                     )}
                   >
@@ -470,10 +466,10 @@ export default function EdgePage() {
         {/* Dual Feeds: Outbound Sync Queue & Conflict Resolution Ledger */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Outbound Sync Queue Feed */}
-          <div className="backdrop-blur-3xl bg-zinc-950/85 border-2 border-orange-500/35 shadow-2xl transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_25px_60px_rgba(249,115,22,0.25)] rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-800/80">
+          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md">
+            <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-800">
               <div className="flex items-center space-x-2">
-                <FileText className="h-4 w-4 text-orange-400" />
+                <FileText className="h-4 w-4 text-amber-500" />
                 <h3 className="font-extrabold text-white text-base tracking-tight">
                   Outbound Sync Queue
                 </h3>
@@ -492,11 +488,11 @@ export default function EdgePage() {
                 {queueEvents.slice(0, 5).map((evt) => (
                   <div
                     key={evt.id}
-                    className="p-3.5 rounded-xl border border-zinc-800/80 bg-zinc-900/40 flex items-center justify-between text-xs"
+                    className="p-3.5 rounded-xl border border-zinc-800 bg-zinc-900/40 flex items-center justify-between text-xs"
                   >
                     <div className="space-y-1">
                       <div className="flex items-center space-x-2">
-                        <span className="font-mono text-orange-400 font-semibold">{evt.entity_type}</span>
+                        <span className="font-mono text-amber-400 font-semibold">{evt.entity_type}</span>
                         <span className="text-zinc-500">#{evt.entity_id.slice(0, 8)}</span>
                       </div>
                       <p className="text-[11px] font-mono text-zinc-400">
@@ -522,10 +518,10 @@ export default function EdgePage() {
           </div>
 
           {/* Conflict Resolution Ledger Feed */}
-          <div className="backdrop-blur-3xl bg-zinc-950/85 border-2 border-orange-500/35 shadow-2xl transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.01] hover:shadow-[0_25px_60px_rgba(249,115,22,0.25)] rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-800/80">
+          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md">
+            <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-800">
               <div className="flex items-center space-x-2">
-                <AlertTriangle className="h-4 w-4 text-orange-400" />
+                <AlertTriangle className="h-4 w-4 text-amber-500" />
                 <h3 className="font-extrabold text-white text-base tracking-tight">
                   Conflict Resolution Ledger
                 </h3>
@@ -544,7 +540,7 @@ export default function EdgePage() {
                 {edgeData.conflicts.map((c) => (
                   <div
                     key={c.id}
-                    className="p-3.5 rounded-xl border border-zinc-800/80 bg-zinc-900/40 space-y-2 text-xs"
+                    className="p-3.5 rounded-xl border border-zinc-800 bg-zinc-900/40 space-y-2 text-xs"
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-zinc-300 font-bold uppercase">{c.entity_type}</span>

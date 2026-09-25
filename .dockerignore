@@ -1,0 +1,33 @@
+# Git and GitHub
+.git
+.gitignore
+.github
+
+# Environment files and credentials
+.env
+.env.*
+*.pem
+*.key
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+backend/venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Frontend artifacts (handled independently)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+
+# Local databases and runtime state
+backend/mirrorx.db
+artifacts/edge/*.db
+*.log
+scratch/

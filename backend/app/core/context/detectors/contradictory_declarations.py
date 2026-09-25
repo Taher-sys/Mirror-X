@@ -39,12 +39,14 @@ class ContradictoryDeclarationsDetector(BaseDetector):
                     # Clean port format (e.g. "8080/tcp" or "8080:8080" or 8080)
                     port_num = str(p).split("/")[0].split(":")[-1]
                     if port_num.isdigit():
-                        service_ports.setdefault(svc_key, []).append({
-                            "port": int(port_num),
-                            "source": path or n.get("name"),
-                            "node_id": n.get("id"),
-                            "type": "exposed_port",
-                        })
+                        service_ports.setdefault(svc_key, []).append(
+                            {
+                                "port": int(port_num),
+                                "source": path or n.get("name"),
+                                "node_id": n.get("id"),
+                                "type": "exposed_port",
+                            }
+                        )
 
         # Check for port conflicts within the same service across different config files
         for svc_name, port_entries in service_ports.items():

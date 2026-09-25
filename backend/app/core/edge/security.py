@@ -10,7 +10,6 @@ import json
 import os
 from typing import Any
 
-
 DEFAULT_SYNC_SECRET = os.environ.get("MIRRORX_EDGE_SYNC_SECRET", "mirrorx-edge-auth-secret-v1")
 
 

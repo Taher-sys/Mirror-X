@@ -1,7 +1,5 @@
 """Unit tests for AI Core Behavior Dataset Generator and Feature Engineering."""
 
-import pytest
-
 from app.core.ai.dataset import BEHAVIOR_LABELS, BehaviorDatasetGenerator
 from app.core.ai.features import (
     FEATURE_DEFINITIONS,

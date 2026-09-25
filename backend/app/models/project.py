@@ -39,4 +39,3 @@ class Project(BaseModel):
 
     def __repr__(self) -> str:
         return f"<Project {self.name}>"
-

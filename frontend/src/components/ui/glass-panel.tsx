@@ -16,8 +16,8 @@ interface GlassPanelProps extends React.HTMLAttributes<HTMLDivElement> {
 
 /**
  * Heavy Glassmorphism Panel
- * Surface spec: backdrop-blur-3xl bg-zinc-950/90 border-2 border-orange-500/35 shadow-[0_20px_50px_rgba(0,0,0,0.9)]
- * with inner top rim highlight: border-t-2 border-white/25
+ * Surface spec: bg-[#12151e]/90 backdrop-blur-md border border-[#232734] border-t border-zinc-700/40 rounded-lg
+ * with inner top rim highlight: border-t border-zinc-700/40
  */
 export function GlassPanel({
   children,
@@ -31,33 +31,33 @@ export function GlassPanel({
   ...props
 }: GlassPanelProps) {
   const glowMap = {
-    amber: 'before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-amber-400/60 before:to-transparent',
-    orange: 'before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-orange-500/60 before:to-transparent',
-    crimson: 'before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-rose-500/60 before:to-transparent',
+    amber: 'before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-amber-500/50',
+    orange: 'before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-amber-500/50',
+    crimson: 'before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-rose-500/50',
     none: '',
   };
 
   return (
     <div
       className={cn(
-        'relative rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 backdrop-blur-3xl',
-        'shadow-[0_20px_50px_rgba(0,0,0,0.9)] transition-all duration-300 ease-out',
-        'hover:-translate-y-2.5 hover:scale-[1.015] hover:border-orange-500/60 hover:border-t-white/40 hover:shadow-[0_20px_45px_-5px_rgba(249,115,22,0.3)]',
+        'relative rounded-lg bg-[#12151e]/92 backdrop-blur-md border border-[#232736] border-t border-t-zinc-700/50',
+        'shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] transition-all duration-250 ease-out',
+        'hover:border-[#343b52] hover:border-t-zinc-500/60 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.8)]',
         glowMap[accentGlow],
         className
       )}
       {...props}
     >
       {/* Corner micro-crosses for precision blueprint aesthetic */}
-      <div className="pointer-events-none absolute top-2 left-2 h-1.5 w-1.5 border-t border-l border-white/30" />
-      <div className="pointer-events-none absolute top-2 right-2 h-1.5 w-1.5 border-t border-r border-white/30" />
-      <div className="pointer-events-none absolute bottom-2 left-2 h-1.5 w-1.5 border-b border-l border-white/30" />
-      <div className="pointer-events-none absolute bottom-2 right-2 h-1.5 w-1.5 border-b border-r border-white/30" />
+      <div className="pointer-events-none absolute top-2 left-2 h-1.5 w-1.5 border-t border-l border-zinc-700/60" />
+      <div className="pointer-events-none absolute top-2 right-2 h-1.5 w-1.5 border-t border-r border-zinc-700/60" />
+      <div className="pointer-events-none absolute bottom-2 left-2 h-1.5 w-1.5 border-b border-l border-zinc-700/60" />
+      <div className="pointer-events-none absolute bottom-2 right-2 h-1.5 w-1.5 border-b border-r border-zinc-700/60" />
 
       {(title || action || badge) && (
         <div
           className={cn(
-            'flex items-center justify-between border-b border-white/10 px-5 py-3.5',
+            'flex items-center justify-between border-b border-zinc-800/80 px-5 py-3.5',
             headerClassName
           )}
         >

@@ -13,10 +13,11 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER:-mirrorx}", "-p${MYSQL_PASSWORD:-mirrorxpassword}"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 15s
 
   backend:
     build:
@@ -27,15 +28,21 @@ services:
     environment:
       DATABASE_URL: mysql+aiomysql://${MYSQL_USER:-mirrorx}:${MYSQL_PASSWORD:-mirrorxpassword}@mysql:3306/${MYSQL_DATABASE:-mirrorx}
       DEBUG: ${DEBUG:-false}
-      ENVIRONMENT: ${ENVIRONMENT:-development}
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      RATE_LIMIT_ENABLED: "true"
+      TELEMETRY_ENABLED: "true"
+      MCP_ENABLED: "true"
     ports:
       - "8000:8000"
     depends_on:
       mysql:
         condition: service_healthy
-    volumes:
-      - ./backend:/app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   frontend:
     build:
@@ -45,6 +52,9 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
     volumes:
       - ./frontend:/app
       - /app/node_modules

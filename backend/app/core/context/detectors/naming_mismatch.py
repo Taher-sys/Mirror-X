@@ -40,7 +40,11 @@ class NamingMismatchDetector(BaseDetector):
                 singular_m = target_table.rstrip("s")
                 potential_match = None
                 for tname in tables_by_name:
-                    if tname.rstrip("s") == singular_m or tname == f"{target_table}s" or tname.replace("_", "") == target_table.replace("_", ""):
+                    if (
+                        tname.rstrip("s") == singular_m
+                        or tname == f"{target_table}s"
+                        or tname.replace("_", "") == target_table.replace("_", "")
+                    ):
                         potential_match = tname
                         break
 
@@ -66,7 +70,9 @@ class NamingMismatchDetector(BaseDetector):
 
             # Check column vs field naming discrepancies
             if matched_table:
-                table_cols = {c.get("name", "").lower(): c for c in matched_table.get("properties", {}).get("columns", [])}
+                table_cols = {
+                    c.get("name", "").lower(): c for c in matched_table.get("properties", {}).get("columns", [])
+                }
                 model_fields = m_props.get("fields", [])
 
                 for field in model_fields:
@@ -90,9 +96,7 @@ class NamingMismatchDetector(BaseDetector):
                                     file_path=m.get("path"),
                                     expected=cand,
                                     actual="id",
-                                    related_node_ids=[
-                                        nid for nid in [m.get("id"), matched_table.get("id")] if nid
-                                    ],
+                                    related_node_ids=[nid for nid in [m.get("id"), matched_table.get("id")] if nid],
                                     metadata={"field": fname, "expected_column": cand},
                                 )
                             )
@@ -113,9 +117,7 @@ class NamingMismatchDetector(BaseDetector):
                                         file_path=m.get("path"),
                                         expected=tcol,
                                         actual=fname,
-                                        related_node_ids=[
-                                            nid for nid in [m.get("id"), matched_table.get("id")] if nid
-                                        ],
+                                        related_node_ids=[nid for nid in [m.get("id"), matched_table.get("id")] if nid],
                                     )
                                 )
 

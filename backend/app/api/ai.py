@@ -1,7 +1,7 @@
 """API routes for AI Core, Behavioral Intelligence, and Model Registry."""
 
-from typing import Any
 import uuid
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
@@ -10,20 +10,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.ai.agent_lab_evaluator import AgentLabEvaluator
 from app.core.ai.dataset import BehaviorDatasetGenerator
 from app.core.ai.experiment_tracker import ExperimentTracker
-from app.core.ai.features import BehavioralFeatureExtractor
 from app.core.ai.model_registry import ModelRegistryManager
 from app.core.database import get_db
-from app.models.ai import AIExperiment, AIModelRegistry, BehaviorDatasetRecord
+from app.models.ai import AIExperiment, BehaviorDatasetRecord
 from app.schemas.ai import (
-    AnalyzeRunResponse,
     DatasetGenerateRequest,
-    DatasetSummaryResponse,
-    ExperimentResponse,
     ExperimentRunRequest,
     ModelPromoteRequest,
-    ModelRegistryResponse,
     PredictRequest,
-    PredictResponse,
 )
 
 router = APIRouter(prefix="/ai", tags=["AI Core & Behavioral Intelligence"])
@@ -314,21 +308,28 @@ async def predict_behavior(
 
     if champion.model_type == "baseline_logistic":
         if not req.features:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Baseline model requires 'features' dict input")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Baseline model requires 'features' dict input"
+            )
         norm_x = feat_proc.transform_features(req.features)
         pred_label, confidence, probabilities = model.predict(norm_x)
     elif champion.model_type == "deep_sequence_gru":
         if not req.action_sequence:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Sequence GRU model requires 'action_sequence' list input")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Sequence GRU model requires 'action_sequence' list input",
+            )
         token_ids = feat_proc.tokenize_sequence(req.action_sequence)
         pred_label, confidence, probabilities = model.predict(token_ids)
     else:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Unsupported model type '{champion.model_type}'")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Unsupported model type '{champion.model_type}'"
+        )
 
     is_anomaly = pred_label not in ("successful",)
     uncertainty_note = None
     if confidence < 0.60:
-        uncertainty_note = f"High prediction uncertainty: model confidence is {confidence*100:.1f}%. Output must be reviewed by an engineer."
+        uncertainty_note = f"High prediction uncertainty: model confidence is {confidence * 100:.1f}%. Output must be reviewed by an engineer."
 
     return {
         "status": "success",

@@ -1,12 +1,11 @@
 """Trust Layer models: Principal, Resource, Action, Permission, Policy, and PolicyDecision."""
 
-import uuid
 from typing import Any
 
-from sqlalchemy import Boolean, ForeignKey, Integer, JSON, String, Text
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import JSON, Boolean, String, Text
+from sqlalchemy.orm import Mapped, mapped_column
 
-from app.models.base import GUID, BaseModel
+from app.models.base import BaseModel
 
 
 class Principal(BaseModel):
@@ -15,7 +14,9 @@ class Principal(BaseModel):
     __tablename__ = "principals"
 
     name: Mapped[str] = mapped_column(String(100), nullable=False, unique=True, index=True)
-    principal_type: Mapped[str] = mapped_column(String(50), nullable=False, default="agent")  # user, service_account, agent, system
+    principal_type: Mapped[str] = mapped_column(
+        String(50), nullable=False, default="agent"
+    )  # user, service_account, agent, system
     roles: Mapped[list[Any]] = mapped_column(JSON, default=list, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
@@ -54,7 +55,9 @@ class TrustAction(BaseModel):
 
     __tablename__ = "trust_actions"
 
-    name: Mapped[str] = mapped_column(String(100), nullable=False, unique=True, index=True)  # read, write, execute, delete, schema_alter, deploy
+    name: Mapped[str] = mapped_column(
+        String(100), nullable=False, unique=True, index=True
+    )  # read, write, execute, delete, schema_alter, deploy
     is_sensitive: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     requires_approval: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     description: Mapped[str] = mapped_column(Text, default="", nullable=False)
@@ -86,8 +89,12 @@ class TrustPolicy(BaseModel):
 
     name: Mapped[str] = mapped_column(String(150), nullable=False, unique=True, index=True)
     description: Mapped[str] = mapped_column(Text, nullable=False)
-    enforcement_level: Mapped[str] = mapped_column(String(50), default="strict", nullable=False)  # strict, audit, advisory
-    target_type: Mapped[str] = mapped_column(String(50), default="all", nullable=False)  # agent, principal, tool, resource
+    enforcement_level: Mapped[str] = mapped_column(
+        String(50), default="strict", nullable=False
+    )  # strict, audit, advisory
+    target_type: Mapped[str] = mapped_column(
+        String(50), default="all", nullable=False
+    )  # agent, principal, tool, resource
     rules_payload: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 

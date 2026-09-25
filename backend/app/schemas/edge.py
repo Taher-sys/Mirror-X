@@ -2,9 +2,8 @@
 
 from datetime import datetime
 from typing import Any
-import uuid
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 
 
 class EdgeStatusResponse(BaseModel):

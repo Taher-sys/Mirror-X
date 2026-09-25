@@ -1,6 +1,5 @@
 """FastAPI routes for Phase 9 Evidence Ledger."""
 
-from typing import Any
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -40,7 +39,10 @@ async def create_evidence(
 
 @router.get("", response_model=StandardResponse[list[EvidenceResponse]])
 async def list_evidence(
-    evidence_type: str | None = Query(None, description="source_file, graph_relationship, api_contract, test_execution, scenario_run, agent_execution, policy_decision, runtime_trace"),
+    evidence_type: str | None = Query(
+        None,
+        description="source_file, graph_relationship, api_contract, test_execution, scenario_run, agent_execution, policy_decision, runtime_trace",
+    ),
     search: str | None = Query(None, description="Search term in summary or source reference"),
     limit: int = Query(50, ge=1, le=200),
     db: AsyncSession = Depends(get_db),

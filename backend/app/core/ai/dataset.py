@@ -5,10 +5,10 @@ structured, labeled training examples with complete explainable provenance.
 Does NOT download or depend on external ML datasets.
 """
 
-from collections import Counter
 import random
-from typing import Any
 import uuid
+from collections import Counter
+from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,7 +17,6 @@ from sqlalchemy.orm import selectinload
 from app.models.agent import AgentRun
 from app.models.scenario import ScenarioRecord
 from app.models.trust import PolicyDecision
-
 
 BEHAVIOR_LABELS = [
     "successful",
@@ -82,11 +81,17 @@ class BehaviorDatasetGenerator:
         # 2. Check for incorrect tools
         incorrect_tools = getattr(run, "incorrect_tool_use_count", 0)
         if incorrect_tools > 0:
-            return "incorrect_tool", f"Deterministic incorrect tool usage: {incorrect_tools} invalid tool invocations recorded"
+            return (
+                "incorrect_tool",
+                f"Deterministic incorrect tool usage: {incorrect_tools} invalid tool invocations recorded",
+            )
         for step in steps:
             tool_name = getattr(step, "tool_name", None) or (step.tool_call if hasattr(step, "tool_call") else None)
             if tool_name and tool_name not in AVAILABLE_SANDBOX_TOOLS:
-                return "incorrect_tool", f"Undeclared tool invoked: '{tool_name}' not in registered sandbox tool registry"
+                return (
+                    "incorrect_tool",
+                    f"Undeclared tool invoked: '{tool_name}' not in registered sandbox tool registry",
+                )
 
         # 3. Check for abnormal cyclic sequence (e.g. A -> B -> A -> B -> A -> B)
         action_seq = [
@@ -97,14 +102,20 @@ class BehaviorDatasetGenerator:
         if len(action_seq) >= 6:
             # Check for 2-step oscillation
             if all(action_seq[i] == action_seq[i - 2] for i in range(2, len(action_seq))):
-                return "abnormal_sequence", f"Oscillating 2-step infinite loop detected: {' -> '.join(action_seq[:4])}..."
+                return (
+                    "abnormal_sequence",
+                    f"Oscillating 2-step infinite loop detected: {' -> '.join(action_seq[:4])}...",
+                )
 
         # 4. Check for unnecessary / redundant duplicate actions
         unnecessary_acts = getattr(run, "unnecessary_actions_count", 0)
         if unnecessary_acts > 0:
             return "unnecessary_action", f"Run flagged {unnecessary_acts} unnecessary or redundant actions"
         if len(action_seq) >= 3 and len(set(action_seq)) == 1 and action_seq[0] in ("read_file", "query_database"):
-            return "unnecessary_action", f"Redundant repeated idempotent reads of identical tool: {action_seq[0]} x{len(action_seq)}"
+            return (
+                "unnecessary_action",
+                f"Redundant repeated idempotent reads of identical tool: {action_seq[0]} x{len(action_seq)}",
+            )
 
         # 5. Check for runtime errors or hard failures
         if run.error_count > 0 or run.status == "failed":
@@ -119,7 +130,10 @@ class BehaviorDatasetGenerator:
         goal_lower = (run.goal or "").lower()
         if any(kw in goal_lower for kw in ("read", "view", "inspect", "list", "check")):
             if any(act in ("write_file", "run_sandbox_test") for act in action_seq):
-                return "unexpected_action", f"Unexpected state-modifying action for read-only inspection goal '{run.goal}'"
+                return (
+                    "unexpected_action",
+                    f"Unexpected state-modifying action for read-only inspection goal '{run.goal}'",
+                )
 
         # 7. Otherwise, successful execution
         return "successful", "Execution completed all steps without errors, policy violations, or anomalous loops"
@@ -144,7 +158,10 @@ class BehaviorDatasetGenerator:
         if target_label == "successful":
             scenario_class = "normal"
             seq_len = self.rng.randint(2, 5)
-            action_sequence = [self.rng.choice(["query_database", "read_file", "parse_ast", "diff_analyzer", "check_policy"]) for _ in range(seq_len)]
+            action_sequence = [
+                self.rng.choice(["query_database", "read_file", "parse_ast", "diff_analyzer", "check_policy"])
+                for _ in range(seq_len)
+            ]
             policy_decisions["ALLOW"] = len(action_sequence)
             exec_outcome = "completed"
             latency = float(self.rng.randint(80, 450))
@@ -153,7 +170,9 @@ class BehaviorDatasetGenerator:
         elif target_label == "failed":
             scenario_class = self.rng.choice(["outage", "malformed", "boundary"])
             seq_len = self.rng.randint(2, 4)
-            action_sequence = [self.rng.choice(["query_database", "http_request", "run_sandbox_test"]) for _ in range(seq_len)]
+            action_sequence = [
+                self.rng.choice(["query_database", "http_request", "run_sandbox_test"]) for _ in range(seq_len)
+            ]
             policy_decisions["ALLOW"] = len(action_sequence)
             error_count = self.rng.randint(1, 3)
             error_features["error_count"] = error_count
@@ -161,7 +180,9 @@ class BehaviorDatasetGenerator:
             error_features["error_messages"] = [f"Downstream service connection reset on step {seq_len}"]
             exec_outcome = "failed"
             latency = float(self.rng.randint(300, 1500))
-            provenance = f"Synthesized trace simulating external dependency failure and unhandled exceptions ({scenario_class})"
+            provenance = (
+                f"Synthesized trace simulating external dependency failure and unhandled exceptions ({scenario_class})"
+            )
 
         elif target_label == "policy_violation":
             scenario_class = "unauthorized"
@@ -174,7 +195,9 @@ class BehaviorDatasetGenerator:
 
         elif target_label == "incorrect_tool":
             scenario_class = "malformed"
-            invalid_tool = self.rng.choice(["undefined_executor", "eval_bash_code", "call_unregistered_rpc", "system_probe"])
+            invalid_tool = self.rng.choice(
+                ["undefined_executor", "eval_bash_code", "call_unregistered_rpc", "system_probe"]
+            )
             action_sequence = ["query_database", invalid_tool]
             policy_decisions["ALLOW"] = 1
             error_features["error_count"] = 1
@@ -204,7 +227,14 @@ class BehaviorDatasetGenerator:
 
         elif target_label == "abnormal_sequence":
             scenario_class = "adversarial"
-            action_sequence = ["query_database", "http_request", "query_database", "http_request", "query_database", "http_request"]
+            action_sequence = [
+                "query_database",
+                "http_request",
+                "query_database",
+                "http_request",
+                "query_database",
+                "http_request",
+            ]
             policy_decisions["ALLOW"] = 6
             exec_outcome = "failed"
             latency = float(self.rng.randint(400, 1200))
@@ -293,38 +323,41 @@ class BehaviorDatasetGenerator:
             latency = float(run.latency_ms or 120.0)
             avg_duration = latency / max(1, len(action_seq))
 
-            examples.append({
-                "example_id": str(run.id),
-                "source_type": "agent_run",
-                "source_reference": f"db://agent_runs/{run.id} (trace:{run.trace_id})",
-                "scenario_features": {
-                    "scenario_class": sc_class,
-                    "has_constraints": sc_class != "normal",
-                    "is_adversarial": sc_class in ("adversarial", "unauthorized"),
-                    "resource_count": len(tool_counts),
-                },
-                "agent_version": f"agent_{run.agent_id}",
-                "model_reference": "standard_execution",
-                "action_sequence": action_seq,
-                "tool_usage": tool_counts,
-                "policy_decisions": policy_summary,
-                "execution_outcome": "completed" if run.successful_completion else "failed",
-                "timing_features": {
-                    "latency_ms": latency,
-                    "avg_step_duration_ms": round(avg_duration, 2),
-                    "max_step_duration_ms": round(avg_duration * 1.5, 2),
-                },
-                "error_features": {
-                    "error_count": getattr(run, "error_count", 0),
-                    "has_error": getattr(run, "error_count", 0) > 0,
-                    "error_messages": [
-                        str(s.error) for s in run_steps
-                        if getattr(s, "error", None) or getattr(s, "status", "") == "tool_error"
-                    ],
-                },
-                "behavioral_label": label,
-                "label_provenance": provenance,
-            })
+            examples.append(
+                {
+                    "example_id": str(run.id),
+                    "source_type": "agent_run",
+                    "source_reference": f"db://agent_runs/{run.id} (trace:{run.trace_id})",
+                    "scenario_features": {
+                        "scenario_class": sc_class,
+                        "has_constraints": sc_class != "normal",
+                        "is_adversarial": sc_class in ("adversarial", "unauthorized"),
+                        "resource_count": len(tool_counts),
+                    },
+                    "agent_version": f"agent_{run.agent_id}",
+                    "model_reference": "standard_execution",
+                    "action_sequence": action_seq,
+                    "tool_usage": tool_counts,
+                    "policy_decisions": policy_summary,
+                    "execution_outcome": "completed" if run.successful_completion else "failed",
+                    "timing_features": {
+                        "latency_ms": latency,
+                        "avg_step_duration_ms": round(avg_duration, 2),
+                        "max_step_duration_ms": round(avg_duration * 1.5, 2),
+                    },
+                    "error_features": {
+                        "error_count": getattr(run, "error_count", 0),
+                        "has_error": getattr(run, "error_count", 0) > 0,
+                        "error_messages": [
+                            str(s.error)
+                            for s in run_steps
+                            if getattr(s, "error", None) or getattr(s, "status", "") == "tool_error"
+                        ],
+                    },
+                    "behavioral_label": label,
+                    "label_provenance": provenance,
+                }
+            )
 
         return examples
 

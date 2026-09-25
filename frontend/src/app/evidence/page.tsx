@@ -122,28 +122,28 @@ export default function EvidencePage() {
       <PerspectiveGrid />
 
       {/* Header */}
-      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-5">
         <div className="flex items-center gap-3.5">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border-2 border-orange-500/40 bg-orange-950/40 text-orange-400 shadow-[0_0_20px_rgba(249,115,22,0.3)]">
-            <FileCheck className="h-5 w-5 drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/80 text-amber-500">
+            <FileCheck className="h-5 w-5" />
           </div>
           <div>
             <div className="flex items-center gap-2.5">
               <h1 className="text-2xl font-bold tracking-tight text-white font-sans drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
                 Evidence Ledger
               </h1>
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2.5 py-0.5 rounded shadow-[0_0_10px_rgba(249,115,22,0.25)]">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-amber-500 bg-zinc-900/80 border border-zinc-800 px-2.5 py-0.5 rounded">
                 VERIFIABLE PROVENANCE
               </span>
             </div>
-            <p className="mt-1 font-mono text-sm font-semibold text-zinc-200">
+            <p className="mt-1 font-mono text-sm font-semibold text-zinc-300">
               Immutable cryptographic ledger anchoring reality findings to source files, graph edges, and test traces
             </p>
           </div>
         </div>
 
         {/* SHA-256 Provenance Tag */}
-        <div className="flex items-center gap-2 rounded-xl border border-orange-500/40 bg-orange-950/40 px-3 py-1.5 font-mono text-xs font-bold text-orange-400 shadow-[0_0_12px_rgba(249,115,22,0.2)]">
+        <div className="flex items-center gap-2 rounded-lg border border-amber-500/40 bg-zinc-900/80 px-3 py-1.5 font-mono text-xs font-bold text-amber-400">
           <Hash className="h-4 w-4" />
           <span>SHA-256 PROVENANCE ACTIVE</span>
         </div>
@@ -162,7 +162,7 @@ export default function EvidencePage() {
           label="Source Anchors"
           value={evidenceList.filter((e) => e.evidence_type === 'source_file').length}
           subvalue="code & AST traces"
-          accent="orange"
+          accent="amber"
           icon={Code2}
         />
         <StatTile
@@ -195,16 +195,16 @@ export default function EvidencePage() {
               <button
                 key={type}
                 onClick={() => setSelectedType(type)}
-                className={`whitespace-nowrap px-3.5 py-1.5 rounded-xl border font-mono text-xs font-bold transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2 backdrop-blur-2xl ${
+                className={`whitespace-nowrap px-3.5 py-1.5 rounded-lg border font-mono text-xs font-bold transition-all duration-200 flex items-center gap-2 ${
                   active
-                    ? 'border-2 border-orange-500/60 bg-orange-950/60 text-white shadow-[0_0_15px_rgba(249,115,22,0.3)]'
-                    : 'border border-white/10 bg-zinc-900/50 text-zinc-300 hover:border-orange-500/30 hover:text-white'
+                    ? 'border-amber-500 bg-zinc-800/90 text-white'
+                    : 'border border-[#232736] bg-zinc-900/60 text-zinc-400 hover:border-zinc-700 hover:text-white'
                 }`}
               >
                 <span>{type.replace(/_/g, ' ').toUpperCase()}</span>
                 <span
                   className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
-                    active ? 'bg-orange-500/30 text-orange-300' : 'bg-black/60 text-zinc-300'
+                    active ? 'bg-amber-500/20 text-amber-300' : 'bg-black/60 text-zinc-400'
                   }`}
                 >
                   {count}
@@ -216,31 +216,31 @@ export default function EvidencePage() {
 
         {/* Search Bar */}
         <div className="relative w-full sm:w-80">
-          <Search className="absolute left-3.5 top-2.5 h-3.5 w-3.5 text-orange-400" />
+          <Search className="absolute left-3.5 top-2.5 h-3.5 w-3.5 text-zinc-400" />
           <input
             type="text"
             placeholder="Search by source reference or hash..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-xl border-2 border-orange-500/30 bg-zinc-950/80 pl-9 pr-3.5 py-2 font-mono text-xs font-bold text-white placeholder-zinc-500 focus:border-orange-500/60 focus:outline-none backdrop-blur-2xl shadow-sm"
+            className="w-full rounded-lg border border-[#232736] bg-zinc-900/80 pl-9 pr-3.5 py-2 font-mono text-xs font-bold text-white placeholder-zinc-500 focus:border-zinc-600 focus:outline-none shadow-sm"
           />
         </div>
       </div>
 
       {/* Main Ledger Table */}
       <GlassPanel className="relative z-10 p-5 space-y-4">
-        <div className="flex items-center justify-between border-b border-white/10 pb-3">
-          <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-orange-400">
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-amber-500">
             <Layers className="h-4 w-4" />
             <span>Immutable Provenance Ledger ({filteredEvidence.length})</span>
           </div>
-          <span className="font-mono text-xs font-bold text-zinc-300">
+          <span className="font-mono text-xs font-bold text-zinc-400">
             Tamper-Evident SHA-256 Digest
           </span>
         </div>
 
         {loading ? (
-          <div className="py-20 text-center font-mono text-sm font-semibold text-zinc-300 animate-pulse">
+          <div className="py-20 text-center font-mono text-sm font-semibold text-zinc-400 animate-pulse">
             Verifying cryptographic signatures in evidence ledger...
           </div>
         ) : filteredEvidence.length === 0 ? (
@@ -253,23 +253,23 @@ export default function EvidencePage() {
               <div
                 key={evi.id}
                 onClick={() => handleInspect(evi.id)}
-                className="cursor-pointer rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 p-4 backdrop-blur-3xl transition-all duration-300 ease-out hover:scale-[1.005] hover:border-orange-500/60 hover:shadow-[0_20px_50px_rgba(0,0,0,0.95)] shadow-[0_16px_40px_rgba(0,0,0,0.85)]"
+                className="cursor-pointer rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-200 hover:border-[#343b52]"
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-2.5 flex-wrap">
-                      <span className="font-mono text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-orange-950/60 text-orange-400 border-orange-500/40">
+                      <span className="font-mono text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-zinc-900 text-amber-400 border-zinc-800">
                         {evi.evidence_type}
                       </span>
                       <span className="font-mono text-xs font-bold text-white">
                         {evi.source_reference}
                       </span>
-                      <span className="font-mono text-xs font-bold text-orange-400">
+                      <span className="font-mono text-xs font-bold text-amber-400">
                         HASH: {evi.hash_signature.slice(0, 16)}...
                       </span>
                     </div>
 
-                    <p className="text-sm font-medium text-zinc-200 font-sans">
+                    <p className="text-sm font-medium text-zinc-300 font-sans">
                       {evi.summary}
                     </p>
                   </div>
@@ -280,7 +280,7 @@ export default function EvidencePage() {
                         e.stopPropagation();
                         handleInspect(evi.id);
                       }}
-                      className="px-3 py-1.5 rounded-xl border border-orange-500/40 bg-zinc-900/60 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 hover:text-white hover:border-orange-400 transition-all"
+                      className="px-3 py-1.5 rounded-lg border border-[#232736] bg-zinc-900/80 font-mono text-xs font-bold uppercase tracking-wider text-amber-400 hover:text-white hover:bg-zinc-800 transition-all"
                     >
                       Inspect Artifact
                     </button>
@@ -295,10 +295,10 @@ export default function EvidencePage() {
       {/* Detail Modal */}
       {selectedEvidenceId && selectedEvidenceDetail && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in">
-          <div className="w-full max-w-2xl rounded-3xl border-2 border-orange-500/40 border-t-2 border-white/25 bg-zinc-950/95 p-6 shadow-[0_24px_64px_rgba(0,0,0,0.95)] backdrop-blur-3xl space-y-5">
-            <div className="flex items-start justify-between border-b border-white/10 pb-4">
+          <div className="w-full max-w-2xl rounded-2xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/96 p-6 shadow-[0_24px_64px_rgba(0,0,0,0.95)] backdrop-blur-3xl space-y-5">
+            <div className="flex items-start justify-between border-b border-zinc-800 pb-4">
               <div className="space-y-1">
-                <span className="font-mono text-xs uppercase font-bold text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2 py-0.5 rounded">
+                <span className="font-mono text-xs uppercase font-bold text-amber-400 bg-zinc-900 border border-zinc-800 px-2 py-0.5 rounded">
                   {selectedEvidenceDetail.evidence_type}
                 </span>
                 <h3 className="text-base font-bold text-white font-mono">
@@ -307,17 +307,17 @@ export default function EvidencePage() {
               </div>
               <button
                 onClick={() => setSelectedEvidenceId(null)}
-                className="p-1.5 rounded-xl border border-white/10 text-zinc-400 hover:text-white hover:border-orange-500/40"
+                className="p-1.5 rounded-lg border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800"
               >
                 <XCircle className="h-5 w-5" />
               </button>
             </div>
 
             <div>
-              <h4 className="font-mono text-xs uppercase font-bold text-orange-400 mb-1">
+              <h4 className="font-mono text-xs uppercase font-bold text-amber-500 mb-1">
                 Evidence Summary
               </h4>
-              <p className="text-sm font-medium text-zinc-200 font-sans leading-relaxed bg-zinc-900/60 border border-white/10 p-3.5 rounded-xl">
+              <p className="text-sm font-medium text-zinc-300 font-sans leading-relaxed bg-zinc-900/60 border border-zinc-800 p-3.5 rounded-xl">
                 {selectedEvidenceDetail.summary}
               </p>
             </div>
@@ -325,28 +325,28 @@ export default function EvidencePage() {
             {/* Cryptographic SHA-256 Hash Signature */}
             <div>
               <div className="flex items-center justify-between mb-1">
-                <span className="font-mono text-xs uppercase font-bold text-orange-400">
+                <span className="font-mono text-xs uppercase font-bold text-amber-500">
                   Cryptographic Provenance Hash (SHA-256)
                 </span>
                 <button
                   onClick={() => handleCopyHash(selectedEvidenceDetail.hash_signature)}
-                  className="flex items-center gap-1 font-mono text-[11px] font-bold text-orange-400 hover:text-white"
+                  className="flex items-center gap-1 font-mono text-[11px] font-bold text-amber-400 hover:text-white"
                 >
                   {copiedHash ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
                   <span>{copiedHash ? 'Copied' : 'Copy'}</span>
                 </button>
               </div>
-              <div className="font-mono text-xs text-orange-400 bg-black/80 border border-orange-500/30 p-2.5 rounded-xl break-all">
+              <div className="font-mono text-xs text-amber-400 bg-black/80 border border-[#232736] p-2.5 rounded-xl break-all">
                 {selectedEvidenceDetail.hash_signature}
               </div>
             </div>
 
             {/* Raw Payload Artifact */}
             <div>
-              <h4 className="font-mono text-xs uppercase font-bold text-orange-400 mb-1">
+              <h4 className="font-mono text-xs uppercase font-bold text-amber-500 mb-1">
                 Verifiable Raw Payload Artifact
               </h4>
-              <pre className="font-mono text-xs text-orange-200 bg-black/90 border border-orange-500/30 p-3.5 rounded-xl overflow-x-auto max-h-60">
+              <pre className="font-mono text-xs text-zinc-300 bg-black/90 border border-[#232736] p-3.5 rounded-xl overflow-x-auto max-h-60">
                 <code>{JSON.stringify(selectedEvidenceDetail.raw_payload, null, 2)}</code>
               </pre>
             </div>

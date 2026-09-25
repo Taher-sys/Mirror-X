@@ -46,3 +46,4 @@ mysql_data/
 *.db
 *.sqlite
 *.sqlite3
+*.log

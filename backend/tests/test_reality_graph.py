@@ -221,9 +221,7 @@ def test_individual_parsers():
 
 
 @pytest.mark.asyncio
-async def test_graph_api_endpoints_and_ingestion_pipeline(
-    client: AsyncClient, test_session: AsyncSession
-):
+async def test_graph_api_endpoints_and_ingestion_pipeline(client: AsyncClient, test_session: AsyncSession):
     """Test full repository ingestion API, graph retrieval, node details, and statistics."""
     # Setup test org and repo
     org = Organization(name="Test Org")

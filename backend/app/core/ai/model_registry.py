@@ -5,9 +5,9 @@ and loads serialized model artifacts for production inference.
 """
 
 import json
+import uuid
 from pathlib import Path
 from typing import Any
-import uuid
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession

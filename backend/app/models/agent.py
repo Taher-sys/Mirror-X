@@ -3,7 +3,7 @@
 import uuid
 from typing import Any
 
-from sqlalchemy import Boolean, Float, ForeignKey, Integer, JSON, String, Text
+from sqlalchemy import JSON, Boolean, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import GUID, BaseModel
@@ -61,7 +61,9 @@ class AgentRun(BaseModel):
     trace_id: Mapped[str] = mapped_column(String(100), nullable=False, unique=True, index=True)
 
     plan: Mapped[list[Any]] = mapped_column(JSON, default=list, nullable=False)
-    status: Mapped[str] = mapped_column(String(50), default="running", nullable=False)  # completed, failed, policy_blocked, aborted
+    status: Mapped[str] = mapped_column(
+        String(50), default="running", nullable=False
+    )  # completed, failed, policy_blocked, aborted
     result: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
     errors: Mapped[list[Any]] = mapped_column(JSON, default=list, nullable=False)
     timings: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict, nullable=False)
@@ -106,7 +108,9 @@ class AgentStep(BaseModel):
     tool_output: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
     policy_check: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict, nullable=False)
     duration_ms: Mapped[float] = mapped_column(Float, default=0.0, nullable=False)
-    status: Mapped[str] = mapped_column(String(50), default="success", nullable=False)  # success, tool_error, policy_denied, unnecessary
+    status: Mapped[str] = mapped_column(
+        String(50), default="success", nullable=False
+    )  # success, tool_error, policy_denied, unnecessary
     error: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     run: Mapped["AgentRun"] = relationship("AgentRun", back_populates="steps")

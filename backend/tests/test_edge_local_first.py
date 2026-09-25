@@ -1,16 +1,14 @@
 """Integration tests for MIRROR-X Phase 11: Edge and Local-First Runtime."""
 
-from collections.abc import AsyncGenerator
 import uuid
+from collections.abc import AsyncGenerator
+
 import pytest
 from httpx import ASGITransport, AsyncClient
-from sqlalchemy import select
 
 from app.core.database import close_db, init_db
 from app.core.edge.database import get_edge_db_manager
-from app.core.edge.models import EdgeConflict, EdgeEvidenceRecord, EdgeSyncEvent
 from app.main import app
-from app.models.evidence import EvidenceRecord
 
 
 @pytest.fixture
@@ -184,6 +182,7 @@ async def test_conflict_detection_and_explicit_resolution(test_client: AsyncClie
     # 2. Edge enqueues a conflicting version with different gateway IP
     edge_mgr = get_edge_db_manager()
     from app.core.edge.sync import EdgeSyncProtocol
+
     protocol = EdgeSyncProtocol()
 
     async with edge_mgr.session() as edge_s:

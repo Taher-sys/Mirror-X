@@ -115,28 +115,28 @@ export default function PoliciesPage() {
       <PerspectiveGrid />
 
       {/* Header */}
-      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-5">
         <div className="flex items-center gap-3.5">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border-2 border-orange-500/40 bg-orange-950/40 text-orange-400 shadow-[0_0_20px_rgba(249,115,22,0.3)]">
-            <Shield className="h-5 w-5 drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/80 text-amber-500">
+            <Shield className="h-5 w-5" />
           </div>
           <div>
             <div className="flex items-center gap-2.5">
               <h1 className="text-2xl font-bold tracking-tight text-white font-sans drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
                 Trust Layer: Policy &amp; Permissions
               </h1>
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2.5 py-0.5 rounded shadow-[0_0_10px_rgba(249,115,22,0.25)]">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-amber-500 bg-zinc-900/80 border border-zinc-800 px-2.5 py-0.5 rounded">
                 SANDBOX GOVERNANCE GATE
               </span>
             </div>
-            <p className="mt-1 font-mono text-sm font-semibold text-zinc-200">
+            <p className="mt-1 font-mono text-sm font-semibold text-zinc-300">
               Strict policy enforcement, human-in-the-loop review requirements, and sandbox isolation
             </p>
           </div>
         </div>
 
         {/* Security Isolation Indicator */}
-        <div className="flex items-center gap-2 rounded-xl border border-orange-500/40 bg-orange-950/40 px-3 py-1.5 font-mono text-xs font-bold text-orange-400 shadow-[0_0_12px_rgba(249,115,22,0.2)]">
+        <div className="flex items-center gap-2 rounded-lg border border-amber-500/40 bg-zinc-900/80 px-3 py-1.5 font-mono text-xs font-bold text-amber-400">
           <Lock className="h-4 w-4" />
           <span>PRODUCTION ACTIONS PROHIBITED</span>
         </div>
@@ -162,7 +162,7 @@ export default function PoliciesPage() {
           label="Review Required"
           value={reviewRequiredCount}
           subvalue="sensitive / destructive gates"
-          accent="orange"
+          accent="amber"
           icon={AlertTriangle}
         />
         <StatTile
@@ -176,25 +176,25 @@ export default function PoliciesPage() {
 
       {/* Policy Simulator Interactive Card */}
       <GlassPanel className="relative z-10 p-5 space-y-4">
-        <div className="flex items-center justify-between border-b border-white/10 pb-3">
-          <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-orange-400">
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-amber-500">
             <Play className="h-4 w-4" />
             <span>Interactive Policy Decision Simulator</span>
           </div>
-          <span className="font-mono text-xs font-bold text-zinc-300">
+          <span className="font-mono text-xs font-bold text-zinc-400">
             100% Mock / Sandbox Isolation
           </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-3.5 items-end">
           <div>
-            <label className="block font-mono text-xs uppercase font-bold text-zinc-300 mb-1">
+            <label className="block font-mono text-xs uppercase font-bold text-zinc-400 mb-1">
               Principal Identity
             </label>
             <select
               value={principal}
               onChange={(e) => setPrincipal(e.target.value)}
-              className="w-full rounded-xl border-2 border-orange-500/30 bg-zinc-950/90 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-orange-500/60 focus:outline-none"
+              className="w-full rounded-lg border border-[#232736] bg-zinc-900/80 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-zinc-600 focus:outline-none"
             >
               <option value="autonomous_agent">autonomous_agent (AI)</option>
               <option value="developer">developer (Human)</option>
@@ -203,13 +203,13 @@ export default function PoliciesPage() {
           </div>
 
           <div>
-            <label className="block font-mono text-xs uppercase font-bold text-zinc-300 mb-1">
+            <label className="block font-mono text-xs uppercase font-bold text-zinc-400 mb-1">
               Target Resource
             </label>
             <select
               value={resource}
               onChange={(e) => setResource(e.target.value)}
-              className="w-full rounded-xl border-2 border-orange-500/30 bg-zinc-950/90 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-orange-500/60 focus:outline-none"
+              className="w-full rounded-lg border border-[#232736] bg-zinc-900/80 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-zinc-600 focus:outline-none"
             >
               {resources.map((r) => (
                 <option key={r.name} value={r.name}>
@@ -220,13 +220,13 @@ export default function PoliciesPage() {
           </div>
 
           <div>
-            <label className="block font-mono text-xs uppercase font-bold text-zinc-300 mb-1">
+            <label className="block font-mono text-xs uppercase font-bold text-zinc-400 mb-1">
               Action Name
             </label>
             <select
               value={action}
               onChange={(e) => setAction(e.target.value)}
-              className="w-full rounded-xl border-2 border-orange-500/30 bg-zinc-950/90 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-orange-500/60 focus:outline-none"
+              className="w-full rounded-lg border border-[#232736] bg-zinc-900/80 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-zinc-600 focus:outline-none"
             >
               <option value="read">read (Safe inspection)</option>
               <option value="write">write (Sandbox mutation)</option>
@@ -239,10 +239,10 @@ export default function PoliciesPage() {
           <button
             onClick={handleSimulate}
             disabled={simulating}
-            className="w-full inline-flex items-center justify-center gap-2 rounded-xl border-2 border-orange-500/50 bg-gradient-to-r from-orange-950/70 via-zinc-900/90 to-orange-950/70 px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] hover:border-orange-400 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] shadow-lg disabled:opacity-50"
+            className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-amber-500 hover:bg-amber-600 px-4 py-2 font-mono text-xs font-extrabold uppercase tracking-wider text-black transition-all shadow-md active:scale-95 disabled:opacity-50"
           >
             {simulating ? (
-              <RotateCcw className="h-4 w-4 animate-spin text-orange-400" />
+              <RotateCcw className="h-4 w-4 animate-spin text-black" />
             ) : (
               <Play className="h-4 w-4 fill-current" />
             )}
@@ -251,30 +251,30 @@ export default function PoliciesPage() {
         </div>
 
         {simResult && (
-          <div className="mt-3 rounded-2xl border-2 border-orange-500/40 border-t-2 border-white/25 bg-zinc-950/90 p-4 space-y-2 backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)]">
+          <div className="mt-3 rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-4 space-y-2 backdrop-blur-md shadow-[0_8px_32px_0_rgba(0,0,0,0.6)]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold text-zinc-300">Decision:</span>
+                <span className="font-mono text-xs font-bold text-zinc-400">Decision:</span>
                 <span
                   className={`font-mono text-xs font-bold uppercase px-2.5 py-0.5 rounded-lg border ${
                     simResult.result === 'ALLOW'
                       ? 'bg-emerald-950/60 text-emerald-400 border-emerald-500/40'
                       : simResult.result === 'DENY'
                       ? 'bg-rose-950/60 text-rose-400 border-rose-500/40'
-                      : 'bg-orange-950/60 text-orange-400 border-orange-500/40'
+                      : 'bg-amber-950/60 text-amber-400 border-amber-500/40'
                   }`}
                 >
                   {simResult.result}
                 </span>
               </div>
               {simResult.evidence && (
-                <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-orange-400">
+                <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-amber-400">
                   <FileCheck className="h-4 w-4" />
                   <span>Evidence Created ({String(simResult.evidence.hash_signature).slice(0, 10)}...)</span>
                 </div>
               )}
             </div>
-            <p className="text-sm font-medium text-zinc-200 font-sans">
+            <p className="text-sm font-medium text-zinc-300 font-sans">
               {simResult.reason}
             </p>
           </div>
@@ -286,27 +286,27 @@ export default function PoliciesPage() {
         {/* Left Column: Governance Policies & Permissions */}
         <div className="lg:col-span-6 space-y-4">
           <GlassPanel className="p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-orange-400">
+            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+              <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-amber-500">
                 <ShieldAlert className="h-4 w-4" />
                 <span>Governance Policies ({policies.length})</span>
               </div>
-              <span className="font-mono text-xs font-bold text-orange-400">MANDATORY ENFORCEMENT</span>
+              <span className="font-mono text-xs font-bold text-amber-500">MANDATORY ENFORCEMENT</span>
             </div>
 
             <div className="space-y-2.5">
               {policies.map((p, idx) => (
                 <div
                   key={idx}
-                  className="rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 p-4 space-y-1.5 backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)]"
+                  className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-4 space-y-1.5 backdrop-blur-md shadow-[0_8px_32px_0_rgba(0,0,0,0.6)]"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-sm font-bold text-white">{p.name}</span>
-                    <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2 py-0.5 rounded">
+                    <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-zinc-900 border border-zinc-800 px-2 py-0.5 rounded">
                       {p.enforcement_level}
                     </span>
                   </div>
-                  <p className="text-xs font-medium text-zinc-200 font-sans">
+                  <p className="text-xs font-medium text-zinc-300 font-sans">
                     {p.description}
                   </p>
                 </div>
@@ -316,8 +316,8 @@ export default function PoliciesPage() {
 
           {/* Permissions Matrix */}
           <GlassPanel className="p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-orange-400">
+            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+              <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-amber-500">
                 <Layers className="h-4 w-4" />
                 <span>Agent Permissions &amp; Resource Bindings</span>
               </div>
@@ -327,12 +327,12 @@ export default function PoliciesPage() {
               {permissions.map((perm, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-zinc-900/40 font-mono text-xs"
+                  className="flex items-center justify-between p-3 rounded-xl border border-[#232736] bg-zinc-900/40 font-mono text-xs"
                 >
                   <div className="space-y-0.5">
                     <div className="text-white font-bold">{perm.name}</div>
                     <div className="text-zinc-400">
-                      Role: <strong className="text-orange-400">{perm.principal_role}</strong> → Action: <strong className="text-white">{perm.action_name}</strong> on <strong className="text-orange-400">{perm.resource_type}</strong>
+                      Role: <strong className="text-amber-400">{perm.principal_role}</strong> → Action: <strong className="text-white">{perm.action_name}</strong> on <strong className="text-amber-400">{perm.resource_type}</strong>
                     </div>
                   </div>
                   <span className={`font-bold px-2 py-0.5 rounded border ${perm.effect === 'ALLOW' ? 'text-emerald-400 border-emerald-500/30 bg-emerald-950/40' : 'text-rose-400 border-rose-500/30 bg-rose-950/40'}`}>
@@ -347,12 +347,12 @@ export default function PoliciesPage() {
         {/* Right Column: Policy Decision Audit Trail */}
         <div className="lg:col-span-6 space-y-4">
           <GlassPanel className="p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-orange-400">
+            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+              <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-amber-500">
                 <FileCheck className="h-4 w-4" />
                 <span>Policy Decision Audit Trail ({decisions.length})</span>
               </div>
-              <span className="font-mono text-xs font-bold text-zinc-300">Live Provenance Log</span>
+              <span className="font-mono text-xs font-bold text-zinc-400">Live Provenance Log</span>
             </div>
 
             {decisions.length === 0 ? (
@@ -368,7 +368,7 @@ export default function PoliciesPage() {
                   return (
                     <div
                       key={dec.id}
-                      className="rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 p-4 space-y-2 backdrop-blur-3xl shadow-[0_12px_32px_rgba(0,0,0,0.8)]"
+                      className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-4 space-y-2 backdrop-blur-md shadow-[0_8px_32px_0_rgba(0,0,0,0.6)]"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -378,7 +378,7 @@ export default function PoliciesPage() {
                                 ? 'bg-emerald-950/60 text-emerald-400 border-emerald-500/40'
                                 : dec.result === 'DENY'
                                 ? 'bg-rose-950/60 text-rose-400 border-rose-500/40'
-                                : 'bg-orange-950/60 text-orange-400 border-orange-500/40'
+                                : 'bg-amber-950/60 text-amber-400 border-amber-500/40'
                             }`}
                           >
                             {dec.result}
@@ -389,17 +389,17 @@ export default function PoliciesPage() {
                         </div>
 
                         {dec.evidence_id && (
-                          <span className="font-mono text-[10px] font-bold text-orange-400 flex items-center gap-1">
+                          <span className="font-mono text-[10px] font-bold text-amber-400 flex items-center gap-1">
                             <FileCheck className="h-3 w-3" /> EVI RECORD
                           </span>
                         )}
                       </div>
 
-                      <p className="text-xs font-medium text-zinc-200 font-sans">
+                      <p className="text-xs font-medium text-zinc-300 font-sans">
                         {dec.reason}
                       </p>
 
-                      <div className="flex items-center justify-between font-mono text-[11px] text-zinc-300 pt-1 border-t border-white/5">
+                      <div className="flex items-center justify-between font-mono text-[11px] text-zinc-400 pt-1 border-t border-zinc-800">
                         <span>Principal: <strong className="text-white font-bold">{dec.principal_name}</strong></span>
 
                         {isReviewRequired && (
@@ -411,7 +411,7 @@ export default function PoliciesPage() {
                             ) : (
                               <button
                                 onClick={() => handleReview(dec.id, 'approved')}
-                                className="px-3 py-1 rounded-xl border border-orange-500/50 bg-orange-950/60 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 hover:bg-orange-900/60 transition-all shadow-[0_0_12px_rgba(249,115,22,0.25)]"
+                                className="px-3 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 font-mono text-xs font-extrabold uppercase tracking-wider text-black transition-all shadow-sm active:scale-95"
                               >
                                 Sign Off (Approve)
                               </button>

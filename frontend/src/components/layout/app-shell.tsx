@@ -26,11 +26,11 @@ export function AppShell({ children }: AppShellProps) {
   }, []);
 
   return (
-    <div className="flex h-screen bg-[#14151a] text-white overflow-hidden">
+    <div className="flex h-screen text-white overflow-hidden bg-transparent">
       <Sidebar />
       <div className="flex flex-1 flex-col overflow-hidden">
         <TopBar onOpenCommandPalette={() => setCommandPaletteOpen(true)} />
-        <main className="flex-1 overflow-auto canvas-textured p-3 sm:p-4 relative">
+        <main className="flex-1 overflow-auto p-3 sm:p-4 relative bg-transparent">
           {children}
         </main>
       </div>

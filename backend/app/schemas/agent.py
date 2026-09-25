@@ -1,8 +1,8 @@
 """Pydantic schemas for Agent Behavior Lab."""
 
+import uuid
 from datetime import datetime
 from typing import Any
-import uuid
 
 from pydantic import BaseModel, ConfigDict, Field
 

@@ -1,9 +1,8 @@
 """Parser for pyproject.toml files."""
 
+import tomllib
 from pathlib import Path
 from typing import Any
-
-import tomllib
 
 from app.core.ingestion.types import IngestionResult, ParsedEdge, ParsedNode
 
@@ -18,17 +17,11 @@ def parse_pyproject_toml(content: str, file_path: str = "pyproject.toml") -> Ing
         result.warnings.append(f"Failed to parse {file_path}: {e}")
         return result
 
-
     # Check project table or tool.poetry
     project_data = data.get("project", {})
     poetry_data = data.get("tool", {}).get("poetry", {})
 
-    name = (
-        project_data.get("name")
-        or poetry_data.get("name")
-        or Path(file_path).parent.name
-        or "python-service"
-    )
+    name = project_data.get("name") or poetry_data.get("name") or Path(file_path).parent.name or "python-service"
     version = project_data.get("version") or poetry_data.get("version", "0.1.0")
 
     service_node = ParsedNode(

@@ -26,18 +26,18 @@ export function SystemSummaryPanel({ summary, status }: SystemSummaryPanelProps)
   return (
     <div className="space-y-4">
       {/* Top Telemetry Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/30 bg-zinc-950/90 p-4.5 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl bg-[#12151e]/92 backdrop-blur-md border border-[#232736] border-t border-t-zinc-700/50 p-4 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)]">
         <div className="flex items-center gap-3.5">
           <div className="relative flex h-3 w-3 items-center justify-center">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-orange-400 shadow-[0_0_8px_#EA580C]" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
           </div>
           <div>
             <h2 className="font-mono text-sm font-bold uppercase tracking-wider text-white">
               System Control Telemetry
             </h2>
-            <p className="font-mono text-xs font-bold text-zinc-200">
-              Live daemon link • Version <span className="font-bold text-orange-400">{status?.api_version || '0.1.0'}</span> • Dialect [<span className="font-bold text-orange-400">{dbDialect}</span>]
+            <p className="font-mono text-xs font-bold text-zinc-400">
+              Live daemon link • Version <span className="font-bold text-white">{status?.api_version || '0.1.0'}</span> • Dialect [<span className="font-bold text-amber-400">{dbDialect}</span>]
             </p>
           </div>
         </div>
@@ -67,7 +67,7 @@ export function SystemSummaryPanel({ summary, status }: SystemSummaryPanelProps)
               : '0 registered'
           }
           icon={Cpu}
-          accent={svcCount > 0 ? 'orange' : 'none'}
+          accent={svcCount > 0 ? 'amber' : 'none'}
         />
 
         <StatTile
@@ -87,7 +87,7 @@ export function SystemSummaryPanel({ summary, status }: SystemSummaryPanelProps)
           value={dbLatency}
           subvalue={status?.database_connected ? 'Connected (online)' : 'Disconnected'}
           icon={Database}
-          accent={status?.database_connected ? 'orange' : 'crimson'}
+          accent={status?.database_connected ? 'amber' : 'crimson'}
         />
       </div>
     </div>

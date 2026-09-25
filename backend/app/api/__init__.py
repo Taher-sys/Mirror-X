@@ -12,6 +12,7 @@ from app.api.evidence import router as evidence_router
 from app.api.findings import router as findings_router
 from app.api.graph import router as graph_router
 from app.api.health import router as health_router
+from app.api.mcp import router as mcp_router
 from app.api.releases import router as releases_router
 from app.api.repositories import router as repositories_router
 from app.api.scenarios import router as scenarios_router
@@ -37,5 +38,6 @@ api_router.include_router(evidence_router)
 api_router.include_router(releases_router)
 api_router.include_router(ai_router)
 api_router.include_router(edge_router)
+api_router.include_router(mcp_router)
 
 __all__ = ["api_router"]

@@ -1,0 +1,77 @@
+name: Production Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version_tag:
+        description: 'Version tag to release (e.g. v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  verify:
+    name: Verify Release Candidate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run Test Suite
+        env:
+          ENVIRONMENT: development
+          RATE_LIMIT_ENABLED: "false"
+        run: pytest -v
+
+  build-release:
+    name: Build & Package Release Artifacts
+    needs: [verify]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract Tag Name
+        id: meta
+        run: |
+          TAG="${{ github.ref_name }}"
+          if [[ -z "$TAG" || "$TAG" == "main" ]]; then
+            TAG="${{ github.event.inputs.version_tag }}"
+          fi
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Build and Package Backend Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: false
+          tags: |
+            mirrorx-backend:latest
+            mirrorx-backend:${{ steps.meta.outputs.tag }}
+
+      - name: Generate Cryptographic SHA-256 Checksums
+        run: |
+          mkdir -p release-dist
+          sha256sum backend/Dockerfile > release-dist/Dockerfile.sha256
+          sha256sum docker-compose.yml > release-dist/docker-compose.yml.sha256
+          echo "${{ steps.meta.outputs.tag }}" > release-dist/RELEASE_VERSION
+          cat release-dist/*.sha256
+
+      - name: Upload Release Checksums Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-checksums-${{ steps.meta.outputs.tag }}
+          path: release-dist/

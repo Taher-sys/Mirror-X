@@ -9,6 +9,7 @@ Strictly enforces:
 import uuid
 from typing import Any
 
+from app.core.observability import get_tracer
 from app.models.evidence import EvidenceRecord
 
 DEFAULT_TRUST_POLICIES = [
@@ -74,7 +75,40 @@ class TrustLayerEngine:
         context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Evaluate access request and return ALLOW, DENY, or HUMAN_REVIEW_REQUIRED with evidence."""
-        ctx = context or {}
+        tracer = get_tracer()
+        with tracer.start_span(
+            "trust.evaluate_policy",
+            {
+                "principal": principal_name,
+                "resource": resource_name,
+                "action": action_name,
+                "is_sandbox": is_sandbox,
+            },
+        ) as span:
+            result = self._evaluate_internal(
+                principal_name=principal_name,
+                resource_name=resource_name,
+                action_name=action_name,
+                agent_name=agent_name,
+                tool_name=tool_name,
+                resource_classification=resource_classification,
+                is_sandbox=is_sandbox,
+                context=context,
+            )
+            span.set_attribute("decision", result.get("result", "UNKNOWN"))
+            return result
+
+    def _evaluate_internal(
+        self,
+        principal_name: str,
+        resource_name: str,
+        action_name: str,
+        agent_name: str | None = None,
+        tool_name: str | None = None,
+        resource_classification: str = "internal",
+        is_sandbox: bool = True,
+        context: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
         matched_policies: list[str] = []
 
         # MANDATE 1: Real production actions are strictly prohibited.
@@ -125,7 +159,9 @@ class TrustLayerEngine:
         # MANDATE 3: Restricted data classification
         if resource_classification.lower() in ["restricted", "confidential"]:
             matched_policies.append("Restricted Data Classification Shield")
-            reason = f"HUMAN_REVIEW_REQUIRED: Resource '{resource_name}' holds '{resource_classification}' classification."
+            reason = (
+                f"HUMAN_REVIEW_REQUIRED: Resource '{resource_name}' holds '{resource_classification}' classification."
+            )
             evidence = self._create_evidence_payload(
                 decision="HUMAN_REVIEW_REQUIRED",
                 reason=reason,
@@ -147,7 +183,9 @@ class TrustLayerEngine:
         # Standard sandbox action allowed
         matched_policies.append("Strict Sandbox Isolation Policy")
         matched_policies.append("Autonomous Agent Write Boundary")
-        reason = f"ALLOWED: Operation '{action_name}' on sandbox resource '{resource_name}' conforms to active policies."
+        reason = (
+            f"ALLOWED: Operation '{action_name}' on sandbox resource '{resource_name}' conforms to active policies."
+        )
 
         # Read actions do not necessarily need high-priority evidence, but we still generate provenance tracking
         return {

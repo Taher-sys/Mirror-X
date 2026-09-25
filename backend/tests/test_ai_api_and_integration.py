@@ -1,12 +1,12 @@
 """Integration tests for AI Core FastAPI endpoints and Agent Behavior Lab integration."""
 
 from collections.abc import AsyncGenerator
+
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from app.core.database import Base, close_db, engine, get_db, init_db
+from app.core.database import close_db, init_db
 from app.main import app
-from app.models.agent import Agent, AgentRun, AgentStep
 
 
 @pytest.fixture
@@ -98,7 +98,7 @@ async def test_experiments_run_baseline_and_sequence(test_client: AsyncClient) -
     resp2 = await test_client.post("/api/v1/ai/experiments/run", json=gru_payload)
     assert resp2.status_code == 201
     exp2_data = resp2.json()["data"]
-    exp2_id = exp2_data["id"]
+    assert exp2_data["id"] is not None
     assert exp2_data["model_type"] == "deep_sequence_gru"
     assert "accuracy" in exp2_data["metrics"]
 

@@ -1,7 +1,7 @@
 """FastAPI routes for Phase 7 Agent Behavior Lab."""
 
-from typing import Any
 import uuid
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
@@ -11,7 +11,7 @@ from sqlalchemy.orm import selectinload
 from app.core.agents.comparison import AgentVersionComparator
 from app.core.agents.lab_engine import DEFAULT_SANDBOX_TOOLS, AgentBehaviorLabEngine
 from app.core.database import get_db
-from app.models.agent import Agent, AgentRun, AgentStep, AgentTool
+from app.models.agent import Agent, AgentRun, AgentStep
 from app.schemas.agent import (
     AgentCompareRequest,
     AgentCompareResponse,
@@ -19,7 +19,6 @@ from app.schemas.agent import (
     AgentResponse,
     AgentRunRequest,
     AgentRunResponse,
-    AgentToolResponse,
 )
 from app.schemas.common import StandardResponse
 
@@ -160,12 +159,7 @@ async def list_agent_runs(
     db: AsyncSession = Depends(get_db),
 ) -> StandardResponse[list[AgentRunResponse]]:
     """List execution runs from the Behavior Lab."""
-    query = (
-        select(AgentRun)
-        .options(selectinload(AgentRun.steps))
-        .order_by(AgentRun.created_at.desc())
-        .limit(limit)
-    )
+    query = select(AgentRun).options(selectinload(AgentRun.steps)).order_by(AgentRun.created_at.desc()).limit(limit)
     if agent_id:
         query = query.where(AgentRun.agent_id == agent_id)
 
@@ -183,11 +177,7 @@ async def get_agent_run(
     db: AsyncSession = Depends(get_db),
 ) -> StandardResponse[AgentRunResponse]:
     """Retrieve full trace telemetry for a specific agent run."""
-    query = (
-        select(AgentRun)
-        .where(AgentRun.id == run_id)
-        .options(selectinload(AgentRun.steps))
-    )
+    query = select(AgentRun).where(AgentRun.id == run_id).options(selectinload(AgentRun.steps))
     result = await db.execute(query)
     run = result.scalar_one_or_none()
     if not run:

@@ -22,7 +22,6 @@ class ActivityCreate(ActivityBase):
     """Schema for recording an activity."""
 
 
-
 class ActivityResponse(ActivityBase):
     """Schema for activity responses."""
 

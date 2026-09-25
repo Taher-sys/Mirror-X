@@ -237,28 +237,28 @@ export function CommandPalette({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-2xl overflow-hidden rounded-2xl border-2 border-orange-500/40 border-t-2 border-white/30 bg-zinc-950/95 shadow-[0_24px_64px_rgba(0,0,0,0.95)] backdrop-blur-3xl"
+        className="w-full max-w-2xl overflow-hidden rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/96 shadow-[0_24px_64px_rgba(0,0,0,0.95)] backdrop-blur-md"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input Bar */}
-        <div className="flex items-center border-b border-white/10 px-4 py-3.5">
-          <Search className="h-4 w-4 text-orange-400 mr-3" />
+        <div className="flex items-center border-b border-zinc-800/80 px-4 py-3.5">
+          <Search className="h-4 w-4 text-zinc-400 mr-3" />
           <input
             type="text"
             placeholder="Type a command, module, or search query..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="flex-1 bg-transparent text-sm font-bold text-white placeholder-zinc-500 outline-none font-sans"
+            className="flex-1 bg-transparent text-sm font-medium text-white placeholder-zinc-500 outline-none font-sans"
             autoFocus
           />
           <div className="flex items-center gap-1.5 font-mono text-[10px] font-bold text-zinc-400">
-            <kbd className="rounded-lg border border-orange-500/30 bg-black/80 px-2 py-0.5 text-orange-400">ESC</kbd>
+            <kbd className="rounded border border-zinc-700 bg-zinc-800 px-2 py-0.5 text-zinc-300">ESC</kbd>
             <span>to close</span>
           </div>
         </div>
 
         {/* Results List */}
-        <div className="max-h-[380px] overflow-y-auto p-2.5 space-y-1.5">
+        <div className="max-h-[380px] overflow-y-auto p-2.5 space-y-1">
           {filtered.length === 0 ? (
             <div className="py-8 text-center text-sm text-zinc-400 font-mono font-bold">
               No matching commands or entities found for &quot;{query}&quot;
@@ -276,34 +276,34 @@ export function CommandPalette({
                   }}
                   onMouseEnter={() => setSelectedIndex(idx)}
                   className={cn(
-                    'w-full flex items-center justify-between rounded-xl px-3.5 py-3 text-left transition-all duration-300 ease-out',
+                    'w-full flex items-center justify-between rounded-lg px-3 py-2.5 text-left transition-colors duration-150',
                     isSelected
-                      ? 'bg-orange-950/60 text-white border-2 border-orange-500/50 shadow-[0_0_15px_rgba(249,115,22,0.25)]'
-                      : 'text-zinc-300 hover:bg-zinc-900/60 hover:text-white border-2 border-transparent'
+                      ? 'bg-zinc-800/90 text-white border border-zinc-700/80'
+                      : 'text-zinc-300 hover:bg-zinc-800/40 hover:text-white border border-transparent'
                   )}
                 >
                   <div className="flex items-center gap-3">
                     <div
                       className={cn(
-                        'flex h-8 w-8 items-center justify-center rounded-xl border',
+                        'flex h-8 w-8 items-center justify-center rounded-lg border',
                         isSelected
-                          ? 'border-orange-500/50 bg-orange-950/70 text-orange-400 shadow-[0_0_10px_rgba(249,115,22,0.3)]'
-                          : 'border-white/10 bg-zinc-900 text-zinc-400'
+                          ? 'border-zinc-700 bg-zinc-800 text-amber-500'
+                          : 'border-zinc-800 bg-zinc-900 text-zinc-400'
                       )}
                     >
                       <Icon className="h-4 w-4" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-bold text-white tracking-tight">
+                        <span className="text-sm font-semibold text-white tracking-tight">
                           {item.title}
                         </span>
-                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-orange-400">
+                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-zinc-400">
                           [{item.category}]
                         </span>
                       </div>
                       {item.subtitle && (
-                        <p className="text-[11px] font-medium text-zinc-300 truncate">
+                        <p className="text-[11px] font-medium text-zinc-400 truncate">
                           {item.subtitle}
                         </p>
                       )}
@@ -312,12 +312,12 @@ export function CommandPalette({
 
                   <div className="flex items-center gap-2">
                     {item.shortcut && (
-                      <kbd className="hidden sm:inline-block font-mono text-[10px] font-bold text-orange-400 border border-orange-500/30 bg-[rgba(20,21,26,0.8)] px-2 py-0.5 rounded-lg">
+                      <kbd className="hidden sm:inline-block font-mono text-[10px] font-medium text-zinc-300 border border-zinc-700 bg-zinc-800 px-2 py-0.5 rounded">
                         {item.shortcut}
                       </kbd>
                     )}
                     {isSelected && (
-                      <CornerDownLeft className="h-3.5 w-3.5 text-orange-400" />
+                      <CornerDownLeft className="h-3.5 w-3.5 text-amber-500" />
                     )}
                   </div>
                 </button>
@@ -327,9 +327,9 @@ export function CommandPalette({
         </div>
 
         {/* Footer info bar */}
-        <div className="flex items-center justify-between border-t border-white/10 bg-zinc-950/80 px-4 py-2.5 font-mono text-[11px] font-bold text-zinc-300">
+        <div className="flex items-center justify-between border-t border-[#232736] bg-zinc-950/80 px-4 py-2.5 font-mono text-[11px] font-bold text-zinc-300">
           <div className="flex items-center gap-2">
-            <Command className="h-3.5 w-3.5 text-orange-400" />
+            <Command className="h-3.5 w-3.5 text-amber-500" />
             <span>MIRROR-X Control Pallet</span>
           </div>
           <div className="flex items-center gap-3">

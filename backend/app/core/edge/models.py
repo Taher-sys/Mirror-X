@@ -1,8 +1,7 @@
 """SQLAlchemy models for MIRROR-X Edge and Local-First Runtime."""
 
-from datetime import datetime, timezone
-from typing import Any
 import uuid
+from datetime import datetime, timezone
 
 from sqlalchemy import Boolean, DateTime, Float, Integer, String, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -81,7 +80,9 @@ class EdgeSyncEvent(EdgeBase):
     version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
     payload_json: Mapped[str] = mapped_column(Text, nullable=False)
     checksum: Mapped[str] = mapped_column(String(64), nullable=False)  # SHA-256
-    status: Mapped[str] = mapped_column(String(50), default="pending", nullable=False, index=True)  # pending, synced, failed, conflict
+    status: Mapped[str] = mapped_column(
+        String(50), default="pending", nullable=False, index=True
+    )  # pending, synced, failed, conflict
     retry_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     last_error: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
@@ -100,7 +101,9 @@ class EdgeConflict(EdgeBase):
     remote_version: Mapped[int] = mapped_column(Integer, nullable=False)
     local_payload_json: Mapped[str] = mapped_column(Text, nullable=False)
     remote_payload_json: Mapped[str] = mapped_column(Text, nullable=False)
-    resolution_status: Mapped[str] = mapped_column(String(50), default="unresolved", nullable=False)  # unresolved, resolved_local, resolved_remote
+    resolution_status: Mapped[str] = mapped_column(
+        String(50), default="unresolved", nullable=False
+    )  # unresolved, resolved_local, resolved_remote
     resolution_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     detected_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 

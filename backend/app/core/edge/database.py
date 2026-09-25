@@ -13,7 +13,6 @@ from sqlalchemy.ext.asyncio import (
 
 from app.core.edge.models import EdgeBase
 
-
 EDGE_DIR = Path(__file__).resolve().parent.parent.parent / "artifacts" / "edge"
 EDGE_DB_PATH = EDGE_DIR / "edge_node.db"
 

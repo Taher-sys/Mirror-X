@@ -1,6 +1,5 @@
 """FastAPI routes for Phase 6 Synthetic Scenario Engine."""
 
-from typing import Any
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -106,11 +105,13 @@ async def execute_scenario(
         raise HTTPException(status_code=404, detail="Scenario not found")
 
     engine = SyntheticScenarioEngine(seed=scenario.seed)
-    exec_res = engine.execute_scenario({
-        "scenario_id": str(scenario.id),
-        "scenario_class": scenario.scenario_class,
-        "expected_constraints": scenario.expected_constraints,
-    })
+    exec_res = engine.execute_scenario(
+        {
+            "scenario_id": str(scenario.id),
+            "scenario_class": scenario.scenario_class,
+            "expected_constraints": scenario.expected_constraints,
+        }
+    )
 
     scenario.status = "passed" if exec_res["passed"] else "failed"
     scenario.execution_result = exec_res

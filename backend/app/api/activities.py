@@ -16,11 +16,12 @@ DatabaseSession = Annotated[AsyncSession, Depends(get_db)]
 @router.get("", response_model=StandardResponse[list[ActivityResponse]])
 async def list_activities(
     db: DatabaseSession,
-    entity_type: Annotated[str | None, Query(description="Filter by entity type (repository, service, finding, system)")] = None,
+    entity_type: Annotated[
+        str | None, Query(description="Filter by entity type (repository, service, finding, system)")
+    ] = None,
     page: Annotated[int, Query(ge=1, description="Page number")] = 1,
     limit: Annotated[int, Query(ge=1, le=100, description="Items per page")] = 20,
 ) -> StandardResponse[list[ActivityResponse]]:
-
     """List recent activity log events in reverse chronological order."""
     query = select(Activity)
 
@@ -68,7 +69,6 @@ async def create_activity(
     payload: ActivityCreate,
     db: DatabaseSession,
 ) -> StandardResponse[ActivityResponse]:
-
     """Manually record an activity event."""
     activity = Activity(
         actor=payload.actor,

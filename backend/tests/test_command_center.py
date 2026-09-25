@@ -32,9 +32,7 @@ async def test_system_status_and_summary_empty(client: AsyncClient):
 
 
 @pytest.mark.asyncio
-async def test_repositories_crud_and_stats(
-    client: AsyncClient, test_session: AsyncSession
-):
+async def test_repositories_crud_and_stats(client: AsyncClient, test_session: AsyncSession):
     """Test repository listing, creation, and count reflection."""
     # Create org and project
     org = Organization(name="Acme Corp")
@@ -81,9 +79,7 @@ async def test_repositories_crud_and_stats(
 
 
 @pytest.mark.asyncio
-async def test_services_and_findings_flow(
-    client: AsyncClient, test_session: AsyncSession
-):
+async def test_services_and_findings_flow(client: AsyncClient, test_session: AsyncSession):
     """Test service registration, findings creation, and summary calculation."""
     org = Organization(name="Test Org")
     test_session.add(org)

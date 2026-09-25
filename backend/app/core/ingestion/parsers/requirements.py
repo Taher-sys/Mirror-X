@@ -16,7 +16,6 @@ def parse_requirements_txt(content: str, file_path: str = "requirements.txt") ->
         if not cleaned or cleaned.startswith(("#", "-")):
             continue
 
-
         # Extract package name and version specification
         pkg_name = cleaned.split(">=")[0].split("==")[0].split("<")[0].split("[")[0].strip()
         if not pkg_name:

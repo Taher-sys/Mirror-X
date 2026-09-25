@@ -7,6 +7,7 @@ Enforces truthful uncertainty disclosure without fabricating metrics.
 
 from typing import Any
 
+from app.core.observability import trace_span
 from app.models.release import ReleasePassport
 
 VALID_PASSPORT_STATUSES = [
@@ -22,6 +23,7 @@ class ReleasePassportEngine:
     """Evaluates readiness of a release bundle across all verification domains."""
 
     @staticmethod
+    @trace_span("release.generate_passport")
     def generate_passport(
         release_version: str,
         changes: list[dict[str, Any]] | None = None,
@@ -48,14 +50,13 @@ class ReleasePassportEngine:
             max_risk = 0.0
             uncertainty_disclosures.append("No Git changes or PRs were linked to this release candidate.")
         else:
-            breaking_changes = sum(
-                len(c.get("impact_summary", {}).get("breaking_changes", []))
-                for c in change_list
-            )
+            breaking_changes = sum(len(c.get("impact_summary", {}).get("breaking_changes", [])) for c in change_list)
             max_risk = max((c.get("risk_score", 0.0) for c in change_list), default=0.0)
             if breaking_changes > 0:
                 code_change_status = "HUMAN_REVIEW_REQUIRED"
-                uncertainty_disclosures.append(f"{breaking_changes} breaking schema/API changes require human sign-off.")
+                uncertainty_disclosures.append(
+                    f"{breaking_changes} breaking schema/API changes require human sign-off."
+                )
             elif max_risk >= 70.0:
                 code_change_status = "WARNING"
             else:
@@ -66,7 +67,9 @@ class ReleasePassportEngine:
             "total_changes": len(change_list),
             "breaking_changes_count": breaking_changes,
             "max_risk_score": max_risk,
-            "evidence_count": len([e for e in evidence_list if e.get("evidence_type") in ["source_file", "graph_relationship"]]),
+            "evidence_count": len(
+                [e for e in evidence_list if e.get("evidence_type") in ["source_file", "graph_relationship"]]
+            ),
         }
 
         # 2. Context Findings (Drift detection)
@@ -79,7 +82,9 @@ class ReleasePassportEngine:
             uncertainty_disclosures.append("Context analysis scan has not been executed on reality graph.")
         elif critical_drifts > 0:
             context_status = "FAIL"
-            uncertainty_disclosures.append(f"{critical_drifts} critical architecture/schema discrepancies remain unresolved.")
+            uncertainty_disclosures.append(
+                f"{critical_drifts} critical architecture/schema discrepancies remain unresolved."
+            )
         elif high_drifts > 0:
             context_status = "WARNING"
             uncertainty_disclosures.append(f"{high_drifts} high-severity context findings detected.")
@@ -101,11 +106,22 @@ class ReleasePassportEngine:
             failed_scenarios = 0
             uncertainty_disclosures.append("No synthetic test scenarios have been executed.")
         else:
-            passed_scenarios = sum(1 for s in scenario_list if s.get("status") == "passed" or (s.get("execution_result") or {}).get("passed"))
-            failed_scenarios = sum(1 for s in scenario_list if s.get("status") == "failed" or (s.get("execution_result") and not (s.get("execution_result") or {}).get("passed")))
+            passed_scenarios = sum(
+                1
+                for s in scenario_list
+                if s.get("status") == "passed" or (s.get("execution_result") or {}).get("passed")
+            )
+            failed_scenarios = sum(
+                1
+                for s in scenario_list
+                if s.get("status") == "failed"
+                or (s.get("execution_result") and not (s.get("execution_result") or {}).get("passed"))
+            )
             if failed_scenarios > 0:
                 scenario_status = "FAIL"
-                uncertainty_disclosures.append(f"{failed_scenarios} synthetic scenarios failed expected invariant checks.")
+                uncertainty_disclosures.append(
+                    f"{failed_scenarios} synthetic scenarios failed expected invariant checks."
+                )
             elif passed_scenarios >= 3:
                 scenario_status = "PASS"
             else:
@@ -146,7 +162,11 @@ class ReleasePassportEngine:
 
         # 5. Policy Validation
         denied_decisions = sum(1 for d in decision_list if d.get("result") == "DENY")
-        review_required_decisions = sum(1 for d in decision_list if d.get("result") == "HUMAN_REVIEW_REQUIRED" and d.get("review_status") != "approved")
+        review_required_decisions = sum(
+            1
+            for d in decision_list
+            if d.get("result") == "HUMAN_REVIEW_REQUIRED" and d.get("review_status") != "approved"
+        )
 
         if not decision_list:
             policy_status = "NOT_EVALUATED"
@@ -156,7 +176,9 @@ class ReleasePassportEngine:
             uncertainty_disclosures.append(f"{denied_decisions} policy evaluations resulted in explicit DENY.")
         elif review_required_decisions > 0:
             policy_status = "HUMAN_REVIEW_REQUIRED"
-            uncertainty_disclosures.append(f"{review_required_decisions} sensitive decisions are awaiting human authorization.")
+            uncertainty_disclosures.append(
+                f"{review_required_decisions} sensitive decisions are awaiting human authorization."
+            )
         else:
             policy_status = "PASS"
 
@@ -180,7 +202,9 @@ class ReleasePassportEngine:
         elif major_findings_count > 0 and evidence_for_findings < major_findings_count:
             evidence_status = "WARNING"
             completeness_score = round(evidence_for_findings / max(major_findings_count, 1), 2)
-            uncertainty_disclosures.append(f"Incomplete evidence provenance: only {evidence_for_findings}/{major_findings_count} major findings have linked evidence.")
+            uncertainty_disclosures.append(
+                f"Incomplete evidence provenance: only {evidence_for_findings}/{major_findings_count} major findings have linked evidence."
+            )
         else:
             evidence_status = "PASS"
             completeness_score = 1.0
@@ -225,7 +249,11 @@ class ReleasePassportEngine:
             "evidence_completeness": evidence_completeness_summary,
         }
 
-        uncertainty_notes = "\n".join(f"- {u}" for u in uncertainty_disclosures) if uncertainty_disclosures else "Zero outstanding uncertainties. All telemetry sources verified."
+        uncertainty_notes = (
+            "\n".join(f"- {u}" for u in uncertainty_disclosures)
+            if uncertainty_disclosures
+            else "Zero outstanding uncertainties. All telemetry sources verified."
+        )
         seal = ReleasePassport.calculate_seal(release_version, sections)
 
         return {

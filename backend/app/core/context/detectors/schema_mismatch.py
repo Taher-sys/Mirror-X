@@ -70,7 +70,14 @@ class SchemaMismatchDetector(BaseDetector):
 
                 # Type mismatch check
                 type_conflict = False
-                if ("int" in col_type or "bigint" in col_type or "smallint" in col_type) and ("str" in ftype or "string" in ftype or "text" in ftype) or ("varchar" in col_type or "text" in col_type or "string" in col_type) and ("int" in ftype or "integer" in ftype or "float" in ftype or "number" in ftype) or ("bool" in col_type) and ("str" in ftype or "int" in ftype):
+                if (
+                    ("int" in col_type or "bigint" in col_type or "smallint" in col_type)
+                    and ("str" in ftype or "string" in ftype or "text" in ftype)
+                    or ("varchar" in col_type or "text" in col_type or "string" in col_type)
+                    and ("int" in ftype or "integer" in ftype or "float" in ftype or "number" in ftype)
+                    or ("bool" in col_type)
+                    and ("str" in ftype or "int" in ftype)
+                ):
                     type_conflict = True
 
                 if type_conflict:

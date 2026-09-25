@@ -24,39 +24,29 @@ export function StatTile({
 }: StatTileProps) {
   const accentConfigs = {
     amber: {
-      border: 'border-orange-500/35',
-      glow: 'shadow-[0_0_20px_rgba(249,115,22,0.3)]',
-      valueColor: 'text-orange-400 drop-shadow-[0_0_8px_rgba(234,88,12,0.4)]',
-      dot: 'bg-orange-400',
-      bar: 'bg-orange-500/30',
+      valueColor: 'text-white',
+      dot: 'bg-amber-500',
+      iconColor: 'text-amber-500',
     },
     orange: {
-      border: 'border-orange-500/40',
-      glow: 'shadow-[0_0_20px_rgba(249,115,22,0.35)]',
-      valueColor: 'text-orange-400 drop-shadow-[0_0_8px_rgba(234,88,12,0.5)]',
-      dot: 'bg-orange-400',
-      bar: 'bg-orange-500/35',
+      valueColor: 'text-white',
+      dot: 'bg-amber-500',
+      iconColor: 'text-amber-500',
     },
     crimson: {
-      border: 'border-rose-500/35',
-      glow: 'shadow-[0_0_20px_rgba(244,63,94,0.3)]',
-      valueColor: 'text-rose-400 drop-shadow-[0_0_8px_rgba(244,63,94,0.3)]',
-      dot: 'bg-rose-400',
-      bar: 'bg-rose-500/30',
+      valueColor: 'text-white',
+      dot: 'bg-rose-500',
+      iconColor: 'text-rose-400',
     },
     emerald: {
-      border: 'border-emerald-500/35',
-      glow: 'shadow-[0_0_20px_rgba(16,185,129,0.3)]',
-      valueColor: 'text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.4)]',
-      dot: 'bg-emerald-400',
-      bar: 'bg-emerald-500/30',
+      valueColor: 'text-white',
+      dot: 'bg-emerald-500',
+      iconColor: 'text-emerald-400',
     },
     none: {
-      border: 'border-orange-500/30',
-      glow: '',
       valueColor: 'text-zinc-100',
-      dot: 'bg-orange-400',
-      bar: 'bg-orange-500/20',
+      dot: 'bg-zinc-600',
+      iconColor: 'text-zinc-400',
     },
   };
 
@@ -65,32 +55,28 @@ export function StatTile({
   return (
     <div
       className={cn(
-        'relative rounded-2xl border-2 border-orange-500/35 border-t-2 border-white/25 bg-zinc-950/90 backdrop-blur-3xl',
-        'shadow-[0_20px_50px_rgba(0,0,0,0.9)] transition-all duration-300 ease-out',
-        'hover:-translate-y-2.5 hover:scale-[1.015] hover:border-orange-500/60 hover:border-t-white/40 hover:shadow-[0_20px_45px_-5px_rgba(249,115,22,0.3)]',
-        currentAccent.border,
+        'relative rounded-lg bg-[#12151e]/92 backdrop-blur-md border border-[#232736] border-t border-t-zinc-700/50',
+        'shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] transition-all duration-250 ease-out',
+        'hover:border-[#343b52] hover:border-t-zinc-500/60 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.8)]',
         className
       )}
     >
-      {/* Top accent line */}
-      <div className={cn('absolute top-0 left-4 right-4 h-[2px] opacity-80', currentAccent.bar)} />
-
-      <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-between p-4 pb-2">
         <div className="flex items-center gap-2">
           <div className={cn('h-2 w-2 rounded-full', currentAccent.dot)} />
-          <span className="font-mono text-xs font-bold uppercase tracking-wider text-orange-400">
+          <span className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-400">
             {label}
           </span>
         </div>
-        {Icon && <Icon className="h-4 w-4 text-orange-400" />}
+        {Icon && <Icon className={cn('h-4 w-4', currentAccent.iconColor)} />}
       </div>
 
-      <div className="mt-1 flex items-baseline gap-2 p-4 pt-0">
+      <div className="flex items-baseline gap-2 p-4 pt-1">
         <span className={cn('font-mono text-2xl font-bold tracking-wider', currentAccent.valueColor)}>
           {value}
         </span>
         {subvalue && (
-          <span className="font-mono text-xs font-semibold text-zinc-300 truncate">
+          <span className="font-mono text-xs font-medium text-zinc-400 truncate">
             {subvalue}
           </span>
         )}

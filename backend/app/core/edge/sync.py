@@ -4,11 +4,11 @@ Implements outbound event queueing, inbound snapshot pulling, idempotent event a
 reconnection flushing, and explicit conflict detection without silent overwriting.
 """
 
-from datetime import datetime, timezone
 import hashlib
 import json
-from typing import Any
 import uuid
+from datetime import datetime, timezone
+from typing import Any
 
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -27,6 +27,7 @@ from app.core.edge.security import (
     sign_snapshot_payload,
     verify_snapshot_signature,
 )
+from app.core.observability import trace_span
 from app.models.evidence import EvidenceRecord
 from app.models.graph import GraphEdge, GraphNode
 from app.models.scenario import ScenarioRecord
@@ -76,6 +77,7 @@ class EdgeSyncProtocol:
         self.runtime.local_stats["pending_sync_events"] += 1
         return event
 
+    @trace_span("edge.snapshot_pull")
     async def pull_cloud_snapshot(
         self,
         cloud_db: AsyncSession,
@@ -93,7 +95,9 @@ class EdgeSyncProtocol:
         policies_res = await cloud_db.execute(select(TrustPolicy))
         cloud_policies = list(policies_res.scalars().all())
 
-        scenarios_res = await cloud_db.execute(select(ScenarioRecord).order_by(ScenarioRecord.created_at.desc()).limit(20))
+        scenarios_res = await cloud_db.execute(
+            select(ScenarioRecord).order_by(ScenarioRecord.created_at.desc()).limit(20)
+        )
         cloud_scenarios = list(scenarios_res.scalars().all())
 
         # 2. Package and sanitize snapshot payload
@@ -210,6 +214,7 @@ class EdgeSyncProtocol:
             "signature": signature,
         }
 
+    @trace_span("edge.queue_flush")
     async def flush_outbound_queue(
         self,
         edge_db: AsyncSession,

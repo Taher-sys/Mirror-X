@@ -157,21 +157,21 @@ export default function ScenariosPage() {
       <PerspectiveGrid />
 
       {/* Header */}
-      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-5">
         <div className="flex items-center gap-3.5">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border-2 border-orange-500/40 bg-orange-950/40 text-orange-400 shadow-[0_0_20px_rgba(249,115,22,0.3)]">
-            <FlaskConical className="h-5 w-5 drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/80 text-amber-500">
+            <FlaskConical className="h-5 w-5" />
           </div>
           <div>
             <div className="flex items-center gap-2.5">
               <h1 className="text-2xl font-bold tracking-tight text-white font-sans drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
                 Synthetic Scenario Engine
               </h1>
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2.5 py-0.5 rounded shadow-[0_0_10px_rgba(249,115,22,0.25)]">
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-amber-500 bg-zinc-900/80 border border-zinc-800 px-2.5 py-0.5 rounded">
                 REPRODUCIBLE TEST TWIN
               </span>
             </div>
-            <p className="mt-1 font-mono text-sm font-semibold text-zinc-200">
+            <p className="mt-1 font-mono text-sm font-semibold text-zinc-300">
               Deterministic, seed-driven synthetic test generation across 10 scenario classes without external ML datasets
             </p>
           </div>
@@ -181,7 +181,7 @@ export default function ScenariosPage() {
           <button
             onClick={handleBatchGenerate}
             disabled={generating}
-            className="inline-flex items-center gap-2 rounded-xl border-2 border-orange-500/50 bg-gradient-to-r from-orange-950/70 via-zinc-900/90 to-orange-950/70 px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] hover:border-orange-400 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] shadow-lg disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-lg bg-amber-500 hover:bg-amber-600 px-4 py-2 font-mono text-xs font-extrabold uppercase tracking-wider text-black transition-all shadow-md active:scale-95 disabled:opacity-50"
           >
             <Sparkles className="h-3.5 w-3.5" />
             <span>Generate Suite (All 10 Classes)</span>
@@ -202,7 +202,7 @@ export default function ScenariosPage() {
           label="Classes Covered"
           value={`${classesCovered}/10`}
           subvalue="behavioral coverage"
-          accent="orange"
+          accent="amber"
           icon={Layers}
         />
         <StatTile
@@ -223,38 +223,38 @@ export default function ScenariosPage() {
 
       {/* Generator Console Bar */}
       <GlassPanel className="relative z-10 p-5 space-y-4">
-        <div className="flex items-center justify-between border-b border-white/10 pb-3">
-          <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-orange-400 tracking-wider">
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center gap-2 font-mono text-xs uppercase font-bold text-amber-500 tracking-wider">
             <FlaskConical className="h-4 w-4" />
             <span>Scenario Parameter Engine</span>
           </div>
-          <span className="font-mono text-xs font-bold text-zinc-300">
+          <span className="font-mono text-xs font-bold text-zinc-400">
             SEED DETERMINISM ACTIVE
           </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 items-end">
           <div>
-            <label className="block font-mono text-xs uppercase font-bold text-zinc-300 mb-1">
+            <label className="block font-mono text-xs uppercase font-bold text-zinc-400 mb-1">
               Target Entity
             </label>
             <input
               type="text"
               value={targetName}
               onChange={(e) => setTargetName(e.target.value)}
-              className="w-full rounded-xl border-2 border-orange-500/30 bg-zinc-950/90 px-3.5 py-2 font-mono text-xs font-bold text-white placeholder-zinc-500 focus:border-orange-500/60 focus:outline-none"
+              className="w-full rounded-lg border border-[#232736] bg-zinc-900/80 px-3.5 py-2 font-mono text-xs font-bold text-white placeholder-zinc-500 focus:border-zinc-600 focus:outline-none"
               placeholder="e.g. CheckoutAPI"
             />
           </div>
 
           <div>
-            <label className="block font-mono text-xs uppercase font-bold text-zinc-300 mb-1">
+            <label className="block font-mono text-xs uppercase font-bold text-zinc-400 mb-1">
               Source Type
             </label>
             <select
               value={sourceType}
               onChange={(e) => setSourceType(e.target.value)}
-              className="w-full rounded-xl border-2 border-orange-500/30 bg-zinc-950/90 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-orange-500/60 focus:outline-none"
+              className="w-full rounded-lg border border-[#232736] bg-zinc-900/80 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-zinc-600 focus:outline-none"
             >
               {SOURCE_TYPES.map((st) => (
                 <option key={st} value={st} className="bg-zinc-900 text-white">
@@ -265,13 +265,13 @@ export default function ScenariosPage() {
           </div>
 
           <div>
-            <label className="block font-mono text-xs uppercase font-bold text-zinc-300 mb-1">
+            <label className="block font-mono text-xs uppercase font-bold text-zinc-400 mb-1">
               Scenario Class
             </label>
             <select
               value={scenarioClass}
               onChange={(e) => setScenarioClass(e.target.value)}
-              className="w-full rounded-xl border-2 border-orange-500/30 bg-zinc-950/90 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-orange-500/60 focus:outline-none"
+              className="w-full rounded-lg border border-[#232736] bg-zinc-900/80 px-3.5 py-2 font-mono text-xs font-bold text-white focus:border-zinc-600 focus:outline-none"
             >
               {SCENARIO_CLASSES.filter((c) => c !== 'all').map((sc) => (
                 <option key={sc} value={sc} className="bg-zinc-900 text-white">
@@ -282,7 +282,7 @@ export default function ScenariosPage() {
           </div>
 
           <div>
-            <label className="block font-mono text-xs uppercase font-bold text-zinc-300 mb-1">
+            <label className="block font-mono text-xs uppercase font-bold text-zinc-400 mb-1">
               Seed (Reproducibility)
             </label>
             <div className="flex items-center gap-2">
@@ -290,12 +290,12 @@ export default function ScenariosPage() {
                 type="number"
                 value={seed}
                 onChange={(e) => setSeed(Number(e.target.value))}
-                className="w-full rounded-xl border-2 border-orange-500/30 bg-zinc-950/90 px-3.5 py-2 font-mono text-xs font-bold text-orange-400 focus:border-orange-500/60 focus:outline-none"
+                className="w-full rounded-lg border border-[#232736] bg-zinc-900/80 px-3.5 py-2 font-mono text-xs font-bold text-amber-400 focus:border-zinc-600 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => setSeed(Math.floor(Math.random() * 9000) + 1000)}
-                className="p-2.5 rounded-xl border border-orange-500/30 bg-zinc-900/60 text-orange-400 hover:text-white hover:border-orange-500/60 transition-all"
+                className="p-2 rounded-lg border border-[#232736] bg-zinc-900/80 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all"
                 title="Randomize seed"
               >
                 <Shuffle className="h-4 w-4" />
@@ -306,10 +306,10 @@ export default function ScenariosPage() {
           <button
             onClick={handleGenerate}
             disabled={generating}
-            className="w-full inline-flex items-center justify-center gap-2 rounded-xl border-2 border-orange-500/50 bg-gradient-to-r from-orange-950/70 via-zinc-900/90 to-orange-950/70 px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] hover:border-orange-400 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] shadow-lg disabled:opacity-50"
+            className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-amber-500 hover:bg-amber-600 px-4 py-2 font-mono text-xs font-extrabold uppercase tracking-wider text-black transition-all shadow-md active:scale-95 disabled:opacity-50"
           >
             {generating ? (
-              <RefreshCw className="h-4 w-4 animate-spin text-orange-400" />
+              <RefreshCw className="h-4 w-4 animate-spin text-black" />
             ) : (
               <FlaskConical className="h-4 w-4" />
             )}
@@ -327,16 +327,16 @@ export default function ScenariosPage() {
             <button
               key={cls}
               onClick={() => setFilterClass(cls)}
-              className={`whitespace-nowrap px-3.5 py-1.5 rounded-xl border font-mono text-xs font-bold transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2 backdrop-blur-2xl ${
+              className={`whitespace-nowrap px-3.5 py-1.5 rounded-lg border font-mono text-xs font-bold transition-all duration-200 flex items-center gap-2 ${
                 active
-                  ? 'border-2 border-orange-500/60 bg-orange-950/60 text-white shadow-[0_0_15px_rgba(249,115,22,0.3)]'
-                  : 'border border-white/10 bg-zinc-900/50 text-zinc-300 hover:border-orange-500/30 hover:text-white'
+                  ? 'border-amber-500 bg-zinc-800/90 text-white'
+                  : 'border border-[#232736] bg-zinc-900/60 text-zinc-400 hover:border-zinc-700 hover:text-white'
               }`}
             >
               <span>{cls.toUpperCase()}</span>
               <span
                 className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
-                  active ? 'bg-orange-500/30 text-orange-300' : 'bg-black/60 text-zinc-300'
+                  active ? 'bg-amber-500/20 text-amber-300' : 'bg-black/60 text-zinc-400'
                 }`}
               >
                 {count}
@@ -351,16 +351,16 @@ export default function ScenariosPage() {
         {/* Left Column: List of Scenarios */}
         <div className="lg:col-span-5 space-y-3">
           {loading && scenarios.length === 0 ? (
-            <div className="py-20 text-center font-mono text-sm font-semibold text-zinc-300 animate-pulse">
+            <div className="py-20 text-center font-mono text-sm font-semibold text-zinc-400 animate-pulse">
               Synthesizing scenario telemetry...
             </div>
           ) : scenarios.length === 0 ? (
             <GlassPanel className="py-16 text-center">
-              <FlaskConical className="mx-auto h-12 w-12 text-orange-400" />
+              <FlaskConical className="mx-auto h-12 w-12 text-zinc-500" />
               <h4 className="mt-3 font-mono text-sm font-bold uppercase tracking-wider text-white">
                 No Scenarios In Class
               </h4>
-              <p className="mt-1 text-sm font-medium text-zinc-300">
+              <p className="mt-1 text-sm font-medium text-zinc-400">
                 Click &quot;Generate Scenario&quot; or &quot;Generate Suite&quot; to produce test twins.
               </p>
             </GlassPanel>
@@ -372,15 +372,15 @@ export default function ScenariosPage() {
                   <div
                     key={scen.id}
                     onClick={() => setSelectedScenarioId(scen.id)}
-                    className={`cursor-pointer rounded-2xl border-2 border-t-2 p-4 backdrop-blur-3xl transition-all duration-300 ease-out hover:scale-[1.01] shadow-[0_16px_40px_rgba(0,0,0,0.85)] ${
+                    className={`cursor-pointer rounded-xl border border-t p-4 backdrop-blur-md transition-all duration-200 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] ${
                       isSelected
-                        ? 'border-orange-500/60 border-t-white/35 bg-zinc-950/95 shadow-[0_0_25px_rgba(249,115,22,0.2)]'
-                        : 'border-orange-500/35 border-t-white/20 bg-zinc-950/85 hover:border-orange-500/50'
+                        ? 'border-zinc-600 border-t-zinc-400 bg-[#161a25]/95 ring-1 ring-amber-500/40'
+                        : 'border-[#232736] border-t-zinc-700/50 bg-[#12151e]/92 hover:border-[#343b52]'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-orange-950/60 text-orange-400 border-orange-500/40">
+                        <span className="font-mono text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border bg-zinc-900 border-zinc-800 text-amber-400">
                           {scen.scenario_class}
                         </span>
                         <span className="font-mono text-xs font-bold text-white truncate max-w-[200px]">
@@ -393,9 +393,9 @@ export default function ScenariosPage() {
                       />
                     </div>
 
-                    <div className="mt-2.5 flex items-center justify-between font-mono text-xs font-semibold text-zinc-300">
+                    <div className="mt-2.5 flex items-center justify-between font-mono text-xs font-semibold text-zinc-400">
                       <span>Source: <strong className="text-white font-bold">{scen.source_type}</strong></span>
-                      <span>Seed: <strong className="text-orange-400 font-bold">{scen.seed}</strong></span>
+                      <span>Seed: <strong className="text-amber-400 font-bold">{scen.seed}</strong></span>
                     </div>
                   </div>
                 );
@@ -408,24 +408,24 @@ export default function ScenariosPage() {
         <div className="lg:col-span-7">
           {!selectedScenario ? (
             <GlassPanel className="py-24 text-center">
-              <FlaskConical className="mx-auto h-12 w-12 text-orange-400" />
+              <FlaskConical className="mx-auto h-12 w-12 text-zinc-500" />
               <h4 className="mt-3 font-mono text-sm font-bold uppercase tracking-wider text-white">
                 Select a Scenario
               </h4>
-              <p className="mt-1 text-sm font-medium text-zinc-300">
+              <p className="mt-1 text-sm font-medium text-zinc-400">
                 Choose a synthetic scenario to inspect its initial state, generated inputs, and expected constraints.
               </p>
             </GlassPanel>
           ) : (
             <GlassPanel className="p-5 space-y-5">
               {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-800 pb-4">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs uppercase font-bold text-orange-400 bg-orange-950/60 border border-orange-500/40 px-2.5 py-0.5 rounded-lg shadow-[0_0_8px_rgba(249,115,22,0.25)]">
+                    <span className="font-mono text-xs uppercase font-bold text-amber-400 bg-zinc-900 border border-zinc-800 px-2.5 py-0.5 rounded-lg">
                       {selectedScenario.scenario_class}
                     </span>
-                    <span className="font-mono text-xs font-bold text-orange-400">
+                    <span className="font-mono text-xs font-bold text-amber-400">
                       SEED: {selectedScenario.seed}
                     </span>
                   </div>
@@ -437,7 +437,7 @@ export default function ScenariosPage() {
                 <button
                   onClick={() => handleExecute(selectedScenario.id)}
                   disabled={executing}
-                  className="inline-flex items-center gap-2 rounded-xl border-2 border-orange-500/50 bg-gradient-to-r from-orange-950/70 via-zinc-900/90 to-orange-950/70 px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider text-orange-400 transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] hover:border-orange-400 hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] shadow-lg disabled:opacity-50"
+                  className="inline-flex items-center gap-2 rounded-lg bg-amber-500 hover:bg-amber-600 px-4 py-2 font-mono text-xs font-extrabold uppercase tracking-wider text-black transition-all shadow-md active:scale-95 disabled:opacity-50"
                 >
                   <Play className={`h-3.5 w-3.5 fill-current ${executing ? 'animate-spin' : ''}`} />
                   <span>{executing ? 'Asserting Constraints...' : 'Execute In Sandbox'}</span>
@@ -446,46 +446,46 @@ export default function ScenariosPage() {
 
               {/* Execution Result Banner */}
               {selectedScenario.execution_result && (
-                <div className="rounded-2xl border-2 border-orange-500/40 border-t-2 border-white/25 bg-orange-950/30 p-4 space-y-2 backdrop-blur-3xl">
+                <div className="rounded-xl border border-emerald-500/40 border-t border-t-zinc-700/50 bg-emerald-950/20 p-4 space-y-2 backdrop-blur-md">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase text-orange-400">
+                    <div className="flex items-center gap-2 font-mono text-xs font-bold uppercase text-emerald-400">
                       <CheckCircle2 className="h-4 w-4" />
                       <span>Sandbox Verification Status: PASSED</span>
                     </div>
-                    <span className="font-mono text-xs font-bold text-orange-400">
+                    <span className="font-mono text-xs font-bold text-emerald-400">
                       {selectedScenario.execution_result.execution_duration_ms}ms
                     </span>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 font-mono text-xs font-semibold text-zinc-200">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 font-mono text-xs font-semibold text-zinc-300">
                     <div>HTTP Status: <strong className="text-white font-bold">{selectedScenario.execution_result.actual_status}</strong></div>
-                    <div>Policy Gate: <strong className="text-orange-400 font-bold">{selectedScenario.execution_result.actual_decision}</strong></div>
-                    <div>Execution ID: <strong className="text-orange-400 font-bold">{selectedScenario.execution_result.execution_id}</strong></div>
+                    <div>Policy Gate: <strong className="text-emerald-400 font-bold">{selectedScenario.execution_result.actual_decision}</strong></div>
+                    <div>Execution ID: <strong className="text-zinc-400 font-bold">{selectedScenario.execution_result.execution_id}</strong></div>
                   </div>
                 </div>
               )}
 
               {/* Generated Inputs Section */}
               <div>
-                <h4 className="font-mono text-xs uppercase font-bold text-orange-400 mb-1.5 flex items-center gap-1.5">
-                  <Play className="h-3.5 w-3.5 text-orange-400" /> Generated Synthetic Inputs
+                <h4 className="font-mono text-xs uppercase font-bold text-zinc-400 mb-1.5 flex items-center gap-1.5">
+                  <Play className="h-3.5 w-3.5 text-amber-500" /> Generated Synthetic Inputs
                 </h4>
-                <pre className="font-mono text-xs text-orange-200 bg-black/90 border border-orange-500/30 p-3.5 rounded-xl overflow-x-auto">
+                <pre className="font-mono text-xs text-zinc-300 bg-black/80 border border-[#232736] p-3.5 rounded-xl overflow-x-auto">
                   <code>{JSON.stringify(selectedScenario.generated_inputs, null, 2)}</code>
                 </pre>
               </div>
 
               {/* Expected Constraints Section */}
               <div>
-                <h4 className="font-mono text-xs uppercase font-bold text-orange-400 mb-1.5 flex items-center gap-1.5">
-                  <ShieldCheck className="h-3.5 w-3.5 text-orange-400" /> Expected Constraints &amp; Invariants
+                <h4 className="font-mono text-xs uppercase font-bold text-zinc-400 mb-1.5 flex items-center gap-1.5">
+                  <ShieldCheck className="h-3.5 w-3.5 text-amber-500" /> Expected Constraints &amp; Invariants
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {Object.entries(selectedScenario.expected_constraints).map(([key, val]) => (
                     <div
                       key={key}
-                      className="rounded-xl border border-orange-500/30 bg-zinc-900/60 p-3 font-mono text-xs"
+                      className="rounded-xl border border-[#232736] bg-zinc-900/60 p-3 font-mono text-xs"
                     >
-                      <div className="text-orange-400 font-bold uppercase tracking-wider">{key}</div>
+                      <div className="text-amber-400 font-bold uppercase tracking-wider">{key}</div>
                       <div className="text-white font-bold mt-1 break-all">{String(val)}</div>
                     </div>
                   ))}
@@ -495,34 +495,34 @@ export default function ScenariosPage() {
               {/* Participating Resources & Policies */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <h4 className="font-mono text-xs uppercase font-bold text-orange-400 mb-1.5 flex items-center gap-1.5">
-                    <Database className="h-3.5 w-3.5 text-orange-400" /> Participating Resources
+                  <h4 className="font-mono text-xs uppercase font-bold text-zinc-400 mb-1.5 flex items-center gap-1.5">
+                    <Database className="h-3.5 w-3.5 text-amber-500" /> Participating Resources
                   </h4>
                   <div className="space-y-1.5">
                     {selectedScenario.participating_resources.map((res, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center justify-between p-2 rounded-xl border border-white/10 bg-zinc-900/40 font-mono text-xs"
+                        className="flex items-center justify-between p-2 rounded-xl border border-[#232736] bg-zinc-900/40 font-mono text-xs"
                       >
                         <span className="text-white font-bold">{res.name}</span>
-                        <span className="text-orange-400 uppercase font-semibold">{res.role}</span>
+                        <span className="text-amber-400 uppercase font-semibold">{res.role}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-mono text-xs uppercase font-bold text-orange-400 mb-1.5 flex items-center gap-1.5">
-                    <ShieldCheck className="h-3.5 w-3.5 text-orange-400" /> Applicable Policies
+                  <h4 className="font-mono text-xs uppercase font-bold text-zinc-400 mb-1.5 flex items-center gap-1.5">
+                    <ShieldCheck className="h-3.5 w-3.5 text-amber-500" /> Applicable Policies
                   </h4>
                   <div className="space-y-1.5">
                     {selectedScenario.applicable_policies.map((pol, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center justify-between p-2 rounded-xl border border-white/10 bg-zinc-900/40 font-mono text-xs"
+                        className="flex items-center justify-between p-2 rounded-xl border border-[#232736] bg-zinc-900/40 font-mono text-xs"
                       >
                         <span className="text-white font-bold">{pol.name}</span>
-                        <span className="text-orange-400 uppercase font-semibold">{pol.enforcement}</span>
+                        <span className="text-amber-400 uppercase font-semibold">{pol.enforcement}</span>
                       </div>
                     ))}
                   </div>

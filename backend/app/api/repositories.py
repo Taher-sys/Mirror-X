@@ -25,7 +25,6 @@ async def list_repositories(
     page: Annotated[int, Query(ge=1, description="Page number")] = 1,
     limit: Annotated[int, Query(ge=1, le=100, description="Items per page")] = 50,
 ) -> StandardResponse[list[RepositoryResponse]]:
-
     """List all registered repositories with service and finding counts."""
     query = select(Repository).options(
         selectinload(Repository.services),
@@ -34,17 +33,13 @@ async def list_repositories(
 
     if search:
         search_filter = f"%{search}%"
-        query = query.where(
-            (Repository.name.ilike(search_filter)) | (Repository.url.ilike(search_filter))
-        )
+        query = query.where((Repository.name.ilike(search_filter)) | (Repository.url.ilike(search_filter)))
 
     # Get total count
     count_query = select(func.count(Repository.id))
     if search:
         search_filter = f"%{search}%"
-        count_query = count_query.where(
-            (Repository.name.ilike(search_filter)) | (Repository.url.ilike(search_filter))
-        )
+        count_query = count_query.where((Repository.name.ilike(search_filter)) | (Repository.url.ilike(search_filter)))
     total_res = await db.execute(count_query)
     total = total_res.scalar() or 0
 
@@ -141,7 +136,6 @@ async def get_repository(
     repository_id: uuid.UUID,
     db: DatabaseSession,
 ) -> StandardResponse[RepositoryResponse]:
-
     """Get single repository by ID."""
     query = (
         select(Repository)

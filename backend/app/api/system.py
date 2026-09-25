@@ -2,15 +2,17 @@
 
 import time
 from datetime import datetime, timezone
-from typing import Annotated
+from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
+from fastapi.responses import PlainTextResponse
 from sqlalchemy import func, select, text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
+from app.core.observability import get_tracer
 from app.models.finding import Finding
 from app.models.repository import Repository
 from app.models.service import Service
@@ -73,24 +75,17 @@ async def get_system_summary(db: DatabaseSession) -> StandardResponse[SystemSumm
     svc_count = svc_res.scalar() or 0
 
     # Count healthy / degraded services
-    healthy_res = await db.execute(
-        select(func.count(Service.id)).where(Service.status == "healthy")
-    )
+    healthy_res = await db.execute(select(func.count(Service.id)).where(Service.status == "healthy"))
     healthy_count = healthy_res.scalar() or 0
 
-    degraded_res = await db.execute(
-        select(func.count(Service.id)).where(Service.status != "healthy")
-    )
+    degraded_res = await db.execute(select(func.count(Service.id)).where(Service.status != "healthy"))
     degraded_count = degraded_res.scalar() or 0
 
     # Count findings and breakdown by severity
     findings_total_res = await db.execute(select(func.count(Finding.id)))
     findings_total = findings_total_res.scalar() or 0
 
-    severity_res = await db.execute(
-        select(Finding.severity, func.count(Finding.id))
-        .group_by(Finding.severity)
-    )
+    severity_res = await db.execute(select(Finding.severity, func.count(Finding.id)).group_by(Finding.severity))
     severity_map = {row[0].lower(): row[1] for row in severity_res.fetchall()}
 
     severity_counts = FindingSeverityCounts(
@@ -121,3 +116,44 @@ async def get_system_summary(db: DatabaseSession) -> StandardResponse[SystemSumm
         timestamp=datetime.now(timezone.utc),
     )
     return StandardResponse(data=data)
+
+
+@router.get("/telemetry", response_model=StandardResponse[dict[str, Any]])
+async def get_system_telemetry(
+    limit: Annotated[int, Query(ge=1, le=500, description="Max spans to return")] = 50,
+    trace_id: Annotated[str | None, Query(description="Filter by trace ID")] = None,
+    name: Annotated[str | None, Query(description="Filter by span name")] = None,
+    span_status: Annotated[str | None, Query(alias="status", description="Filter by status (OK, ERROR)")] = None,
+) -> StandardResponse[dict[str, Any]]:
+    """Return OpenTelemetry trace spans, duration metrics, and component breakdowns."""
+    tracer = get_tracer()
+    spans = tracer.get_recent_spans(limit=limit, trace_id=trace_id, name=name, status=span_status)
+    summary = tracer.get_telemetry_summary()
+    return StandardResponse(data={"summary": summary, "spans": spans})
+
+
+@router.get("/metrics")
+async def get_metrics() -> PlainTextResponse:
+    """Return Prometheus-formatted metrics text."""
+    tracer = get_tracer()
+    summary = tracer.get_telemetry_summary()
+    uptime_seconds = round(time.time() - _STARTUP_TIME, 1)
+
+    lines = [
+        "# HELP mirrorx_uptime_seconds Total runtime in seconds.",
+        "# TYPE mirrorx_uptime_seconds gauge",
+        f"mirrorx_uptime_seconds {uptime_seconds}",
+        "# HELP mirrorx_spans_total Total OpenTelemetry spans recorded.",
+        "# TYPE mirrorx_spans_total counter",
+        f"mirrorx_spans_total {summary['total_spans']}",
+        "# HELP mirrorx_errors_total Total error spans recorded.",
+        "# TYPE mirrorx_errors_total counter",
+        f"mirrorx_errors_total {summary['error_spans']}",
+        "# HELP mirrorx_avg_duration_ms Average span duration in milliseconds.",
+        "# TYPE mirrorx_avg_duration_ms gauge",
+        f"mirrorx_avg_duration_ms {summary['avg_duration_ms']}",
+        "# HELP mirrorx_p95_duration_ms 95th percentile span duration in milliseconds.",
+        "# TYPE mirrorx_p95_duration_ms gauge",
+        f"mirrorx_p95_duration_ms {summary['p95_duration_ms']}",
+    ]
+    return PlainTextResponse("\n".join(lines) + "\n", media_type="text/plain; version=0.0.4")

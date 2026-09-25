@@ -7,7 +7,7 @@ from sqlalchemy import Float, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.mysql import JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.models.base import BaseModel, GUID
+from app.models.base import GUID, BaseModel
 
 
 class AIExperiment(BaseModel):
@@ -57,7 +57,9 @@ class AIModelRegistry(BaseModel):
         nullable=False,
     )
 
-    status: Mapped[str] = mapped_column(String(50), nullable=False, default="candidate")  # candidate, champion, archived
+    status: Mapped[str] = mapped_column(
+        String(50), nullable=False, default="candidate"
+    )  # candidate, champion, archived
     metrics_summary: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False, default=dict)
     artifact_path: Mapped[str | None] = mapped_column(String(512), nullable=True)
 

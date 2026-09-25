@@ -45,9 +45,7 @@ class DocumentationDriftDetector(BaseDetector):
             lines = content.splitlines()
 
             # Check 1: Explicitly documented endpoints like `GET /api/v1/...` or `POST /...`
-            endpoint_matches = re.finditer(
-                r"\b(GET|POST|PUT|DELETE|PATCH)\s+(/[a-zA-Z0-9_\-/{}:]+)", content
-            )
+            endpoint_matches = re.finditer(r"\b(GET|POST|PUT|DELETE|PATCH)\s+(/[a-zA-Z0-9_\-/{}:]+)", content)
             for m in endpoint_matches:
                 verb = m.group(1)
                 route = m.group(2)
@@ -92,7 +90,11 @@ class DocumentationDriftDetector(BaseDetector):
             )
             for m in legacy_refs:
                 ref_name = m.group(1).lower()
-                if service_names and ref_name not in service_names and ("legacy" in ref_name or "deprecated" in ref_name or "-v1" in ref_name):
+                if (
+                    service_names
+                    and ref_name not in service_names
+                    and ("legacy" in ref_name or "deprecated" in ref_name or "-v1" in ref_name)
+                ):
                     line_no = content[: m.start()].count("\n") + 1
                     snippet = lines[line_no - 1] if line_no <= len(lines) else ""
                     results.append(

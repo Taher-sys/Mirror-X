@@ -132,8 +132,8 @@ def test_schema_mismatch_detector():
                 "fields": [
                     {"name": "id", "type": "int", "nullable": False},
                     {"name": "age", "type": "string", "nullable": True},  # Type conflict!
-                    {"name": "email", "type": "str", "nullable": True},   # Nullability drift! (SQL is NOT NULL)
-                    {"name": "nickname", "type": "str", "nullable": True}, # Missing in DB!
+                    {"name": "email", "type": "str", "nullable": True},  # Nullability drift! (SQL is NOT NULL)
+                    {"name": "nickname", "type": "str", "nullable": True},  # Missing in DB!
                 ],
             },
         },
@@ -234,9 +234,7 @@ def test_stale_references_detector():
             "name": "api-gateway",
             "node_type": "service",
             "path": "docker-compose.yml",
-            "properties": {
-                "depends_on": ["active-redis", "deleted-cache-cluster"]
-            },
+            "properties": {"depends_on": ["active-redis", "deleted-cache-cluster"]},
         },
         {
             "id": "svc-2",

@@ -4,10 +4,9 @@ Extracts deterministic numeric feature vectors and sequence tokens from structur
 behavioral examples. Every feature is explicitly documented with its empirical formula.
 """
 
-from collections import Counter
 import math
+from collections import Counter
 from typing import Any
-
 
 # Documented feature dictionary with definitions
 FEATURE_DEFINITIONS: dict[str, str] = {
@@ -127,8 +126,12 @@ class BehavioralFeatureExtractor:
         retries = float(max(0, max_repeats - 1))
 
         # Check sandbox ratio
-        sandbox_actions = sum(1 for act in action_seq if not any(kw in act for kw in ("production", "raw_shell", "bypass", "delete_cluster", "secret_keys")))
-        sandbox_ratio = (sandbox_actions / max(1.0, seq_len))
+        sandbox_actions = sum(
+            1
+            for act in action_seq
+            if not any(kw in act for kw in ("production", "raw_shell", "bypass", "delete_cluster", "secret_keys"))
+        )
+        sandbox_ratio = sandbox_actions / max(1.0, seq_len)
 
         # Label indicators
         label = example.get("behavioral_label", "")
@@ -190,7 +193,7 @@ class BehavioralFeatureExtractor:
         tokens = [self.vocab.get(action, self.vocab["<UNK>"]) for action in sequence]
         # Truncate or pad to max_sequence_length
         if len(tokens) > self.max_sequence_length:
-            tokens = tokens[:self.max_sequence_length]
+            tokens = tokens[: self.max_sequence_length]
         else:
             tokens = tokens + [self.vocab["<PAD>"]] * (self.max_sequence_length - len(tokens))
         return tokens

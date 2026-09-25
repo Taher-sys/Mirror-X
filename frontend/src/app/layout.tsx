@@ -33,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}>
-      <body className="antialiased">
+      <body className="antialiased bg-transparent">
         <AppShell>{children}</AppShell>
       </body>
     </html>

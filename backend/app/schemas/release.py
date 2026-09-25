@@ -1,8 +1,8 @@
 """Pydantic schemas for Evidence Ledger and Release Passport."""
 
+import uuid
 from datetime import datetime
 from typing import Any
-import uuid
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -10,7 +10,10 @@ from pydantic import BaseModel, ConfigDict, Field
 class EvidenceCreateRequest(BaseModel):
     """Payload to record an immutable evidence record."""
 
-    evidence_type: str = Field(..., description="source_file, graph_relationship, api_contract, test_execution, scenario_run, agent_execution, policy_decision, runtime_trace")
+    evidence_type: str = Field(
+        ...,
+        description="source_file, graph_relationship, api_contract, test_execution, scenario_run, agent_execution, policy_decision, runtime_trace",
+    )
     source_reference: str = Field(..., description="Path, URI, or ID of source")
     summary: str = Field(..., description="Summary description of the ground truth artifact")
     raw_payload: dict[str, Any] = Field(default_factory=dict, description="Verifiable content artifact")

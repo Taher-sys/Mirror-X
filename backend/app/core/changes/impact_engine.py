@@ -251,7 +251,9 @@ class ChangeImpactEngine:
                         )
                     )
                     base_risk += 35.0
-                elif any(re.search(r"DROP\s+COLUMN|ALTER\s+TABLE.*DROP", line, re.IGNORECASE) for line in fdiff.deleted_lines):
+                elif any(
+                    re.search(r"DROP\s+COLUMN|ALTER\s+TABLE.*DROP", line, re.IGNORECASE) for line in fdiff.deleted_lines
+                ):
                     breaking_changes.append(
                         BreakingChangeWarning(
                             title=f"Database Column Dropped in {d_node.name}",
@@ -265,7 +267,9 @@ class ChangeImpactEngine:
 
             # If an API or Service has many indirect dependents, flag high blast radius
             downstream_callers = [
-                n.name for n in indirect_nodes if n.propagation_path and "(calls)" in n.propagation_path or "(depends_on)" in n.propagation_path
+                n.name
+                for n in indirect_nodes
+                if n.propagation_path and "(calls)" in n.propagation_path or "(depends_on)" in n.propagation_path
             ]
             if len(downstream_callers) >= 2:
                 breaking_changes.append(

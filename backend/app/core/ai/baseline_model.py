@@ -48,7 +48,7 @@ def compute_metrics(
         return {"accuracy": 0.0, "f1_macro": 0.0}
 
     # Confusion matrix: rows = true, cols = predicted
-    matrix: dict[str, dict[str, int]] = {l: {pred: 0 for pred in labels} for l in labels}
+    matrix: dict[str, dict[str, int]] = {l: dict.fromkeys(labels, 0) for l in labels}
     for yt, yp in zip(y_true, y_pred):
         if yt in matrix and yp in matrix[yt]:
             matrix[yt][yp] += 1
@@ -92,12 +92,14 @@ def compute_metrics(
     # Collect detailed false positive instances
     for idx, (yt, yp) in enumerate(zip(y_true, y_pred)):
         if yt != yp:
-            false_positive_cases.append({
-                "sample_index": idx,
-                "ground_truth": yt,
-                "model_prediction": yp,
-                "type": f"False {yp} (True: {yt})",
-            })
+            false_positive_cases.append(
+                {
+                    "sample_index": idx,
+                    "ground_truth": yt,
+                    "model_prediction": yp,
+                    "type": f"False {yp} (True: {yt})",
+                }
+            )
 
     total_correct = sum(1 for yt, yp in zip(y_true, y_pred) if yt == yp)
     accuracy = total_correct / n
@@ -144,10 +146,7 @@ class BaselineLogisticClassifier:
 
         # Initialize weights with small normal values and biases to 0
         rng = random.Random(seed)
-        self.weights = [
-            [(rng.gauss(0.0, 0.05)) for _ in range(self.num_classes)]
-            for _ in range(self.num_features)
-        ]
+        self.weights = [[(rng.gauss(0.0, 0.05)) for _ in range(self.num_classes)] for _ in range(self.num_features)]
         self.biases = [0.0 for _ in range(self.num_classes)]
 
     def _softmax(self, logits: list[float]) -> list[float]:
@@ -215,10 +214,10 @@ class BaselineLogisticClassifier:
                 self.weights[d][c] -= self.lr * ((grad_w[d][c] * inv_n) + reg)
 
         # Add L2 penalty to loss
-        l2_penalty = 0.5 * self.l2_reg * sum(
-            self.weights[d][c] ** 2
-            for d in range(self.num_features)
-            for c in range(self.num_classes)
+        l2_penalty = (
+            0.5
+            * self.l2_reg
+            * sum(self.weights[d][c] ** 2 for d in range(self.num_features) for c in range(self.num_classes))
         )
         return (total_loss / n) + l2_penalty
 
@@ -244,11 +243,13 @@ class BaselineLogisticClassifier:
                 val_loss = sum(val_losses) / max(1, len(val_losses))
 
             if epoch % 10 == 0 or epoch == epochs:
-                history.append({
-                    "epoch": epoch,
-                    "train_loss": round(train_loss, 4),
-                    "val_loss": round(val_loss, 4),
-                })
+                history.append(
+                    {
+                        "epoch": epoch,
+                        "train_loss": round(train_loss, 4),
+                        "val_loss": round(val_loss, 4),
+                    }
+                )
 
         return {"epochs_trained": epochs, "history": history}
 
@@ -256,10 +257,7 @@ class BaselineLogisticClassifier:
         """Explainable AI: Return weight coefficients connecting each feature to each class."""
         coefs: dict[str, dict[str, float]] = {}
         for d, name in enumerate(feature_names[: self.num_features]):
-            coefs[name] = {
-                self.idx_to_class[c]: round(self.weights[d][c], 4)
-                for c in range(self.num_classes)
-            }
+            coefs[name] = {self.idx_to_class[c]: round(self.weights[d][c], 4) for c in range(self.num_classes)}
         return coefs
 
     def to_dict(self) -> dict[str, Any]:
@@ -313,10 +311,7 @@ class CentroidAnomalyDetector:
 
     def score(self, x: list[float]) -> tuple[float, bool]:
         """Compute anomaly distance and binary flag."""
-        dist_sq = sum(
-            ((x[d] - self.centroid[d]) ** 2) / self.variances[d]
-            for d in range(self.num_features)
-        )
+        dist_sq = sum(((x[d] - self.centroid[d]) ** 2) / self.variances[d] for d in range(self.num_features))
         dist = math.sqrt(dist_sq)
         # Map distance to 0..1 confidence using sigmoid
         prob_anomaly = 1.0 / (1.0 + math.exp(-0.8 * (dist - self.threshold)))

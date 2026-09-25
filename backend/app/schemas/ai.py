@@ -1,8 +1,8 @@
 """Pydantic schemas for AI Core, Behavioral Intelligence, and Model Registry."""
 
+import uuid
 from datetime import datetime
 from typing import Any
-import uuid
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -10,10 +10,14 @@ from pydantic import BaseModel, ConfigDict, Field
 class DatasetGenerateRequest(BaseModel):
     """Configuration for generating or compiling a behavioral training dataset."""
 
-    num_examples: int = Field(100, ge=10, le=2000, description="Total number of structured examples to synthesize/extract")
+    num_examples: int = Field(
+        100, ge=10, le=2000, description="Total number of structured examples to synthesize/extract"
+    )
     seed: int = Field(42, description="Random seed for reproducible generation")
     include_existing_runs: bool = Field(True, description="Extract and label existing AgentRun database records")
-    include_existing_scenarios: bool = Field(True, description="Extract and transform existing ScenarioRecord database records")
+    include_existing_scenarios: bool = Field(
+        True, description="Extract and transform existing ScenarioRecord database records"
+    )
     name: str = Field("behavior-dataset-v1", description="Identifier name for this generated dataset")
 
 

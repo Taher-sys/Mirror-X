@@ -6,10 +6,10 @@ and artifact serialization.
 """
 
 import json
-from pathlib import Path
 import time
-from typing import Any
 import uuid
+from pathlib import Path
+from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,7 +22,6 @@ from app.core.ai.dataset import BEHAVIOR_LABELS, BehaviorDatasetGenerator
 from app.core.ai.features import BehavioralFeatureExtractor
 from app.core.ai.sequence_model import SequenceGRUClassifier
 from app.models.ai import AIExperiment, AIModelRegistry
-
 
 ARTIFACTS_DIR = Path(__file__).resolve().parent.parent.parent / "artifacts" / "models"
 

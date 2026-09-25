@@ -21,7 +21,6 @@ def parse_openapi(content: str, file_path: str = "openapi.yaml") -> IngestionRes
         result.warnings.append(f"Failed to parse OpenAPI {file_path}: {e}")
         return result
 
-
     info = data.get("info", {})
     service_name = info.get("title", "API Gateway").replace(" ", "-").lower()
 

@@ -27,12 +27,13 @@ async def list_findings(
     db: DatabaseSession,
     severity: Annotated[str | None, Query(description="Filter by severity (critical, high, medium, low, info)")] = None,
     finding_type: Annotated[str | None, Query(description="Filter by finding type")] = None,
-    status_filter: Annotated[str | None, Query(alias="status", description="Filter by status (open, resolved, dismissed)")] = None,
+    status_filter: Annotated[
+        str | None, Query(alias="status", description="Filter by status (open, resolved, dismissed)")
+    ] = None,
     search: Annotated[str | None, Query(description="Search term for finding title or description")] = None,
     page: Annotated[int, Query(ge=1, description="Page number")] = 1,
     limit: Annotated[int, Query(ge=1, le=100, description="Items per page")] = 50,
 ) -> StandardResponse[list[FindingResponse]]:
-
     """List findings with filters and pagination."""
     query = select(Finding).options(
         selectinload(Finding.repository),
@@ -47,9 +48,7 @@ async def list_findings(
         query = query.where(Finding.status == status_filter)
     if search:
         search_filter = f"%{search}%"
-        query = query.where(
-            (Finding.title.ilike(search_filter)) | (Finding.description.ilike(search_filter))
-        )
+        query = query.where((Finding.title.ilike(search_filter)) | (Finding.description.ilike(search_filter)))
 
     # Count query
     count_query = select(func.count(Finding.id))
@@ -111,9 +110,7 @@ async def get_findings_summary(
     total_res = await db.execute(select(func.count(Finding.id)))
     total = total_res.scalar() or 0
 
-    severity_res = await db.execute(
-        select(Finding.severity, func.count(Finding.id)).group_by(Finding.severity)
-    )
+    severity_res = await db.execute(select(Finding.severity, func.count(Finding.id)).group_by(Finding.severity))
     severity_map = {row[0].lower(): row[1] for row in severity_res.fetchall()}
 
     counts = FindingSeverityCounts(
@@ -132,7 +129,6 @@ async def create_finding(
     payload: FindingCreate,
     db: DatabaseSession,
 ) -> StandardResponse[FindingResponse]:
-
     """Create a new analytical finding."""
     if payload.repository_id:
         repo = await db.get(Repository, payload.repository_id)

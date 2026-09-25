@@ -29,7 +29,9 @@ def parse_package_json(content: str, file_path: str = "package.json") -> Ingesti
             "version": version,
             "runtime": f"Node.js ({data.get('engines', {}).get('node', '>=18')})",
             "scripts": list(scripts.keys()),
-            "type": "frontend" if "next" in data.get("dependencies", {}) or "react" in data.get("dependencies", {}) else "api",
+            "type": "frontend"
+            if "next" in data.get("dependencies", {}) or "react" in data.get("dependencies", {})
+            else "api",
         },
     )
     result.nodes.append(service_node)

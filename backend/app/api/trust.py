@@ -1,7 +1,7 @@
 """FastAPI routes for Phase 8 Trust Layer."""
 
-from typing import Any
 import uuid
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
@@ -13,10 +13,7 @@ from app.models.evidence import EvidenceRecord
 from app.models.trust import (
     Permission,
     PolicyDecision,
-    Principal,
-    TrustAction,
     TrustPolicy,
-    TrustResource,
 )
 from app.schemas.common import StandardResponse
 from app.schemas.trust import (
@@ -27,7 +24,6 @@ from app.schemas.trust import (
     PolicyDecisionReviewRequest,
     TrustPolicyCreateRequest,
     TrustPolicyResponse,
-    TrustResourceResponse,
 )
 
 router = APIRouter(prefix="/trust", tags=["Trust Layer"])
@@ -80,10 +76,38 @@ async def list_permissions(
     perms = result.scalars().all()
 
     default_permissions = [
-        {"name": "perm_agent_sandbox_read", "principal_role": "agent", "resource_type": "database", "action_name": "read", "effect": "ALLOW", "conditions": {"sandbox_only": True}},
-        {"name": "perm_agent_sandbox_invoke", "principal_role": "agent", "resource_type": "api_endpoint", "action_name": "invoke", "effect": "ALLOW", "conditions": {"sandbox_only": True}},
-        {"name": "perm_agent_schema_alter", "principal_role": "agent", "resource_type": "database", "action_name": "schema_alter", "effect": "DENY", "conditions": {}},
-        {"name": "perm_human_admin_all", "principal_role": "admin", "resource_type": "all", "action_name": "all", "effect": "ALLOW", "conditions": {}},
+        {
+            "name": "perm_agent_sandbox_read",
+            "principal_role": "agent",
+            "resource_type": "database",
+            "action_name": "read",
+            "effect": "ALLOW",
+            "conditions": {"sandbox_only": True},
+        },
+        {
+            "name": "perm_agent_sandbox_invoke",
+            "principal_role": "agent",
+            "resource_type": "api_endpoint",
+            "action_name": "invoke",
+            "effect": "ALLOW",
+            "conditions": {"sandbox_only": True},
+        },
+        {
+            "name": "perm_agent_schema_alter",
+            "principal_role": "agent",
+            "resource_type": "database",
+            "action_name": "schema_alter",
+            "effect": "DENY",
+            "conditions": {},
+        },
+        {
+            "name": "perm_human_admin_all",
+            "principal_role": "admin",
+            "resource_type": "all",
+            "action_name": "all",
+            "effect": "ALLOW",
+            "conditions": {},
+        },
     ]
 
     data = [PermissionResponse.model_validate(p).model_dump() for p in perms] if perms else default_permissions
@@ -97,9 +121,24 @@ async def list_trust_resources(
     """List resources under Trust Layer governance (all marked sandbox=True)."""
     default_resources = [
         {"name": "sandbox-orders-db", "resource_type": "database", "classification": "internal", "is_sandbox": True},
-        {"name": "sandbox-checkout-api", "resource_type": "api_endpoint", "classification": "internal", "is_sandbox": True},
-        {"name": "sandbox-customers-table", "resource_type": "table", "classification": "confidential", "is_sandbox": True},
-        {"name": "sandbox-auth-service", "resource_type": "service", "classification": "restricted", "is_sandbox": True},
+        {
+            "name": "sandbox-checkout-api",
+            "resource_type": "api_endpoint",
+            "classification": "internal",
+            "is_sandbox": True,
+        },
+        {
+            "name": "sandbox-customers-table",
+            "resource_type": "table",
+            "classification": "confidential",
+            "is_sandbox": True,
+        },
+        {
+            "name": "sandbox-auth-service",
+            "resource_type": "service",
+            "classification": "restricted",
+            "is_sandbox": True,
+        },
     ]
     return StandardResponse(data=default_resources, meta={"total": len(default_resources)})
 
