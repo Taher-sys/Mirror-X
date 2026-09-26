@@ -230,7 +230,7 @@ export default function EdgePage() {
   const isOnline = edgeData.connectivity === 'ONLINE';
 
   return (
-    <div className="relative min-h-[calc(100vh-3.5rem)] overflow-hidden canvas-textured text-white p-6 space-y-6">
+    <div className="relative min-h-[calc(100vh-3.5rem)] overflow-hidden bg-transparent text-white p-6 space-y-6">
       <PerspectiveGrid />
 
       <div className="max-w-7xl mx-auto space-y-8 relative z-10">
@@ -312,7 +312,7 @@ export default function EdgePage() {
         {/* Primary Edge Telemetry Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {/* Card 1: Node State & Storage */}
-          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-200 hover:border-[#343b52] relative overflow-hidden group">
+          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.015] hover:border-amber-500/60 hover:border-t-zinc-400 hover:shadow-[0_20px_45px_-5px_rgba(245,158,11,0.25)] relative overflow-hidden group cursor-pointer">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
                 Storage & Database
@@ -334,7 +334,7 @@ export default function EdgePage() {
           </div>
 
           {/* Card 2: Outbound Queue */}
-          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-200 hover:border-[#343b52] relative overflow-hidden group">
+          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.015] hover:border-amber-500/60 hover:border-t-zinc-400 hover:shadow-[0_20px_45px_-5px_rgba(245,158,11,0.25)] relative overflow-hidden group cursor-pointer">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
                 Outbound Sync Queue
@@ -356,7 +356,7 @@ export default function EdgePage() {
           </div>
 
           {/* Card 3: Versions & Snapshot */}
-          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-200 hover:border-[#343b52] relative overflow-hidden group">
+          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.015] hover:border-amber-500/60 hover:border-t-zinc-400 hover:shadow-[0_20px_45px_-5px_rgba(245,158,11,0.25)] relative overflow-hidden group cursor-pointer">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
                 Model & Policy State
@@ -379,7 +379,7 @@ export default function EdgePage() {
           </div>
 
           {/* Card 4: Last Synchronization */}
-          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-200 hover:border-[#343b52] relative overflow-hidden group">
+          <div className="rounded-xl border border-[#232736] border-t border-t-zinc-700/50 bg-[#12151e]/92 p-6 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.015] hover:border-amber-500/60 hover:border-t-zinc-400 hover:shadow-[0_20px_45px_-5px_rgba(245,158,11,0.25)] relative overflow-hidden group cursor-pointer">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
                 Sync Heartbeat
@@ -387,10 +387,10 @@ export default function EdgePage() {
               <Clock className="h-5 w-5 text-amber-500 group-hover:scale-110 transition-transform" />
             </div>
             <div className="space-y-1">
-              <div className="text-xl font-extrabold text-white font-mono tabular-nums truncate">
+              <div className="text-xl font-extrabold text-white font-mono tabular-nums truncate" suppressHydrationWarning>
                 {new Date(edgeData.last_sync).toLocaleTimeString()}
               </div>
-              <p className="text-xs text-zinc-400 pt-1">
+              <p className="text-xs text-zinc-400 pt-1" suppressHydrationWarning>
                 {new Date(edgeData.last_sync).toLocaleDateString()}
               </p>
             </div>
@@ -559,7 +559,7 @@ export default function EdgePage() {
                     </div>
                     <p className="text-[11px] text-zinc-400">{c.resolution_notes || 'Conflict recorded'}</p>
                     {c.detected_at && (
-                      <p className="text-[10px] font-mono text-zinc-500">
+                      <p className="text-[10px] font-mono text-zinc-500" suppressHydrationWarning>
                         Detected: {new Date(c.detected_at).toLocaleString()}
                       </p>
                     )}

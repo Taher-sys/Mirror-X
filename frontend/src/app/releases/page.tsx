@@ -138,7 +138,7 @@ export default function ReleasesPage() {
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-3.5rem)] overflow-hidden canvas-textured text-white p-6 space-y-6">
+    <div className="relative min-h-[calc(100vh-3.5rem)] overflow-hidden bg-transparent text-white p-6 space-y-6">
       <PerspectiveGrid />
 
       {/* Header */}

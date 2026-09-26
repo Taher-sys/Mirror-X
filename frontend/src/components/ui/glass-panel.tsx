@@ -41,8 +41,8 @@ export function GlassPanel({
     <div
       className={cn(
         'relative rounded-lg bg-[#12151e]/92 backdrop-blur-md border border-[#232736] border-t border-t-zinc-700/50',
-        'shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] transition-all duration-250 ease-out',
-        'hover:border-[#343b52] hover:border-t-zinc-500/60 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.8)]',
+        'shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] transition-all duration-300 ease-out',
+        'hover:-translate-y-1.5 hover:border-[#3b4254] hover:border-t-zinc-400 hover:shadow-[0_16px_40px_0_rgba(0,0,0,0.8)]',
         glowMap[accentGlow],
         className
       )}

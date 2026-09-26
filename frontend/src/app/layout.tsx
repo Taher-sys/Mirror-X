@@ -32,8 +32,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}>
-      <body className="antialiased bg-transparent">
+    <html lang="en" className={`${inter.variable} ${dmSans.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+      <body className="antialiased bg-transparent" suppressHydrationWarning>
         <AppShell>{children}</AppShell>
       </body>
     </html>

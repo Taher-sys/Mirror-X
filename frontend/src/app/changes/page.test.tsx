@@ -1,4 +1,5 @@
-import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
+import { screen, waitFor, fireEvent } from '@testing-library/dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ChangesPage from './page';
 import * as api from '@/lib/api';

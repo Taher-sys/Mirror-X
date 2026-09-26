@@ -44,7 +44,7 @@ export default function TopographicBackground() {
       </defs>
 
       {/* Background fill */}
-      <rect width="100%" height="100%" fill="#0c0d10" />
+      <rect width="100%" height="100%" fill="none" />
 
       {/* Topographic contour lines */}
       <g stroke="url(#mouseGlow)" stroke-width="1.2" fill="none">

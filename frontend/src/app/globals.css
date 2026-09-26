@@ -25,9 +25,8 @@
 body {
   background-color: #09090b !important;
   background-image: 
-    radial-gradient(circle at 75% 25%, rgba(245, 158, 11, 0.07) 0%, transparent 40%),
-    radial-gradient(circle at 20% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 50%),
-    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" fill="none"><ellipse cx="1200" cy="250" rx="90" ry="55" stroke="%23f59e0b" stroke-opacity="0.22" stroke-width="1.3" stroke-dasharray="3 1.5"/><ellipse cx="1200" cy="250" rx="160" ry="95" stroke="%23f59e0b" stroke-opacity="0.20" stroke-width="1.3" stroke-dasharray="3 1.5"/><ellipse cx="1200" cy="250" rx="240" ry="145" stroke="%23f59e0b" stroke-opacity="0.18" stroke-width="1.3"/><ellipse cx="1200" cy="250" rx="330" ry="200" stroke="%23f59e0b" stroke-opacity="0.16" stroke-width="1.3" stroke-dasharray="4 2"/><ellipse cx="350" cy="850" rx="80" ry="50" stroke="%23f59e0b" stroke-opacity="0.20" stroke-width="1.3"/><ellipse cx="350" cy="850" rx="150" ry="90" stroke="%23f59e0b" stroke-opacity="0.17" stroke-width="1.3" stroke-dasharray="3 1.5"/><ellipse cx="350" cy="850" rx="230" ry="140" stroke="%23f59e0b" stroke-opacity="0.15" stroke-width="1.3"/><path d="M-100 80 C 400 30, 800 180, 1700 70 M-100 170 C 450 110, 850 260, 1700 150 M-100 280 C 500 200, 900 360, 1700 240 M-100 400 C 420 330, 950 480, 1700 350 M-100 520 C 550 440, 1050 590, 1700 460 M-100 660 C 600 570, 1150 710, 1700 590 M-100 800 C 520 720, 1200 830, 1700 730" stroke="%23f59e0b" stroke-opacity="0.16" stroke-width="1.3" stroke-dasharray="3 1.5" fill="none"/></svg>') !important;
+    radial-gradient(circle at 85% 15%, rgba(245, 158, 11, 0.08) 0%, transparent 45%),
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1600" viewBox="0 0 1000 1600" fill="none"><path d="M-50 60 C 170 20, 200 -20, 470 30 C 730 90, 810 -20, 1050 20 M-50 120 C 180 80, 220 30, 480 90 C 740 150, 820 40, 1050 70 M-50 150 C 170 110, 240 60, 490 120 C 730 180, 830 75, 1050 100 M-50 180 C 160 140, 260 90, 500 150 C 720 210, 840 110, 1050 130 M-50 215 C 180 170, 270 125, 510 185 C 740 245, 835 145, 1050 165 M-50 250 C 200 200, 280 160, 520 220 C 760 280, 830 180, 1050 200 M-50 285 C 170 240, 295 195, 530 255 C 770 315, 840 215, 1050 240 M-50 320 C 140 280, 310 230, 540 290 C 780 350, 850 250, 1050 280 M-50 360 C 160 320, 325 270, 555 330 C 790 390, 860 290, 1050 320 M-50 400 C 180 360, 340 310, 570 370 C 800 430, 870 330, 1050 360 M-50 445 C 195 400, 360 350, 585 415 C 810 475, 880 375, 1050 405 M-50 490 C 210 440, 380 390, 600 460 C 820 520, 890 420, 1050 450 M-50 535 C 225 485, 400 435, 620 505 C 835 565, 905 465, 1050 495 M-50 580 C 240 530, 420 480, 640 550 C 850 610, 920 510, 1050 540 M-50 630 C 255 580, 440 530, 660 600 C 865 660, 930 560, 1050 590 M-50 680 C 270 630, 460 580, 680 650 C 880 710, 940 610, 1050 640 M-50 735 C 285 680, 480 630, 700 705 C 895 765, 950 665, 1050 695 M-50 790 C 300 730, 500 680, 720 760 C 910 820, 960 720, 1050 750 M-50 845 C 315 785, 525 735, 745 815 C 925 875, 965 775, 1050 805 M-50 900 C 330 840, 550 790, 770 870 C 940 930, 970 830, 1050 860 M-50 960 C 345 900, 575 850, 795 930 C 955 990, 980 890, 1050 920 M-50 1020 C 360 960, 600 910, 820 990 C 970 1050, 990 950, 1050 980 M-50 1085 C 380 1020, 625 970, 845 1055 C 985 1110, 1000 1015, 1050 1045 M-50 1150 C 400 1080, 650 1030, 870 1120 C 1000 1170, 1010 1080, 1050 1110 M-50 1215 C 415 1145, 675 1095, 895 1185 C 1010 1235, 1020 1145, 1050 1175 M-50 1280 C 430 1210, 700 1160, 920 1250 C 1020 1300, 1030 1210, 1050 1240 M-50 1350 C 445 1280, 725 1230, 945 1320 C 1030 1365, 1040 1280, 1050 1310 M-50 1420 C 460 1350, 750 1300, 970 1390 C 1040 1430, 1050 1350, 1050 1380 M-50 1490 C 475 1420, 775 1370, 990 1460 C 1050 1500, 1060 1420, 1050 1450 M-50 1560 C 490 1490, 800 1440, 1010 1530 C 1060 1570, 1070 1490, 1050 1520" stroke="%23f59e0b" stroke-opacity="0.20" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>') !important;
   background-repeat: repeat-y;
   background-size: 100% auto;
   color: #f4f4f5 !important;
@@ -157,9 +156,9 @@ h1, h2, h3, h4, h5, h6, .subsection-header, [class*="header"]:not(.section-title
     color: #a1a1aa;
   }
 
-  /* Rich Textured Canvas Background Utility */
+  /* Rich Textured Canvas Background Utility - transparent to reveal vector topography */
   .canvas-textured {
-    background-color: #09090b;
+    background-color: transparent !important;
   }
 
   /* FramerKit Navigation Spec */
@@ -196,14 +195,14 @@ h1, h2, h3, h4, h5, h6, .subsection-header, [class*="header"]:not(.section-title
     transform: scale(0.98);
   }
 
-  /* Micro-Interactions: Smooth hover lift & subtle highlight */
+  /* Micro-Interactions: High-amplification hover lift & vibrant amber highlight */
   .hover-glass-lift {
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .hover-glass-lift:hover {
-    transform: translateY(-2px);
-    border-color: #3b4254;
-    box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.8);
+    transform: translateY(-6px) scale(1.02);
+    border-color: rgba(245, 158, 11, 0.5);
+    box-shadow: 0 20px 45px -5px rgba(245, 158, 11, 0.25), 0 16px 40px 0 rgba(0, 0, 0, 0.8);
   }
 
   /* Crisp Telemetry Accents */

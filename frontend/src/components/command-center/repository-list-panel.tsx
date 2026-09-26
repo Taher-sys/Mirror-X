@@ -82,7 +82,7 @@ export function RepositoryListPanel({
           {filtered.map((repo) => (
             <div
               key={repo.id}
-              className="group flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-lg bg-[#12151e]/92 backdrop-blur-md border border-[#232736] border-t border-t-zinc-700/50 p-4 transition-all duration-200 ease-out hover:border-[#343b52] hover:border-t-zinc-500/60 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.8)] shadow-[0_8px_32px_0_rgba(0,0,0,0.6)]"
+              className="group flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-lg bg-[#12151e]/92 backdrop-blur-md border border-[#232736] border-t border-t-zinc-700/50 p-4 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:scale-[1.01] hover:border-amber-500/50 hover:border-t-zinc-400 hover:shadow-[0_16px_40px_0_rgba(0,0,0,0.8)] shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] cursor-pointer"
             >
               <div className="space-y-1.5">
                 <div className="flex items-center gap-2">

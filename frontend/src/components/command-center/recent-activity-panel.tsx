@@ -41,10 +41,10 @@ export function RecentActivityPanel({ activities }: RecentActivityPanelProps) {
                 {/* Timeline node dot */}
                 <div className="absolute -left-[19px] top-2.5 h-2.5 w-2.5 rounded-full border-2 border-zinc-700 bg-zinc-900 group-hover:border-amber-500 group-hover:bg-amber-500 transition-colors" />
 
-                <div className="rounded-lg bg-[#12151e]/92 backdrop-blur-md border border-[#232736] border-t border-t-zinc-700/50 p-3.5 transition-all duration-200 ease-out hover:border-[#343b52] hover:border-t-zinc-500/60 hover:shadow-[0_12px_40px_0_rgba(0,0,0,0.8)] shadow-[0_8px_32px_0_rgba(0,0,0,0.6)]">
+                <div className="rounded-lg bg-[#12151e]/92 backdrop-blur-md border border-[#232736] border-t border-t-zinc-700/50 p-3.5 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.01] hover:border-[#343b52] hover:border-t-zinc-400 hover:shadow-[0_14px_36px_0_rgba(0,0,0,0.8)] shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] cursor-pointer">
                   <div className="flex items-center justify-between font-mono text-xs">
                     <div className="flex items-center gap-2">
-                      <span className="text-zinc-400 font-medium">{timeStr}</span>
+                      <span className="text-zinc-400 font-medium" suppressHydrationWarning>{timeStr}</span>
                       <span className="rounded bg-zinc-800 border border-zinc-700/80 px-2 py-0.5 text-[9px] uppercase font-bold text-zinc-300">
                         {act.action.replace('_', ' ')}
                       </span>
