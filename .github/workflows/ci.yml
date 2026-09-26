@@ -89,6 +89,7 @@ jobs:
           ENVIRONMENT: development
           RATE_LIMIT_ENABLED: "false"
           PYTHONPATH: .
+          DATABASE_URL: sqlite+aiosqlite:///./mirrorx.db
         run: pytest -v --tb=short
 
   container-build:
